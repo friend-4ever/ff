@@ -11,9 +11,19 @@
         /* --- GLOBAL STYLES & GLASSMORPHISM --- */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
+        /* TEXT SELECTION BLOCKED FOR ENTIRE WEBSITE */
         body {
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             background-attachment: fixed; color: white; min-height: 100vh; overflow-x: hidden;
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none;    /* Firefox */
+            -ms-user-select: none;     /* IE 10+ */
+            user-select: none;         /* Standard */
+        }
+
+        /* Allow selection only inside the search input so typing works normally */
+        input {
+            -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text;
         }
 
         .glass-panel {
@@ -25,6 +35,9 @@
         .top-wrapper {
             background: rgba(15, 12, 41, 0.8); backdrop-filter: blur(10px);
             position: sticky; top: 0; z-index: 100; padding-bottom: 15px;
+            /* Added beautiful drop shadow and bottom border to the top section */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
         .top-banner {
@@ -94,10 +107,16 @@
         }
         .btn-bundle:hover { transform: scale(1.05); box-shadow: 0 0 35px rgba(13, 59, 223, 0.9); }
 
-        /* --- SOFTWARE GRID --- */
+        /* --- SOFTWARE GRID & SEARCH ANIMATION --- */
         .software-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 20px 5%; margin-bottom: 50px; z-index: 10;}
 
         .software-card { padding: 25px; display: flex; flex-direction: column; align-items: center; text-align: center; transition: 0.3s; position: relative; }
+
+        /* Smooth Animation when software card appears after searching */
+        @keyframes searchPop {
+            0% { opacity: 0; transform: translateY(30px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
 
         .software-logo { width: 80px; height: 80px; margin-bottom: 15px; border-radius: 15px; animation: logoPulse 5s infinite alternate ease-in-out; }
         @keyframes logoPulse {
@@ -112,7 +131,7 @@
         .highlight-price { color: #00ff00; font-weight: 700; text-shadow: 0 0 8px rgba(255, 255, 255, 1); letter-spacing: 0.5px; }
 
         /* --- BUTTER SMOOTH CUSTOM DROPDOWN --- */
-        .custom-select-wrapper { position: relative; width: 100%; margin-bottom: 20px; user-select: none; z-index: 50; }
+        .custom-select-wrapper { position: relative; width: 100%; margin-bottom: 20px; z-index: 50; }
         .custom-select-trigger {
             width: 100%; padding: 12px 15px; border-radius: 10px; color: white;
             background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
@@ -613,7 +632,7 @@
         // INITIALIZE ALL CARDS ON LOAD
         document.querySelectorAll('.software-card').forEach(card => updateCardLinks(card));
 
-        // --- SEARCH LOGIC ---
+        // --- SEARCH LOGIC WITH SMOOTH ANIMATION ---
         function getEditDistance(a, b) {
             if(a.length === 0) return b.length; if(b.length === 0) return a.length;
             var matrix = [];
@@ -643,10 +662,21 @@
 
         searchInput.addEventListener('input', function() {
             const query = this.value.toLowerCase().trim();
+            
             if (query === "") {
                 bundleSection.style.display = 'block'; searchError.style.display = 'none';
-                allCards.forEach(card => card.style.display = 'flex'); return;
+                allCards.forEach(card => {
+                    // Trigger animation only if it was hidden
+                    if(card.style.display === 'none' || card.style.display === '') {
+                        card.style.display = 'flex';
+                        card.style.animation = 'none';
+                        void card.offsetWidth; // Trigger reflow for restart
+                        card.style.animation = 'searchPop 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards';
+                    }
+                }); 
+                return;
             }
+            
             bundleSection.style.display = 'none';
             const yearMatch = query.match(/\d{2,4}/);
             const searchYear = yearMatch ? yearMatch[0] : null;
@@ -661,7 +691,13 @@
                 }
 
                 if ((queryWords.length > 0 && matchesAllWords) || (queryWords.length === 0 && searchYear)) {
-                    card.style.display = 'flex'; matchFound = true;
+                    if(card.style.display !== 'flex') {
+                        card.style.display = 'flex';
+                        card.style.animation = 'none';
+                        void card.offsetWidth; // Trigger reflow
+                        card.style.animation = 'searchPop 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards';
+                    }
+                    matchFound = true;
                     if(searchYear) {
                         const wrapper = card.querySelector('.custom-select-wrapper');
                         if (wrapper) {
@@ -669,7 +705,9 @@
                             if(targetOption) targetOption.click();
                         }
                     }
-                } else { card.style.display = 'none'; }
+                } else { 
+                    card.style.display = 'none'; 
+                }
             });
             if(!matchFound) searchError.style.display = 'block'; else searchError.style.display = 'none';
         });
