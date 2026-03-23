@@ -9,48 +9,27 @@
     
     <style>
         /* --- GLOBAL STYLES & GLASSMORPHISM --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
         body {
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            background-attachment: fixed;
-            color: white;
-            min-height: 100vh;
-            overflow-x: hidden;
+            background-attachment: fixed; color: white; min-height: 100vh; overflow-x: hidden;
         }
 
         .glass-panel {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
         /* --- HEADER AREA --- */
         .top-wrapper {
-            background: rgba(15, 12, 41, 0.8);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            padding-bottom: 15px;
+            background: rgba(15, 12, 41, 0.8); backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100; padding-bottom: 15px;
         }
 
         .top-banner {
-            text-align: center;
-            padding: 15px;
-            font-size: 20px;
-            font-weight: 700;
-            background: transparent;
-            letter-spacing: 0.5px;
-            color: white;
+            text-align: center; padding: 15px; font-size: 20px; font-weight: 700;
+            background: transparent; letter-spacing: 0.5px; color: white;
         }
         .top-banner .discount { color: #ff0000; }
         .top-banner .lifetime { color: #ffffff; }
@@ -83,37 +62,32 @@
 
         .bundle-logos-wrapper { position: relative; display: flex; justify-content: center; margin-bottom: 30px; }
         
-        /* Removed the solid green background behind the logos */
-        .bundle-logos-wrapper::before { display: none; }
-
-        .bundle-logos { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; position: relative; z-index: 1; }
+        .bundle-logos { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; position: relative; z-index: 1; }
         
-        /* 10 Different Colors Slow Smooth Glowing Animation */
+        /* 10 Different Colors Slow Smooth Glowing Animation (WIDER AREA SPREAD) */
         .bundle-logos img { 
             width: 35px; height: 35px; border-radius: 5px; 
-            animation: bundleLogo10ColorGlow 15s infinite linear; /* Super slow and smooth */
+            animation: bundleLogo10ColorWideGlow 15s infinite linear; 
         }
         
-        @keyframes bundleLogo10ColorGlow {
-            0%   { filter: drop-shadow(0 0 12px #ff0000); } /* Red */
-            10%  { filter: drop-shadow(0 0 12px #ff7f00); } /* Orange */
-            20%  { filter: drop-shadow(0 0 12px #ffff00); } /* Yellow */
-            30%  { filter: drop-shadow(0 0 12px #00ff00); } /* Green */
-            40%  { filter: drop-shadow(0 0 12px #00ffcc); } /* Cyan */
-            50%  { filter: drop-shadow(0 0 12px #00d2ff); } /* Light Blue */
-            60%  { filter: drop-shadow(0 0 12px #0000ff); } /* Blue */
-            70%  { filter: drop-shadow(0 0 12px #8b00ff); } /* Violet */
-            80%  { filter: drop-shadow(0 0 12px #ff00ff); } /* Magenta */
-            90%  { filter: drop-shadow(0 0 12px #ff0088); } /* Pink */
-            100% { filter: drop-shadow(0 0 12px #ff0000); } /* Red */
+        @keyframes bundleLogo10ColorWideGlow {
+            0%   { filter: drop-shadow(0 0 15px #ff0000) drop-shadow(0 0 35px #ff0000); }
+            10%  { filter: drop-shadow(0 0 15px #ff7f00) drop-shadow(0 0 35px #ff7f00); }
+            20%  { filter: drop-shadow(0 0 15px #ffff00) drop-shadow(0 0 35px #ffff00); }
+            30%  { filter: drop-shadow(0 0 15px #00ff00) drop-shadow(0 0 35px #00ff00); }
+            40%  { filter: drop-shadow(0 0 15px #00ffcc) drop-shadow(0 0 35px #00ffcc); }
+            50%  { filter: drop-shadow(0 0 15px #00d2ff) drop-shadow(0 0 35px #00d2ff); }
+            60%  { filter: drop-shadow(0 0 15px #0000ff) drop-shadow(0 0 35px #0000ff); }
+            70%  { filter: drop-shadow(0 0 15px #8b00ff) drop-shadow(0 0 35px #8b00ff); }
+            80%  { filter: drop-shadow(0 0 15px #ff00ff) drop-shadow(0 0 35px #ff00ff); }
+            90%  { filter: drop-shadow(0 0 15px #ff0088) drop-shadow(0 0 35px #ff0088); }
+            100% { filter: drop-shadow(0 0 15px #ff0000) drop-shadow(0 0 35px #ff0000); }
         }
 
-        /* Buy Bundle Button with Slide Animation */
         .btn-bundle {
             background: #0d3bdf; color: white; padding: 14px 40px; border: none; border-radius: 30px;
             font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s; text-decoration: none;
-            display: inline-block; box-shadow: 0 0 20px rgba(13, 59, 223, 0.7);
-            position: relative; overflow: hidden; /* Added for slide effect */
+            display: inline-block; box-shadow: 0 0 20px rgba(13, 59, 223, 0.7); position: relative; overflow: hidden;
         }
         .btn-bundle::before {
             content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
@@ -123,15 +97,11 @@
         .btn-bundle:hover { transform: scale(1.05); box-shadow: 0 0 35px rgba(13, 59, 223, 0.9); }
 
         /* --- SOFTWARE GRID --- */
-        .software-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 20px 5%; margin-bottom: 50px; }
+        .software-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 20px 5%; margin-bottom: 50px; z-index: 10;}
 
-        .software-card { padding: 25px; display: flex; flex-direction: column; align-items: center; text-align: center; transition: 0.3s; }
+        .software-card { padding: 25px; display: flex; flex-direction: column; align-items: center; text-align: center; transition: 0.3s; position: relative; }
 
-        .software-logo {
-            width: 80px; height: 80px; margin-bottom: 15px; border-radius: 15px;
-            animation: logoPulse 5s infinite alternate ease-in-out; 
-        }
-
+        .software-logo { width: 80px; height: 80px; margin-bottom: 15px; border-radius: 15px; animation: logoPulse 5s infinite alternate ease-in-out; }
         @keyframes logoPulse {
             0% { filter: drop-shadow(0 0 10px #00d2ff) drop-shadow(0 0 20px #ff00ff); }
             33% { filter: drop-shadow(0 0 15px #ff00ff) drop-shadow(0 0 25px #00ffcc); }
@@ -140,36 +110,47 @@
         }
 
         .software-title { font-size: 20px; font-weight: 600; margin-bottom: 5px; }
-        
         .price-tag { font-size: 16px; margin-bottom: 15px; color: #ddd; }
         .highlight-price { color: #00ff00; font-weight: 700; text-shadow: 0 0 8px rgba(255, 255, 255, 1); letter-spacing: 0.5px; }
 
-        /* Butter Smooth Version Dropdown Styling */
-        .version-select {
+        /* --- BUTTER SMOOTH CUSTOM DROPDOWN (Replaces Native Select) --- */
+        .custom-select-wrapper { position: relative; width: 100%; margin-bottom: 20px; user-select: none; z-index: 50; }
+        .custom-select-trigger {
             width: 100%; padding: 12px 15px; border-radius: 10px; color: white;
-            background: rgba(0,0,0,0.5) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>') no-repeat right 15px center;
-            background-size: 15px;
-            border: 1px solid rgba(255,255,255,0.2); margin-bottom: 20px; font-size: 15px; outline: none;
-            cursor: pointer;
-            appearance: none; -webkit-appearance: none; -moz-appearance: none; /* Hide default arrow */
-            transition: all 0.3s ease-in-out; /* Butter smooth transitions */
+            background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
+            font-size: 15px; display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; transition: all 0.3s ease-in-out;
         }
-        .version-select:hover {
-            background-color: rgba(255,255,255,0.1);
-            border-color: rgba(255,255,255,0.4);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        .custom-select-trigger:hover {
+            background-color: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.4); box-shadow: 0 5px 15px rgba(0,0,0,0.3); transform: translateY(-2px);
         }
-        .version-select:focus {
-            background-color: rgba(0,0,0,0.7);
-            border-color: #00d2ff;
-            box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
-            transform: scale(1.02);
+        .custom-select-options {
+            position: absolute; display: block; top: 110%; left: 0; right: 0;
+            background: rgba(15, 12, 41, 0.95); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2); border-radius: 10px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.8); z-index: 100;
+            opacity: 0; visibility: hidden; pointer-events: none;
+            transform: translateY(-15px); transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            list-style: none; padding: 5px; max-height: 220px; overflow-y: auto;
         }
-        .version-select option { background: #24243e; color: white; padding: 10px; font-size: 15px;}
+        .custom-select-wrapper.open .custom-select-options {
+            opacity: 1; visibility: visible; pointer-events: all; transform: translateY(0);
+        }
+        .custom-select-options li {
+            padding: 10px 15px; color: #ccc; cursor: pointer; border-radius: 5px;
+            transition: all 0.2s ease-in-out; font-size: 14px; text-align: left;
+        }
+        /* Butter Smooth Hover inside options */
+        .custom-select-options li:hover { background: rgba(0, 210, 255, 0.2); color: #fff; transform: translateX(5px); }
+        .custom-select-options li.selected { background: rgba(0, 210, 255, 0.4); color: #fff; font-weight: 600; border-left: 3px solid #00d2ff;}
+        
+        .custom-select-options::-webkit-scrollbar { width: 6px; }
+        .custom-select-options::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
+        .fa-chevron-down { transition: transform 0.3s ease; }
+        .custom-select-wrapper.open .fa-chevron-down { transform: rotate(180deg); }
 
         /* --- BUTTONS --- */
-        .card-btns { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+        .card-btns { width: 100%; display: flex; flex-direction: column; gap: 12px; position: relative; z-index: 1;}
         .btn {
             width: 100%; padding: 12px; border-radius: 10px; border: none; font-size: 15px; font-weight: 600;
             color: white; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center;
@@ -190,7 +171,7 @@
         .btn-video:hover { background: #ffd633; }
         .btn-canva-pay { background: #ffcc00; color: #000; font-size: 13px; line-height: 1.4; padding: 15px 10px; text-align: left; border: 1px solid #e6b800;}
 
-        /* --- MODERN TRANSLUCENT FLOATING ICONS --- */
+        /* --- FLOATING ICONS --- */
         .floating-social { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 1000; }
         .floating-social a {
             width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; text-decoration: none; transition: 0.3s;
@@ -202,13 +183,10 @@
 
         /* --- MODAL (Video & Contact) --- */
         .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(15px);
-            z-index: 2000; display: none; justify-content: center; align-items: center;
-            opacity: 0; transition: opacity 0.3s ease-out;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(15px);
+            z-index: 2000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease-out;
         }
         .modal-overlay.active { display: flex; opacity: 1; }
-        
         .modal-content {
             background: #000; border-radius: 10px; box-shadow: 0 0 30px rgba(0, 255, 255, 0.6), 0 0 60px rgba(255, 0, 255, 0.6);
             position: relative; transform: scale(0.8); opacity: 0; transition: transform 0.3s ease-out, opacity 0.3s ease-out;
@@ -223,11 +201,9 @@
         }
         .contact-modal-btn {
             display: flex; align-items: center; justify-content: center; gap: 15px; padding: 15px; border-radius: 15px;
-            text-decoration: none; font-size: 20px; font-weight: 600;
-            backdrop-filter: blur(15px); box-shadow: 0 10px 25px rgba(0,0,0,0.6); transition: 0.3s;
+            text-decoration: none; font-size: 20px; font-weight: 600; backdrop-filter: blur(15px); box-shadow: 0 10px 25px rgba(0,0,0,0.6); transition: 0.3s;
         }
         .contact-modal-btn:hover { transform: scale(1.05); }
-        
         .contact-whatsapp { background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.5); color: #25D366; text-shadow: 0 0 10px rgba(37,211,102,0.5); }
         .contact-telegram { background: rgba(0, 136, 204, 0.15); border: 1px solid rgba(0, 136, 204, 0.5); color: #0088cc; text-shadow: 0 0 10px rgba(0,136,204,0.5); }
 
@@ -279,7 +255,19 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg" alt="Logo" class="software-logo">
             <div class="software-title">Adobe Premiere Pro <span class="year-text">2026</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹99</span>)</div>
-            <select class="version-select" data-id="premiere-pro"><option value="2026">Version 2026</option><option value="2025">Version 2025</option><option value="2024">Version 2024</option><option value="2023">Version 2023</option><option value="2022">Version 2022</option><option value="2021">Version 2021</option></select>
+            
+            <div class="custom-select-wrapper" data-id="premiere-pro" data-value="2026">
+                <div class="custom-select-trigger"><span>Version 2026</span> <i class="fa-solid fa-chevron-down"></i></div>
+                <ul class="custom-select-options">
+                    <li data-value="2026" class="selected">Version 2026</li>
+                    <li data-value="2025">Version 2025</li>
+                    <li data-value="2024">Version 2024</li>
+                    <li data-value="2023">Version 2023</li>
+                    <li data-value="2022">Version 2022</li>
+                    <li data-value="2021">Version 2021</li>
+                </ul>
+            </div>
+
             <div class="card-btns">
                 <a href="#" class="btn btn-download action-btn"><i class="fa-solid fa-download"></i> Download</a>
                 <a href="#" class="btn btn-password action-btn"><i class="fa-solid fa-key"></i> Get Password (Pay)</a>
@@ -291,7 +279,16 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" alt="Logo" class="software-logo">
             <div class="software-title">Adobe After Effects <span class="year-text">2026</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹100</span>)</div>
-            <select class="version-select" data-id="after-effects"><option value="2026">Version 2026</option><option value="2025">Version 2025</option><option value="2024">Version 2024</option><option value="2023">Version 2023</option><option value="2022">Version 2022</option><option value="2021">Version 2021</option></select>
+            
+            <div class="custom-select-wrapper" data-id="after-effects" data-value="2026">
+                <div class="custom-select-trigger"><span>Version 2026</span> <i class="fa-solid fa-chevron-down"></i></div>
+                <ul class="custom-select-options">
+                    <li data-value="2026" class="selected">Version 2026</li><li data-value="2025">Version 2025</li>
+                    <li data-value="2024">Version 2024</li><li data-value="2023">Version 2023</li>
+                    <li data-value="2022">Version 2022</li><li data-value="2021">Version 2021</li>
+                </ul>
+            </div>
+
             <div class="card-btns">
                 <a href="#" class="btn btn-download action-btn"><i class="fa-solid fa-download"></i> Download</a>
                 <a href="#" class="btn btn-password action-btn"><i class="fa-solid fa-key"></i> Get Password (Pay)</a>
@@ -303,7 +300,16 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" alt="Logo" class="software-logo">
             <div class="software-title">Adobe Photoshop <span class="year-text">2026</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹98</span>)</div>
-            <select class="version-select" data-id="photoshop"><option value="2026">Version 2026</option><option value="2025">Version 2025</option><option value="2024">Version 2024</option><option value="2023">Version 2023</option><option value="2022">Version 2022</option><option value="2021">Version 2021</option></select>
+            
+            <div class="custom-select-wrapper" data-id="photoshop" data-value="2026">
+                <div class="custom-select-trigger"><span>Version 2026</span> <i class="fa-solid fa-chevron-down"></i></div>
+                <ul class="custom-select-options">
+                    <li data-value="2026" class="selected">Version 2026</li><li data-value="2025">Version 2025</li>
+                    <li data-value="2024">Version 2024</li><li data-value="2023">Version 2023</li>
+                    <li data-value="2022">Version 2022</li><li data-value="2021">Version 2021</li>
+                </ul>
+            </div>
+
             <div class="card-btns">
                 <a href="#" class="btn btn-download action-btn"><i class="fa-solid fa-download"></i> Download</a>
                 <a href="#" class="btn btn-password action-btn"><i class="fa-solid fa-key"></i> Get Password (Pay)</a>
@@ -315,7 +321,16 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Filmora_Logo.png" alt="Logo" class="software-logo">
             <div class="software-title">Wondershare Filmora <span class="year-text">15</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹96</span>)</div>
-            <select class="version-select" data-id="filmora"><option value="15">Version 15</option><option value="14">Version 14</option><option value="13">Version 13</option></select>
+            
+            <div class="custom-select-wrapper" data-id="filmora" data-value="15">
+                <div class="custom-select-trigger"><span>Version 15</span> <i class="fa-solid fa-chevron-down"></i></div>
+                <ul class="custom-select-options">
+                    <li data-value="15" class="selected">Version 15</li>
+                    <li data-value="14">Version 14</li>
+                    <li data-value="13">Version 13</li>
+                </ul>
+            </div>
+
             <div class="card-btns">
                 <a href="#" class="btn btn-download action-btn"><i class="fa-solid fa-download"></i> Download</a>
                 <a href="#" class="btn btn-password action-btn"><i class="fa-solid fa-key"></i> Get Password (Pay)</a>
@@ -327,7 +342,9 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Canva_icon_2021.svg" alt="Logo" class="software-logo">
             <div class="software-title">Canva Pro <span style="color: #00ff00; font-size: 16px;">(Lifetime)</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹199</span>)</div>
-            <select class="version-select" data-id="canva" style="display:none;"><option value="lifetime">Lifetime</option></select>
+            
+            <div class="custom-select-wrapper" data-id="canva" data-value="lifetime" style="display:none;"></div>
+
             <div class="card-btns">
                 <a href="#" class="btn btn-password action-btn"><i class="fa-solid fa-key"></i> Pay</a>
                 <a href="#" class="btn btn-canva-pay action-btn" onclick="event.preventDefault(); openContactModal();" style="display: flex; align-items: center;">
@@ -344,7 +361,14 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Adobe_Media_Encoder_Icon.svg" alt="Logo" class="software-logo">
             <div class="software-title">Adobe Media Encoder <span class="year-text">2026</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹188</span>)</div>
-            <select class="version-select" data-id="media-encoder"><option value="2026">Version 2026</option><option value="2025">Version 2025</option><option value="2024">Version 2024</option><option value="2023">Version 2023</option><option value="2022">Version 2022</option><option value="2021">Version 2021</option></select>
+            
+            <div class="custom-select-wrapper" data-id="media-encoder" data-value="2026">
+                <div class="custom-select-trigger"><span>Version 2026</span> <i class="fa-solid fa-chevron-down"></i></div>
+                <ul class="custom-select-options">
+                    <li data-value="2026" class="selected">Version 2026</li><li data-value="2025">Version 2025</li><li data-value="2024">Version 2024</li><li data-value="2023">Version 2023</li><li data-value="2022">Version 2022</li><li data-value="2021">Version 2021</li>
+                </ul>
+            </div>
+
             <div class="card-btns">
                 <a href="#" class="btn btn-download action-btn"><i class="fa-solid fa-download"></i> Download</a>
                 <a href="#" class="btn btn-password action-btn"><i class="fa-solid fa-key"></i> Get Password (Pay)</a>
@@ -356,7 +380,14 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Adobe_Audition_CC_icon.svg" alt="Logo" class="software-logo">
             <div class="software-title">Adobe Audition <span class="year-text">2026</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹77</span>)</div>
-            <select class="version-select" data-id="audition"><option value="2026">Version 2026</option><option value="2025">Version 2025</option><option value="2024">Version 2024</option><option value="2023">Version 2023</option><option value="2022">Version 2022</option><option value="2021">Version 2021</option></select>
+            
+            <div class="custom-select-wrapper" data-id="audition" data-value="2026">
+                <div class="custom-select-trigger"><span>Version 2026</span> <i class="fa-solid fa-chevron-down"></i></div>
+                <ul class="custom-select-options">
+                    <li data-value="2026" class="selected">Version 2026</li><li data-value="2025">Version 2025</li><li data-value="2024">Version 2024</li><li data-value="2023">Version 2023</li><li data-value="2022">Version 2022</li><li data-value="2021">Version 2021</li>
+                </ul>
+            </div>
+
             <div class="card-btns">
                 <a href="#" class="btn btn-download action-btn"><i class="fa-solid fa-download"></i> Download</a>
                 <a href="#" class="btn btn-password action-btn"><i class="fa-solid fa-key"></i> Get Password (Pay)</a>
@@ -368,7 +399,14 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Adobe_Photoshop_Lightroom_CC_logo.svg" alt="Logo" class="software-logo">
             <div class="software-title">Adobe Lightroom <span class="year-text">2026</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹69</span>)</div>
-            <select class="version-select" data-id="lightroom"><option value="2026">Version 2026</option><option value="2025">Version 2025</option><option value="2024">Version 2024</option><option value="2023">Version 2023</option><option value="2022">Version 2022</option><option value="2021">Version 2021</option></select>
+            
+            <div class="custom-select-wrapper" data-id="lightroom" data-value="2026">
+                <div class="custom-select-trigger"><span>Version 2026</span> <i class="fa-solid fa-chevron-down"></i></div>
+                <ul class="custom-select-options">
+                    <li data-value="2026" class="selected">Version 2026</li><li data-value="2025">Version 2025</li><li data-value="2024">Version 2024</li><li data-value="2023">Version 2023</li><li data-value="2022">Version 2022</li><li data-value="2021">Version 2021</li>
+                </ul>
+            </div>
+
             <div class="card-btns">
                 <a href="#" class="btn btn-download action-btn"><i class="fa-solid fa-download"></i> Download</a>
                 <a href="#" class="btn btn-password action-btn"><i class="fa-solid fa-key"></i> Get Password (Pay)</a>
@@ -380,7 +418,14 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg" alt="Logo" class="software-logo">
             <div class="software-title">Adobe Illustrator <span class="year-text">2026</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹89</span>)</div>
-            <select class="version-select" data-id="illustrator"><option value="2026">Version 2026</option><option value="2025">Version 2025</option><option value="2024">Version 2024</option><option value="2023">Version 2023</option><option value="2022">Version 2022</option><option value="2021">Version 2021</option></select>
+            
+            <div class="custom-select-wrapper" data-id="illustrator" data-value="2026">
+                <div class="custom-select-trigger"><span>Version 2026</span> <i class="fa-solid fa-chevron-down"></i></div>
+                <ul class="custom-select-options">
+                    <li data-value="2026" class="selected">Version 2026</li><li data-value="2025">Version 2025</li><li data-value="2024">Version 2024</li><li data-value="2023">Version 2023</li><li data-value="2022">Version 2022</li><li data-value="2021">Version 2021</li>
+                </ul>
+            </div>
+
             <div class="card-btns">
                 <a href="#" class="btn btn-download action-btn"><i class="fa-solid fa-download"></i> Download</a>
                 <a href="#" class="btn btn-password action-btn"><i class="fa-solid fa-key"></i> Get Password (Pay)</a>
@@ -392,7 +437,14 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Adobe_InDesign_CC_icon.svg" alt="Logo" class="software-logo">
             <div class="software-title">Adobe InDesign <span class="year-text">2026</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹78</span>)</div>
-            <select class="version-select" data-id="indesign"><option value="2026">Version 2026</option><option value="2025">Version 2025</option><option value="2024">Version 2024</option><option value="2023">Version 2023</option><option value="2022">Version 2022</option><option value="2021">Version 2021</option></select>
+            
+            <div class="custom-select-wrapper" data-id="indesign" data-value="2026">
+                <div class="custom-select-trigger"><span>Version 2026</span> <i class="fa-solid fa-chevron-down"></i></div>
+                <ul class="custom-select-options">
+                    <li data-value="2026" class="selected">Version 2026</li><li data-value="2025">Version 2025</li><li data-value="2024">Version 2024</li><li data-value="2023">Version 2023</li><li data-value="2022">Version 2022</li><li data-value="2021">Version 2021</li>
+                </ul>
+            </div>
+
             <div class="card-btns">
                 <a href="#" class="btn btn-download action-btn"><i class="fa-solid fa-download"></i> Download</a>
                 <a href="#" class="btn btn-password action-btn"><i class="fa-solid fa-key"></i> Get Password (Pay)</a>
@@ -404,7 +456,14 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/Adobe_Animate_CC_icon.svg" alt="Logo" class="software-logo">
             <div class="software-title">Adobe Animate <span class="year-text">2026</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹84</span>)</div>
-            <select class="version-select" data-id="animate"><option value="2026">Version 2026</option><option value="2025">Version 2025</option><option value="2024">Version 2024</option><option value="2023">Version 2023</option><option value="2022">Version 2022</option><option value="2021">Version 2021</option></select>
+            
+            <div class="custom-select-wrapper" data-id="animate" data-value="2026">
+                <div class="custom-select-trigger"><span>Version 2026</span> <i class="fa-solid fa-chevron-down"></i></div>
+                <ul class="custom-select-options">
+                    <li data-value="2026" class="selected">Version 2026</li><li data-value="2025">Version 2025</li><li data-value="2024">Version 2024</li><li data-value="2023">Version 2023</li><li data-value="2022">Version 2022</li><li data-value="2021">Version 2021</li>
+                </ul>
+            </div>
+
             <div class="card-btns">
                 <a href="#" class="btn btn-download action-btn"><i class="fa-solid fa-download"></i> Download</a>
                 <a href="#" class="btn btn-password action-btn"><i class="fa-solid fa-key"></i> Get Password (Pay)</a>
@@ -416,16 +475,17 @@
             <i class="fa-solid fa-money-check-dollar" style="font-size: 60px; color: #00ffcc; margin-bottom: 15px; filter: drop-shadow(0 0 15px #00ffcc);"></i>
             <div class="software-title">Payment Testing System</div>
             <p style="font-size: 13px; color: #ccc; margin-bottom: 10px; line-height: 1.4;">
-                Yah sirf website redirect aur payment testing ke liye hai. Matlab tum jo payment karoge uske bad vah payment website mein success hota hai ya nahin hota hai vah dekhne ke liye sirf yah payment hai. Isse koi software download nahi hoga.
+                Yah sirf website aur payment testing ke liye hai. Isse koi software download nahi hoga.
             </p>
             
             <div style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 10px; margin-bottom: 20px;">
                 <p style="font-size: 13px; color: #fff; line-height: 1.5; margin: 0;">
-                    Agar tumko exactly Aisa website banana hai to mujhse contact kar sakte ho. FIR tum bhi Aisa website own karoge, software sell karoge ya FIR kuchh bhi sell kar sakte ho Jo Tum chaho.
+                    Agar aapko bhi aisi professional website banwani hai, toh mujhse contact karein aur apna business start karein.
                 </p>
             </div>
 
-            <select class="version-select" data-id="test-pay" style="display:none;"><option value="test">Test</option></select>
+            <div class="custom-select-wrapper" data-id="test-pay" data-value="test" style="display:none;"></div>
+
             <div class="card-btns">
                 <a href="#" class="btn btn-password action-btn" style="background:#0056b3; border-color:#004494;"><i class="fa-solid fa-credit-card"></i> Test Payment (<span style="color:#00ff00; text-shadow: 0 0 5px rgba(255,255,255,0.5);">₹1</span>)</a>
             </div>
@@ -448,14 +508,8 @@
         <div class="modal-content contact-modal-content" onclick="event.stopPropagation()">
             <h2 style="color: white; margin-bottom: 5px;">Send Screenshot</h2>
             <p style="color: #ccc; font-size: 14px; margin-bottom: 20px;">Click below to open chat</p>
-            
-            <a href="#" target="_blank" class="contact-modal-btn contact-whatsapp">
-                <i class="fa-brands fa-whatsapp" style="font-size: 30px;"></i> WhatsApp
-            </a>
-            
-            <a href="#" target="_blank" class="contact-modal-btn contact-telegram">
-                <i class="fa-brands fa-telegram" style="font-size: 30px;"></i> Telegram
-            </a>
+            <a href="#" target="_blank" class="contact-modal-btn contact-whatsapp"><i class="fa-brands fa-whatsapp" style="font-size: 30px;"></i> WhatsApp</a>
+            <a href="#" target="_blank" class="contact-modal-btn contact-telegram"><i class="fa-brands fa-telegram" style="font-size: 30px;"></i> Telegram</a>
         </div>
     </div>
 
@@ -475,35 +529,67 @@
             "test-pay": { "test": { pay: "#" } }
         };
 
+        // --- CUSTOM DROPDOWN LOGIC ---
+        document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
+            const trigger = wrapper.querySelector('.custom-select-trigger');
+            if(!trigger) return;
+            const options = wrapper.querySelectorAll('.custom-select-options li');
+            
+            trigger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                document.querySelectorAll('.custom-select-wrapper').forEach(w => {
+                    if (w !== wrapper) w.classList.remove('open');
+                });
+                wrapper.classList.toggle('open');
+            });
+
+            options.forEach(option => {
+                option.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const value = this.getAttribute('data-value');
+                    const text = this.innerText;
+                    wrapper.querySelector('.custom-select-trigger span').innerText = text;
+                    wrapper.setAttribute('data-value', value);
+                    
+                    options.forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                    wrapper.classList.remove('open');
+                    
+                    updateCardLinks(wrapper.closest('.software-card'));
+                });
+            });
+        });
+
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
+        });
+
+        // --- MODAL LOGIC ---
         function openVideo(link) {
             document.getElementById('videoIframe').src = link;
             const modal = document.getElementById('videoModal');
-            modal.style.display = 'flex';
-            setTimeout(() => { modal.classList.add('active'); }, 10);
+            modal.style.display = 'flex'; setTimeout(() => { modal.classList.add('active'); }, 10);
         }
-
         function closeVideo() {
             const modal = document.getElementById('videoModal');
             modal.classList.remove('active'); 
             setTimeout(() => { modal.style.display = 'none'; document.getElementById('videoIframe').src = ""; }, 300);
         }
-
         function openContactModal() {
             const modal = document.getElementById('contactModal');
-            modal.style.display = 'flex';
-            setTimeout(() => { modal.classList.add('active'); }, 10);
+            modal.style.display = 'flex'; setTimeout(() => { modal.classList.add('active'); }, 10);
         }
-
         function closeContactModal() {
             const modal = document.getElementById('contactModal');
-            modal.classList.remove('active'); 
-            setTimeout(() => { modal.style.display = 'none'; }, 300);
+            modal.classList.remove('active'); setTimeout(() => { modal.style.display = 'none'; }, 300);
         }
 
+        // --- UPDATE LINKS BASED ON CUSTOM SELECT ---
         function updateCardLinks(card) {
-            const select = card.querySelector('.version-select');
-            const softId = select.getAttribute('data-id');
-            const version = select.value;
+            const wrapper = card.querySelector('.custom-select-wrapper');
+            if(!wrapper) return;
+            const softId = wrapper.getAttribute('data-id');
+            const version = wrapper.getAttribute('data-value');
             const yearText = card.querySelector('.year-text');
             
             if(yearText) yearText.innerText = version;
@@ -519,8 +605,7 @@
             
             if(videoBtn) {
                 videoBtn.onclick = function(e) {
-                    e.preventDefault();
-                    let vLink = links.video;
+                    e.preventDefault(); let vLink = links.video;
                     if(vLink === "#" || vLink === "") { alert("Video link not added yet!"); return; }
                     if(vLink.includes('/view')) vLink = vLink.replace(/\/view.*/, '/preview');
                     openVideo(vLink);
@@ -528,15 +613,12 @@
             }
         }
 
-        document.querySelectorAll('.software-card').forEach(card => {
-            updateCardLinks(card);
-            const selectBox = card.querySelector('.version-select');
-            if(selectBox) selectBox.addEventListener('change', () => updateCardLinks(card));
-        });
+        // INITIALIZE ALL CARDS ON LOAD
+        document.querySelectorAll('.software-card').forEach(card => updateCardLinks(card));
 
+        // --- SEARCH LOGIC ---
         function getEditDistance(a, b) {
-            if(a.length === 0) return b.length;
-            if(b.length === 0) return a.length;
+            if(a.length === 0) return b.length; if(b.length === 0) return a.length;
             var matrix = [];
             for(var i = 0; i <= b.length; i++){ matrix[i] = [i]; }
             for(var j = 0; j <= a.length; j++){ matrix[0][j] = j; }
@@ -553,9 +635,7 @@
             if (targetName.includes(searchWord)) return true;
             if (searchWord.length <= 3) return false;
             let targetWords = targetName.split(' ');
-            for(let tWord of targetWords) {
-                if(tWord.length > 3 && getEditDistance(searchWord, tWord) <= 2) return true;
-            }
+            for(let tWord of targetWords) { if(tWord.length > 3 && getEditDistance(searchWord, tWord) <= 2) return true; }
             return false;
         }
 
@@ -566,18 +646,13 @@
 
         searchInput.addEventListener('input', function() {
             const query = this.value.toLowerCase().trim();
-            
             if (query === "") {
-                bundleSection.style.display = 'block';
-                searchError.style.display = 'none';
-                allCards.forEach(card => card.style.display = 'flex');
-                return;
+                bundleSection.style.display = 'block'; searchError.style.display = 'none';
+                allCards.forEach(card => card.style.display = 'flex'); return;
             }
-
             bundleSection.style.display = 'none';
             const yearMatch = query.match(/\d{2,4}/);
             const searchYear = yearMatch ? yearMatch[0] : null;
-
             const queryWords = query.replace(/[0-9]/g, '').trim().split(/\s+/).filter(w => w.length > 0);
             let matchFound = false;
 
@@ -585,30 +660,24 @@
                 const softName = card.getAttribute('data-name');
                 let matchesAllWords = true;
                 if (queryWords.length > 0) {
-                    for(let word of queryWords) {
-                        if(!isWordMatch(word, softName)) { matchesAllWords = false; break; }
-                    }
+                    for(let word of queryWords) { if(!isWordMatch(word, softName)) { matchesAllWords = false; break; } }
                 }
 
                 if ((queryWords.length > 0 && matchesAllWords) || (queryWords.length === 0 && searchYear)) {
-                    card.style.display = 'flex';
-                    matchFound = true;
+                    card.style.display = 'flex'; matchFound = true;
                     if(searchYear) {
-                        const selectBox = card.querySelector('.version-select');
-                        if (selectBox) {
-                            let optionExists = Array.from(selectBox.options).some(opt => opt.value === searchYear);
-                            if(optionExists) { selectBox.value = searchYear; updateCardLinks(card); }
+                        const wrapper = card.querySelector('.custom-select-wrapper');
+                        if (wrapper) {
+                            const targetOption = wrapper.querySelector(`li[data-value="${searchYear}"]`);
+                            if(targetOption) targetOption.click(); // Auto-selects and triggers update visually
                         }
                     }
-                } else {
-                    card.style.display = 'none';
-                }
+                } else { card.style.display = 'none'; }
             });
-
-            if(!matchFound) searchError.style.display = 'block';
-            else searchError.style.display = 'none';
+            if(!matchFound) searchError.style.display = 'block'; else searchError.style.display = 'none';
         });
 
+        // ANTI-INSPECT SYSTEM
         document.addEventListener('contextmenu', event => event.preventDefault());
         document.onkeydown = function(e) {
             if(e.keyCode == 123) return false;
