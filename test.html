@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dream Tech | Premium Software Store</title>
+    <title>Premium Software Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -11,319 +11,294 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #0f172a; /* Deep Dark Blue */
+            background-color: #020617; /* Very dark background */
             color: #ffffff;
             overflow-x: hidden;
         }
 
-        /* Glassmorphism Effect */
+        /* --- Liquid Glass Theme Elements --- */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
         .glass-card {
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 1.5rem;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .glass-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.15);
-            border: 1px solid rgba(0, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.08);
         }
 
-        /* Neon Glow Animation for Logos */
-        @keyframes neonGlow {
-            0% { filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.5)); }
-            50% { filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.9)) drop-shadow(0 0 25px rgba(255, 0, 255, 0.6)); }
-            100% { filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.5)); }
+        /* Ambient Background Blobs for Liquid Effect */
+        .bg-blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: -1;
+            border-radius: 50%;
+            animation: float 10s infinite alternate;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(-50px) scale(1.2); }
         }
 
-        .glowing-logo {
-            animation: neonGlow 2s infinite alternate;
+        /* Glowing Pay Button */
+        .glow-button {
+            background: linear-gradient(90deg, #10b981, #059669);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.6), 0 0 30px rgba(16, 185, 129, 0.4);
+            animation: pulse-glow 2s infinite;
+        }
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 15px rgba(16, 185, 129, 0.6); }
+            50% { box-shadow: 0 0 25px rgba(16, 185, 129, 0.9), 0 0 40px rgba(16, 185, 129, 0.5); }
+            100% { box-shadow: 0 0 15px rgba(16, 185, 129, 0.6); }
         }
 
-        /* Gradient Text */
         .text-gradient {
             background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* Bundle Border Animation */
-        .bundle-border {
-            position: relative;
-            border-radius: 1rem;
-            background: rgba(15, 23, 42, 0.9);
-            z-index: 1;
+        /* Loading Spinner */
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: #00f2fe;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
         }
-        .bundle-border::before {
-            content: '';
-            position: absolute;
-            top: -2px; left: -2px; right: -2px; bottom: -2px;
-            background: linear-gradient(45deg, #ff00cc, #3333ff, #00ffff, #ff00cc);
-            background-size: 400%;
-            z-index: -1;
-            border-radius: 1.1rem;
-            animation: gradientBorder 15s ease infinite;
-        }
-        @keyframes gradientBorder {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Hide Scrollbar but keep functionality */
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
     </style>
 </head>
-<body class="antialiased relative">
+<body class="antialiased relative min-h-screen">
 
-    <nav class="fixed w-full top-0 z-40 bg-slate-900/80 backdrop-blur-md border-b border-white/10 p-4">
+    <div class="bg-blob bg-blue-600/30 w-96 h-96 top-0 left-0"></div>
+    <div class="bg-blob bg-purple-600/20 w-[30rem] h-[30rem] top-40 right-10" style="animation-delay: 2s;"></div>
+    <div class="bg-blob bg-cyan-600/20 w-80 h-80 bottom-0 left-1/3" style="animation-delay: 4s;"></div>
+
+    <nav class="fixed w-full top-0 z-40 glass-panel border-none rounded-none border-b border-white/10 p-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-2 text-blue-400">
+            <div class="flex items-center gap-2 text-cyan-400">
                 <i class="fa-brands fa-windows text-2xl"></i>
-                <span class="hidden md:inline text-sm font-semibold">For Windows</span>
             </div>
 
-            <div class="relative w-1/2 md:w-1/3">
-                <input type="text" id="searchInput" placeholder="Search software (e.g., Premiere Pro)..." 
-                       class="w-full bg-slate-800 text-white rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-cyan-500 border border-slate-700">
-                <i class="fa-solid fa-magnifying-glass absolute left-4 top-3 text-slate-400"></i>
+            <div class="relative w-[60%] md:w-1/3">
+                <input type="text" id="searchInput" placeholder="Search software..." 
+                       class="w-full bg-white/5 backdrop-blur-md text-white rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-cyan-500 border border-white/20 transition-all">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-3 text-white/50"></i>
             </div>
 
-            <a href="LINK_APPLE_WEBSITE_HERE" class="flex items-center gap-2 text-gray-300 hover:text-white transition">
+            <a href="LINK_APPLE_WEBSITE_HERE" class="flex items-center gap-2 text-white/80 hover:text-white transition">
                 <i class="fa-brands fa-apple text-2xl"></i>
             </a>
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-4 pt-28 pb-20">
+    <main class="max-w-7xl mx-auto px-4 pt-32 pb-24 relative z-10">
         
         <div class="text-center mb-12">
-            <h1 class="text-3xl md:text-5xl font-bold mb-4">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight">
                 <span class="text-gradient">89-99% OFF</span> Official Price
             </h1>
-            <p class="text-xl text-gray-300">+ Lifetime Premium Access</p>
+            <p class="text-xl text-white/70 font-light">+ Lifetime Premium Access</p>
         </div>
 
-        <div class="bundle-border p-6 md:p-10 mb-16 text-center">
-            <h2 class="text-2xl md:text-3xl font-bold mb-6 text-yellow-400 drop-shadow-md">
-                Buy Now! Bundle plans at Half Price – Only ₹395
-            </h2>
+        <div id="bundleSection" class="glass-panel p-8 md:p-12 mb-16 text-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 z-0"></div>
             
-            <div class="flex flex-wrap justify-center gap-4 md:gap-6 mb-8">
-                <img src="https://windows707.github.io/soft_ware/premiere-logo.svg" alt="Premiere" class="w-12 h-12 glowing-logo">
+            <div class="relative z-10">
+                <h2 class="text-2xl md:text-4xl font-bold mb-8 text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.5)]">
+                    Buy Now! Bundle plans at Half Price – Only ₹395
+                </h2>
                 
-                <div class="w-12 h-12 bg-white/10 rounded glowing-logo flex items-center justify-center text-xs">Logo 2</div>
-                <div class="w-12 h-12 bg-white/10 rounded glowing-logo flex items-center justify-center text-xs">Logo 3</div>
-                <div class="w-12 h-12 bg-white/10 rounded glowing-logo flex items-center justify-center text-xs">Logo 4</div>
-                <div class="w-12 h-12 bg-white/10 rounded glowing-logo flex items-center justify-center text-xs">Logo 5</div>
-                <div class="w-12 h-12 bg-white/10 rounded glowing-logo flex items-center justify-center text-xs">Logo 6</div>
-                <div class="w-12 h-12 bg-white/10 rounded glowing-logo flex items-center justify-center text-xs">Logo 7</div>
-                <div class="w-12 h-12 bg-white/10 rounded glowing-logo flex items-center justify-center text-xs">Logo 8</div>
-                <div class="w-12 h-12 bg-white/10 rounded glowing-logo flex items-center justify-center text-xs">Logo 9</div>
-                <div class="w-12 h-12 bg-white/10 rounded glowing-logo flex items-center justify-center text-xs">Logo 10</div>
-            </div>
+                <div class="flex flex-wrap justify-center gap-4 md:gap-6 mb-10">
+                    
+                    <img src="https://windows707.github.io/soft_ware/premiere-logo.svg" alt="Premiere" class="w-14 h-14 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
+                    
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" alt="After Effects" class="w-14 h-14 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
+                    
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" alt="Photoshop" class="w-14 h-14 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
+                    
+                    <div class="w-14 h-14 bg-white/10 rounded flex items-center justify-center text-[10px] border border-white/20">Filmora</div>
+                    
+                    <div class="w-14 h-14 bg-white/10 rounded flex items-center justify-center text-[10px] border border-white/20">Encoder</div>
+                    
+                    <div class="w-14 h-14 bg-white/10 rounded flex items-center justify-center text-[10px] border border-white/20">Audition</div>
+                    
+                    <div class="w-14 h-14 bg-white/10 rounded flex items-center justify-center text-[10px] border border-white/20">Lightroom</div>
+                    
+                    <div class="w-14 h-14 bg-white/10 rounded flex items-center justify-center text-[10px] border border-white/20">Illustrator</div>
+                    
+                    <div class="w-14 h-14 bg-white/10 rounded flex items-center justify-center text-[10px] border border-white/20">InDesign</div>
+                    
+                    <div class="w-14 h-14 bg-white/10 rounded flex items-center justify-center text-[10px] border border-white/20">Animate</div>
 
-            <a href="LINK_BUY_BUNDLE_HERE" class="inline-block bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-[0_0_15px_rgba(37,99,235,0.5)]">
-                Buy Bundle Plans
-            </a>
+                    </div>
+
+                <a href="LINK_BUY_BUNDLE_HERE" class="inline-block bg-white/10 backdrop-blur-md border border-white/30 hover:bg-white/20 text-white font-bold py-4 px-10 rounded-full transition transform hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                    Buy Bundle Plans
+                </a>
+            </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="softwareGrid">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="softwareGrid">
 
-            <div class="glass-card p-6 software-item" data-name="adobe premiere pro">
-                <h3 class="text-xl font-bold mb-1">Adobe Premiere Pro</h3>
-                <p class="text-sm text-cyan-400 font-semibold mb-4">(Price ₹99)</p>
+            <div class="glass-card p-6 software-item flex flex-col" data-name="adobe premiere pro">
+                <div class="flex items-center gap-3 mb-2">
+                    <img src="https://windows707.github.io/soft_ware/premiere-logo.svg" class="w-8 h-8 rounded" alt="Logo">
+                    <h3 class="text-xl font-bold">Adobe Premiere Pro</h3>
+                </div>
+                <p class="text-sm text-cyan-300 font-semibold mb-4">(Price ₹99)</p>
                 
-                <select class="version-select w-full bg-slate-800 text-white p-2 rounded mb-4 outline-none border border-slate-600 focus:border-cyan-500">
-                    <option value="2026" data-dl="LINK_DOWNLOAD_PREMIERE_2026" data-pay="LINK_PAY_PREMIERE_2026">Version 2026</option>
-                    <option value="2025" data-dl="LINK_DOWNLOAD_PREMIERE_2025" data-pay="LINK_PAY_PREMIERE_2025">Version 2025</option>
-                    <option value="2024" data-dl="LINK_DOWNLOAD_PREMIERE_2024" data-pay="LINK_PAY_PREMIERE_2024">Version 2024</option>
-                    <option value="2023" data-dl="LINK_DOWNLOAD_PREMIERE_2023" data-pay="LINK_PAY_PREMIERE_2023">Version 2023</option>
-                    <option value="2022" data-dl="LINK_DOWNLOAD_PREMIERE_2022" data-pay="LINK_PAY_PREMIERE_2022">Version 2022</option>
-                    <option value="2021" data-dl="LINK_DOWNLOAD_PREMIERE_2021" data-pay="LINK_PAY_PREMIERE_2021">Version 2021</option>
+                <select class="version-select w-full bg-white/10 text-white p-3 rounded-xl mb-4 outline-none border border-white/20 backdrop-blur-md appearance-none">
+                    <option value="2026" class="bg-gray-900 text-white" data-dl="DL_PREMIERE_2026" data-pay="PAY_PREMIERE_2026">Version 2026</option>
+                    <option value="2025" class="bg-gray-900 text-white" data-dl="DL_PREMIERE_2025" data-pay="PAY_PREMIERE_2025">Version 2025</option>
+                    <option value="2024" class="bg-gray-900 text-white" data-dl="DL_PREMIERE_2024" data-pay="PAY_PREMIERE_2024">Version 2024</option>
+                    <option value="2023" class="bg-gray-900 text-white" data-dl="DL_PREMIERE_2023" data-pay="PAY_PREMIERE_2023">Version 2023</option>
+                    <option value="2022" class="bg-gray-900 text-white" data-dl="DL_PREMIERE_2022" data-pay="PAY_PREMIERE_2022">Version 2022</option>
+                    <option value="2021" class="bg-gray-900 text-white" data-dl="DL_PREMIERE_2021" data-pay="PAY_PREMIERE_2021">Version 2021</option>
                 </select>
 
-                <div class="flex flex-col gap-3">
-                    <a href="LINK_DOWNLOAD_PREMIERE_2026" class="btn-download block text-center bg-gray-700 hover:bg-gray-600 py-2 rounded transition">
-                        <i class="fa-solid fa-download mr-2"></i> Download
-                    </a>
-                    <a href="LINK_PAY_PREMIERE_2026" class="btn-pay block text-center bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 py-2 rounded transition font-bold">
-                        Get Password (Pay)
-                    </a>
-                    <button onclick="openVideo()" class="block w-full text-center bg-purple-600 hover:bg-purple-500 py-2 rounded transition mt-2 text-sm">
+                <div class="flex flex-col gap-3 mt-auto">
+                    <a href="DL_PREMIERE_2026" class="btn-download text-center bg-white/10 border border-white/20 hover:bg-white/20 py-3 rounded-xl transition"><i class="fa-solid fa-download mr-2"></i> Download</a>
+                    
+                    <a href="PAY_PREMIERE_2026" class="btn-pay glow-button text-center text-white py-3 rounded-xl transition font-bold text-lg">Get Password <span class="text-sm font-normal">(Pay)</span></a>
+                    
+                    <button onclick="openVideo('https://drive.google.com/file/d/1eRc7C8OLn8G9_vUHfZdj6GYnmGOhiZlL/preview')" class="w-full text-center bg-white/5 border border-white/10 hover:bg-white/10 py-3 rounded-xl transition text-sm text-white/80">
                         <i class="fa-solid fa-play mr-2"></i> Installation steps + proof video
                     </button>
                 </div>
             </div>
 
-            <div class="glass-card p-6 software-item" data-name="adobe after effects">
-                <h3 class="text-xl font-bold mb-1">Adobe After Effects</h3>
-                <p class="text-sm text-cyan-400 font-semibold mb-4">(Price ₹100)</p>
+            <div class="glass-card p-6 software-item flex flex-col" data-name="adobe after effects">
+                <div class="flex items-center gap-3 mb-2">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" class="w-8 h-8 rounded" alt="Logo">
+                    <h3 class="text-xl font-bold">Adobe After Effects</h3>
+                </div>
+                <p class="text-sm text-cyan-300 font-semibold mb-4">(Price ₹100)</p>
                 
-                <select class="version-select w-full bg-slate-800 text-white p-2 rounded mb-4 outline-none border border-slate-600 focus:border-cyan-500">
-                    <option value="2026" data-dl="LINK_DOWNLOAD_AE_2026" data-pay="LINK_PAY_AE_2026">Version 2026</option>
-                    <option value="2025" data-dl="LINK_DOWNLOAD_AE_2025" data-pay="LINK_PAY_AE_2025">Version 2025</option>
-                    <option value="2024" data-dl="LINK_DOWNLOAD_AE_2024" data-pay="LINK_PAY_AE_2024">Version 2024</option>
-                    <option value="2023" data-dl="LINK_DOWNLOAD_AE_2023" data-pay="LINK_PAY_AE_2023">Version 2023</option>
-                    <option value="2022" data-dl="LINK_DOWNLOAD_AE_2022" data-pay="LINK_PAY_AE_2022">Version 2022</option>
-                    <option value="2021" data-dl="LINK_DOWNLOAD_AE_2021" data-pay="LINK_PAY_AE_2021">Version 2021</option>
+                <select class="version-select w-full bg-white/10 text-white p-3 rounded-xl mb-4 outline-none border border-white/20 backdrop-blur-md appearance-none">
+                    <option value="2026" class="bg-gray-900" data-dl="DL_AE_2026" data-pay="PAY_AE_2026">Version 2026</option>
+                    <option value="2025" class="bg-gray-900" data-dl="DL_AE_2025" data-pay="PAY_AE_2025">Version 2025</option>
+                    <option value="2024" class="bg-gray-900" data-dl="DL_AE_2024" data-pay="PAY_AE_2024">Version 2024</option>
                 </select>
 
-                <div class="flex flex-col gap-3">
-                    <a href="LINK_DOWNLOAD_AE_2026" class="btn-download block text-center bg-gray-700 hover:bg-gray-600 py-2 rounded transition"><i class="fa-solid fa-download mr-2"></i> Download</a>
-                    <a href="LINK_PAY_AE_2026" class="btn-pay block text-center bg-gradient-to-r from-green-500 to-emerald-600 py-2 rounded transition font-bold">Get Password (Pay)</a>
-                    <button onclick="openVideo()" class="block w-full text-center bg-purple-600 hover:bg-purple-500 py-2 rounded transition mt-2 text-sm"><i class="fa-solid fa-play mr-2"></i> Installation steps + proof video</button>
+                <div class="flex flex-col gap-3 mt-auto">
+                    <a href="DL_AE_2026" class="btn-download text-center bg-white/10 border border-white/20 hover:bg-white/20 py-3 rounded-xl transition"><i class="fa-solid fa-download mr-2"></i> Download</a>
+                    <a href="PAY_AE_2026" class="btn-pay glow-button text-center text-white py-3 rounded-xl transition font-bold text-lg">Get Password <span class="text-sm font-normal">(Pay)</span></a>
+                    
+                    <button onclick="openVideo('LINK_DRIVE_VIDEO_AFTER_EFFECTS_YAHAN_DALEIN')" class="w-full text-center bg-white/5 border border-white/10 hover:bg-white/10 py-3 rounded-xl transition text-sm text-white/80">
+                        <i class="fa-solid fa-play mr-2"></i> Installation steps + proof video
+                    </button>
                 </div>
             </div>
 
-            <div class="glass-card p-6 software-item" data-name="adobe photoshop">
-                <h3 class="text-xl font-bold mb-1">Adobe Photoshop</h3>
-                <p class="text-sm text-cyan-400 font-semibold mb-4">(Price ₹98)</p>
+            <div class="glass-card p-6 software-item flex flex-col" data-name="adobe photoshop">
+                <div class="flex items-center gap-3 mb-2">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" class="w-8 h-8 rounded" alt="Logo">
+                    <h3 class="text-xl font-bold">Adobe Photoshop</h3>
+                </div>
+                <p class="text-sm text-cyan-300 font-semibold mb-4">(Price ₹98)</p>
                 
-                <select class="version-select w-full bg-slate-800 text-white p-2 rounded mb-4 outline-none border border-slate-600 focus:border-cyan-500">
-                    <option value="2026" data-dl="LINK_DOWNLOAD_PS_2026" data-pay="LINK_PAY_PS_2026">Version 2026</option>
-                    <option value="2025" data-dl="LINK_DOWNLOAD_PS_2025" data-pay="LINK_PAY_PS_2025">Version 2025</option>
-                    <option value="2024" data-dl="LINK_DOWNLOAD_PS_2024" data-pay="LINK_PAY_PS_2024">Version 2024</option>
-                    <option value="2023" data-dl="LINK_DOWNLOAD_PS_2023" data-pay="LINK_PAY_PS_2023">Version 2023</option>
-                    <option value="2022" data-dl="LINK_DOWNLOAD_PS_2022" data-pay="LINK_PAY_PS_2022">Version 2022</option>
-                    <option value="2021" data-dl="LINK_DOWNLOAD_PS_2021" data-pay="LINK_PAY_PS_2021">Version 2021</option>
+                <select class="version-select w-full bg-white/10 text-white p-3 rounded-xl mb-4 outline-none border border-white/20 backdrop-blur-md appearance-none">
+                    <option value="2026" class="bg-gray-900" data-dl="DL_PS_2026" data-pay="PAY_PS_2026">Version 2026</option>
+                    <option value="2025" class="bg-gray-900" data-dl="DL_PS_2025" data-pay="PAY_PS_2025">Version 2025</option>
+                    <option value="2024" class="bg-gray-900" data-dl="DL_PS_2024" data-pay="PAY_PS_2024">Version 2024</option>
                 </select>
 
-                <div class="flex flex-col gap-3">
-                    <a href="LINK_DOWNLOAD_PS_2026" class="btn-download block text-center bg-gray-700 hover:bg-gray-600 py-2 rounded transition"><i class="fa-solid fa-download mr-2"></i> Download</a>
-                    <a href="LINK_PAY_PS_2026" class="btn-pay block text-center bg-gradient-to-r from-green-500 to-emerald-600 py-2 rounded transition font-bold">Get Password (Pay)</a>
-                    <button onclick="openVideo()" class="block w-full text-center bg-purple-600 hover:bg-purple-500 py-2 rounded transition mt-2 text-sm"><i class="fa-solid fa-play mr-2"></i> Installation steps + proof video</button>
+                <div class="flex flex-col gap-3 mt-auto">
+                    <a href="DL_PS_2026" class="btn-download text-center bg-white/10 border border-white/20 hover:bg-white/20 py-3 rounded-xl transition"><i class="fa-solid fa-download mr-2"></i> Download</a>
+                    <a href="PAY_PS_2026" class="btn-pay glow-button text-center text-white py-3 rounded-xl transition font-bold text-lg">Get Password <span class="text-sm font-normal">(Pay)</span></a>
+                    
+                    <button onclick="openVideo('LINK_DRIVE_VIDEO_PHOTOSHOP_YAHAN_DALEIN')" class="w-full text-center bg-white/5 border border-white/10 hover:bg-white/10 py-3 rounded-xl transition text-sm text-white/80">
+                        <i class="fa-solid fa-play mr-2"></i> Installation steps + proof video
+                    </button>
                 </div>
             </div>
 
-            <div class="glass-card p-6 software-item" data-name="wondershare filmora">
-                <h3 class="text-xl font-bold mb-1">Wondershare Filmora</h3>
-                <p class="text-sm text-cyan-400 font-semibold mb-4">(Price ₹96)</p>
+            <div class="glass-card p-6 software-item flex flex-col" data-name="wondershare filmora">
+                <div class="flex items-center gap-3 mb-2">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Filmora_logo.png" class="w-8 h-8 object-contain rounded bg-white/20" alt="Logo">
+                    <h3 class="text-xl font-bold">Wondershare Filmora</h3>
+                </div>
+                <p class="text-sm text-cyan-300 font-semibold mb-4">(Price ₹96)</p>
                 
-                <select class="version-select w-full bg-slate-800 text-white p-2 rounded mb-4 outline-none border border-slate-600 focus:border-cyan-500">
-                    <option value="15" data-dl="LINK_DOWNLOAD_FILMORA_15" data-pay="LINK_PAY_FILMORA_15">Version 15</option>
-                    <option value="14" data-dl="LINK_DOWNLOAD_FILMORA_14" data-pay="LINK_PAY_FILMORA_14">Version 14</option>
-                    <option value="13" data-dl="LINK_DOWNLOAD_FILMORA_13" data-pay="LINK_PAY_FILMORA_13">Version 13</option>
+                <select class="version-select w-full bg-white/10 text-white p-3 rounded-xl mb-4 outline-none border border-white/20 backdrop-blur-md appearance-none">
+                    <option value="15" class="bg-gray-900" data-dl="DL_FILMORA_15" data-pay="PAY_FILMORA_15">Version 15</option>
+                    <option value="14" class="bg-gray-900" data-dl="DL_FILMORA_14" data-pay="PAY_FILMORA_14">Version 14</option>
+                    <option value="13" class="bg-gray-900" data-dl="DL_FILMORA_13" data-pay="PAY_FILMORA_13">Version 13</option>
                 </select>
 
-                <div class="flex flex-col gap-3">
-                    <a href="LINK_DOWNLOAD_FILMORA_15" class="btn-download block text-center bg-gray-700 hover:bg-gray-600 py-2 rounded transition"><i class="fa-solid fa-download mr-2"></i> Download</a>
-                    <a href="LINK_PAY_FILMORA_15" class="btn-pay block text-center bg-gradient-to-r from-green-500 to-emerald-600 py-2 rounded transition font-bold">Get Password (Pay)</a>
-                    <button onclick="openVideo()" class="block w-full text-center bg-purple-600 hover:bg-purple-500 py-2 rounded transition mt-2 text-sm"><i class="fa-solid fa-play mr-2"></i> Installation steps + proof video</button>
+                <div class="flex flex-col gap-3 mt-auto">
+                    <a href="DL_FILMORA_15" class="btn-download text-center bg-white/10 border border-white/20 hover:bg-white/20 py-3 rounded-xl transition"><i class="fa-solid fa-download mr-2"></i> Download</a>
+                    <a href="PAY_FILMORA_15" class="btn-pay glow-button text-center text-white py-3 rounded-xl transition font-bold text-lg">Get Password <span class="text-sm font-normal">(Pay)</span></a>
+                    <button onclick="openVideo('LINK_DRIVE_VIDEO_FILMORA_YAHAN_DALEIN')" class="w-full text-center bg-white/5 border border-white/10 hover:bg-white/10 py-3 rounded-xl transition text-sm text-white/80">
+                        <i class="fa-solid fa-play mr-2"></i> Installation steps + proof video
+                    </button>
                 </div>
             </div>
 
-            <div class="glass-card p-6 software-item border border-pink-500/50 shadow-[0_0_15px_rgba(236,72,153,0.2)]" data-name="canva pro">
-                <h3 class="text-xl font-bold mb-1 text-pink-400">Canva Pro <span class="text-xs bg-pink-600 text-white px-2 py-1 rounded ml-2">Lifetime</span></h3>
-                <p class="text-sm text-cyan-400 font-semibold mb-4">(Price ₹199)</p>
+            <div class="glass-card p-6 software-item border-pink-500/30 flex flex-col" data-name="canva pro">
+                <div class="flex items-center gap-3 mb-2">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b2/Canva_logo.png" class="w-8 h-8 object-contain rounded bg-white/20" alt="Logo">
+                    <h3 class="text-xl font-bold text-pink-300">Canva Pro <span class="text-[10px] bg-pink-600/80 px-2 py-1 rounded-full ml-2 text-white border border-pink-400">Lifetime</span></h3>
+                </div>
+                <p class="text-sm text-cyan-300 font-semibold mb-4">(Price ₹199)</p>
                 
-                <div class="flex flex-col gap-3 mt-6">
-                    <a href="LINK_CANVA_SIRF_PAY" class="block text-center bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-400 hover:to-rose-400 py-2 rounded transition font-bold text-lg shadow-lg">
+                <div class="flex flex-col gap-3 mt-auto pt-6">
+                    <a href="LINK_CANVA_SIRF_PAY" class="text-center bg-gradient-to-r from-pink-500 to-rose-500 shadow-[0_0_15px_rgba(236,72,153,0.5)] py-3 rounded-xl transition font-bold text-lg text-white">
                         Sirf Pay
                     </a>
-                    
-                    <a href="LINK_CANVA_PAY_SCREENSHOT" class="block text-center bg-slate-800 hover:bg-slate-700 border border-slate-600 p-3 rounded transition text-sm leading-relaxed">
-                        <span class="font-bold text-green-400">Pay kro & WhatsApp ya telegram me screenshot do.</span><br>
-                        <span class="text-xs text-gray-400">(Email Login) Android, iOS, Windows, MacOS all device supported</span>
+                    <a href="LINK_CANVA_PAY_SCREENSHOT" class="text-center bg-white/5 border border-white/20 hover:bg-white/10 p-4 rounded-xl transition text-sm leading-relaxed text-white/90">
+                        <span class="font-bold text-emerald-400">Pay kro & WhatsApp ya telegram me screenshot do.</span><br>
+                        <span class="text-xs text-white/50 block mt-2">(Email Login) Android, iOS, Windows, MacOS all device supported</span>
                     </a>
                 </div>
             </div>
 
-            <div class="glass-card p-6 software-item" data-name="adobe media encoder">
-                <h3 class="text-xl font-bold mb-1">Adobe Media Encoder</h3>
-                <p class="text-sm text-cyan-400 font-semibold mb-4">(Price ₹188)</p>
-                <div class="flex flex-col gap-3 mt-auto">
-                    <a href="LINK_DOWNLOAD_MEDIA_ENCODER" class="block text-center bg-gray-700 hover:bg-gray-600 py-2 rounded transition"><i class="fa-solid fa-download mr-2"></i> Download</a>
-                    <a href="LINK_PAY_MEDIA_ENCODER" class="block text-center bg-gradient-to-r from-green-500 to-emerald-600 py-2 rounded transition font-bold">Get Password (Pay)</a>
-                    <button onclick="openVideo()" class="block w-full text-center bg-purple-600 hover:bg-purple-500 py-2 rounded transition mt-2 text-sm"><i class="fa-solid fa-play mr-2"></i> Installation steps + proof video</button>
-                </div>
             </div>
-
-            <div class="glass-card p-6 software-item" data-name="adobe audition">
-                <h3 class="text-xl font-bold mb-1">Adobe Audition</h3>
-                <p class="text-sm text-cyan-400 font-semibold mb-4">(Price ₹77)</p>
-                <div class="flex flex-col gap-3">
-                    <a href="LINK_DOWNLOAD_AUDITION" class="block text-center bg-gray-700 py-2 rounded"><i class="fa-solid fa-download mr-2"></i> Download</a>
-                    <a href="LINK_PAY_AUDITION" class="block text-center bg-gradient-to-r from-green-500 to-emerald-600 py-2 rounded font-bold">Get Password (Pay)</a>
-                    <button onclick="openVideo()" class="bg-purple-600 py-2 rounded text-sm"><i class="fa-solid fa-play mr-2"></i> Installation steps + proof video</button>
-                </div>
-            </div>
-
-            <div class="glass-card p-6 software-item" data-name="adobe lightroom">
-                <h3 class="text-xl font-bold mb-1">Adobe Lightroom</h3>
-                <p class="text-sm text-cyan-400 font-semibold mb-4">(Price ₹69)</p>
-                <div class="flex flex-col gap-3">
-                    <a href="LINK_DOWNLOAD_LIGHTROOM" class="block text-center bg-gray-700 py-2 rounded"><i class="fa-solid fa-download mr-2"></i> Download</a>
-                    <a href="LINK_PAY_LIGHTROOM" class="block text-center bg-gradient-to-r from-green-500 to-emerald-600 py-2 rounded font-bold">Get Password (Pay)</a>
-                    <button onclick="openVideo()" class="bg-purple-600 py-2 rounded text-sm"><i class="fa-solid fa-play mr-2"></i> Installation steps + proof video</button>
-                </div>
-            </div>
-
-            <div class="glass-card p-6 software-item" data-name="adobe illustrator">
-                <h3 class="text-xl font-bold mb-1">Adobe Illustrator</h3>
-                <p class="text-sm text-cyan-400 font-semibold mb-4">(Price ₹89)</p>
-                <div class="flex flex-col gap-3">
-                    <a href="LINK_DOWNLOAD_ILLUSTRATOR" class="block text-center bg-gray-700 py-2 rounded"><i class="fa-solid fa-download mr-2"></i> Download</a>
-                    <a href="LINK_PAY_ILLUSTRATOR" class="block text-center bg-gradient-to-r from-green-500 to-emerald-600 py-2 rounded font-bold">Get Password (Pay)</a>
-                    <button onclick="openVideo()" class="bg-purple-600 py-2 rounded text-sm"><i class="fa-solid fa-play mr-2"></i> Installation steps + proof video</button>
-                </div>
-            </div>
-
-            <div class="glass-card p-6 software-item" data-name="adobe indesign">
-                <h3 class="text-xl font-bold mb-1">Adobe InDesign</h3>
-                <p class="text-sm text-cyan-400 font-semibold mb-4">(Price ₹78)</p>
-                <div class="flex flex-col gap-3">
-                    <a href="LINK_DOWNLOAD_INDESIGN" class="block text-center bg-gray-700 py-2 rounded"><i class="fa-solid fa-download mr-2"></i> Download</a>
-                    <a href="LINK_PAY_INDESIGN" class="block text-center bg-gradient-to-r from-green-500 to-emerald-600 py-2 rounded font-bold">Get Password (Pay)</a>
-                    <button onclick="openVideo()" class="bg-purple-600 py-2 rounded text-sm"><i class="fa-solid fa-play mr-2"></i> Installation steps + proof video</button>
-                </div>
-            </div>
-
-            <div class="glass-card p-6 software-item" data-name="adobe animate">
-                <h3 class="text-xl font-bold mb-1">Adobe Animate</h3>
-                <p class="text-sm text-cyan-400 font-semibold mb-4">(Price ₹84)</p>
-                <div class="flex flex-col gap-3">
-                    <a href="LINK_DOWNLOAD_ANIMATE" class="block text-center bg-gray-700 py-2 rounded"><i class="fa-solid fa-download mr-2"></i> Download</a>
-                    <a href="LINK_PAY_ANIMATE" class="block text-center bg-gradient-to-r from-green-500 to-emerald-600 py-2 rounded font-bold">Get Password (Pay)</a>
-                    <button onclick="openVideo()" class="bg-purple-600 py-2 rounded text-sm"><i class="fa-solid fa-play mr-2"></i> Installation steps + proof video</button>
-                </div>
-            </div>
-
-            <div class="glass-card p-6 software-item" data-name="adobe character animator">
-                <h3 class="text-xl font-bold mb-1">Adobe Character Animator</h3>
-                <p class="text-sm text-cyan-400 font-semibold mb-4">(Price ₹83)</p>
-                <div class="flex flex-col gap-3">
-                    <a href="LINK_DOWNLOAD_CHARACTER" class="block text-center bg-gray-700 py-2 rounded"><i class="fa-solid fa-download mr-2"></i> Download</a>
-                    <a href="LINK_PAY_CHARACTER" class="block text-center bg-gradient-to-r from-green-500 to-emerald-600 py-2 rounded font-bold">Get Password (Pay)</a>
-                    <button onclick="openVideo()" class="bg-purple-600 py-2 rounded text-sm"><i class="fa-solid fa-play mr-2"></i> Installation steps + proof video</button>
-                </div>
-            </div>
-
-        </div>
     </main>
 
     <div class="fixed bottom-6 right-6 flex flex-col gap-4 z-40">
-        <a href="https://wa.me/message/MTTGHMIF7TNSC1" target="_blank" class="hover:scale-110 transition-transform drop-shadow-lg">
-            <img src="https://windows707.github.io/soft_ware/whatsapp.png" alt="WhatsApp" class="w-14 h-14 rounded-full">
+        <a href="https://wa.me/message/MTTGHMIF7TNSC1" target="_blank" class="w-14 h-14 flex items-center justify-center glass-panel bg-green-500/20 hover:bg-green-500/40 border-green-500/50 transition-all hover:scale-110">
+            <i class="fa-brands fa-whatsapp text-3xl text-green-400"></i>
         </a>
-        <a href="https://t.me/Its_Maxado" target="_blank" class="hover:scale-110 transition-transform drop-shadow-lg bg-white rounded-full p-1">
-            <img src="https://windows707.github.io/soft_ware/telegram.webp" alt="Telegram" class="w-12 h-12 rounded-full">
+        <a href="https://t.me/Its_Maxado" target="_blank" class="w-14 h-14 flex items-center justify-center glass-panel bg-blue-500/20 hover:bg-blue-500/40 border-blue-500/50 transition-all hover:scale-110">
+            <i class="fa-brands fa-telegram text-3xl text-blue-400"></i>
         </a>
     </div>
 
-    <div id="videoModal" class="fixed inset-0 bg-black/90 z-50 hidden flex-col items-center justify-center p-4 backdrop-blur-sm">
-        <div class="relative w-full max-w-4xl bg-slate-800 p-2 rounded-xl border border-slate-600 shadow-2xl">
-            <button onclick="closeVideo()" class="absolute -top-10 right-0 text-white hover:text-red-500 text-3xl font-bold transition">
-                &times; Close
-            </button>
-            <div class="relative pt-[56.25%] w-full rounded overflow-hidden">
-                <iframe id="driveVideo" class="absolute top-0 left-0 w-full h-full" 
+    <div id="videoModal" class="fixed inset-0 z-50 hidden flex-col items-center justify-center p-4 bg-black/40 backdrop-blur-2xl transition-opacity">
+        
+        <div id="videoLoader" class="absolute z-10 flex flex-col items-center gap-3">
+            <div class="loader"></div>
+            <p class="text-cyan-400 font-semibold tracking-widest text-sm">LOADING VIDEO...</p>
+        </div>
+
+        <div class="relative w-full max-w-4xl glass-panel p-1 rounded-2xl z-20" id="videoContainer" style="display: none;">
+            <div class="relative pt-[56.25%] w-full rounded-xl overflow-hidden bg-black" onclick="event.stopPropagation()">
+                <iframe id="driveVideo" class="absolute top-0 left-0 w-full h-full rounded-xl" 
                         src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
                 </iframe>
             </div>
@@ -331,63 +306,104 @@
     </div>
 
     <script>
-        // --- 1. Version Change Logic (Updates Links Automatically) ---
+        // --- 1. Version Update Logic ---
         const selects = document.querySelectorAll('.version-select');
-        
         selects.forEach(select => {
             select.addEventListener('change', function() {
-                // Get the parent card
                 const card = this.closest('.software-item');
-                // Get the buttons inside this specific card
                 const dlBtn = card.querySelector('.btn-download');
                 const payBtn = card.querySelector('.btn-pay');
-                
-                // Get the selected option and its data attributes
                 const selectedOption = this.options[this.selectedIndex];
-                const newDlLink = selectedOption.getAttribute('data-dl');
-                const newPayLink = selectedOption.getAttribute('data-pay');
                 
-                // Update the href attributes
-                if (dlBtn) dlBtn.href = newDlLink;
-                if (payBtn) payBtn.href = newPayLink;
+                if (dlBtn) dlBtn.href = selectedOption.getAttribute('data-dl');
+                if (payBtn) payBtn.href = selectedOption.getAttribute('data-pay');
             });
         });
 
-        // --- 2. Search Logic ---
+        // --- 2. Advanced Search & Hide Bundle Logic ---
         const searchInput = document.getElementById('searchInput');
         const cards = document.querySelectorAll('.software-item');
+        const bundleSection = document.getElementById('bundleSection');
 
         searchInput.addEventListener('input', function(e) {
-            const term = e.target.value.toLowerCase();
+            const term = e.target.value.toLowerCase().trim();
+            
+            // Hide/Show Bundle Plan based on typing
+            if(term.length > 0) {
+                bundleSection.style.display = 'none';
+            } else {
+                bundleSection.style.display = 'block';
+            }
+
             cards.forEach(card => {
                 const name = card.getAttribute('data-name');
-                if (name.includes(term)) {
+                const select = card.querySelector('.version-select');
+                
+                if (term === "") {
                     card.style.display = 'block';
                 } else {
-                    card.style.display = 'none';
+                    // Extract year from search if exists (e.g., "premiere 2024")
+                    const parts = term.split(' ');
+                    const possibleYear = parts.find(p => !isNaN(p) && p.length === 4);
+                    const textWithoutYear = term.replace(possibleYear || '', '').trim();
+
+                    if (name.includes(textWithoutYear)) {
+                        card.style.display = 'block';
+                        // Auto-select the version dropdown if a year was typed
+                        if(possibleYear && select) {
+                            for(let i=0; i < select.options.length; i++) {
+                                if(select.options[i].value === possibleYear) {
+                                    select.selectedIndex = i;
+                                    select.dispatchEvent(new Event('change')); // Update buttons
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        card.style.display = 'none';
+                    }
                 }
             });
         });
 
-        // --- 3. Video Modal Logic ---
+        // --- 3. Video Modal with Loader & Background Click Close ---
         const modal = document.getElementById('videoModal');
         const iframe = document.getElementById('driveVideo');
-        // Using /preview instead of /view to allow embedding
-        const videoURL = "https://drive.google.com/file/d/1eRc7C8OLn8G9_vUHfZdj6GYnmGOhiZlL/preview";
+        const loader = document.getElementById('videoLoader');
+        const videoContainer = document.getElementById('videoContainer');
 
-        function openVideo() {
-            iframe.src = videoURL;
+        function openVideo(videoUrl) {
+            // Show modal and loader, hide iframe container initially
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            document.body.style.overflow = 'hidden'; // stop background scrolling
+            document.body.style.overflow = 'hidden'; // Stop body scrolling
+            
+            loader.style.display = 'flex';
+            videoContainer.style.display = 'none';
+            
+            iframe.src = videoUrl;
+
+            // When iframe finishes loading the drive link
+            iframe.onload = function() {
+                loader.style.display = 'none';
+                videoContainer.style.display = 'block';
+            };
         }
 
         function closeVideo() {
-            iframe.src = ""; // stop video from playing in background
+            iframe.src = ""; // Stop playing
             modal.classList.add('hidden');
             modal.classList.remove('flex');
-            document.body.style.overflow = 'auto'; // restore scrolling
+            document.body.style.overflow = 'auto'; // Restore scroll
         }
+
+        // Close modal when clicking on the blurred background
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeVideo();
+            }
+        });
+
     </script>
 </body>
 </html>
