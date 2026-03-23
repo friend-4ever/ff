@@ -1,664 +1,183 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Software Store</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* === GLOBAL STYLES & LIQUID GLASS THEME === */
-        :root {
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            user-select: none; /* Prevents text selection */
-        }
-        body {
-            background-color: #0d0d14;
-            background-image: radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.2), transparent 25%),
-                              radial-gradient(circle at 85% 30%, rgba(14, 165, 233, 0.2), transparent 25%);
-            color: #fff;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        a { text-decoration: none; color: inherit; }
-        
-        /* === HEADER === */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 5%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .os-logos { font-size: 24px; display: flex; align-items: center; gap: 10px; }
-        .os-logos span { font-size: 18px; font-weight: bold; letter-spacing: 1px; }
-        .apple-logo:hover { color: #aaa; cursor: pointer; }
-        
-        .search-container {
-            flex: 1;
-            max-width: 500px;
-            margin: 0 20px;
-            position: relative;
-        }
-        .search-container input {
-            width: 100%;
-            padding: 12px 20px;
-            border-radius: 30px;
-            border: 1px solid var(--glass-border);
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            outline: none;
-            backdrop-filter: blur(5px);
-            font-size: 16px;
-        }
-        .search-container input::placeholder { color: #bbb; }
-
-        /* === FLOATING SOCIALS === */
-        .social-floating {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 999;
-        }
-        .social-floating a {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 28px;
-            color: white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            transition: transform 0.3s;
-        }
-        .social-floating a:hover { transform: scale(1.1); }
-        .wa-btn { background: #25D366; }
-        .tg-btn { background: #0088cc; }
-
-        /* === HIGHLIGHT TEXT === */
-        .highlight-banner {
-            text-align: center;
-            padding: 15px;
-            background: linear-gradient(90deg, #ff8a00, #e52e71);
-            font-weight: bold;
-            font-size: 16px;
-            letter-spacing: 1px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-        }
-
-        /* === BUNDLE PLAN SECTION (NEON EFFECT) === */
-        .bundle-section {
-            margin: 40px auto;
-            max-width: 900px;
-            padding: 30px;
-            border-radius: 20px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(15px);
-            border: 2px solid transparent;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-            text-align: center;
-            animation: borderGlow 4s linear infinite alternate;
-        }
-        @keyframes borderGlow {
-            0% { border-color: #0ff; box-shadow: 0 0 20px #0ff; }
-            33% { border-color: #f0f; box-shadow: 0 0 20px #f0f; }
-            66% { border-color: #ff0; box-shadow: 0 0 20px #ff0; }
-            100% { border-color: #0f0; box-shadow: 0 0 20px #0f0; }
-        }
-        .bundle-title {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #fff;
-            text-shadow: 0 0 10px #fff;
-        }
-        .bundle-logos {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        .bundle-logos img {
-            width: 45px;
-            height: 45px;
-            border-radius: 10px;
-            filter: drop-shadow(0 0 8px rgba(255,255,255,0.6));
-            animation: logoGlow 3s ease-in-out infinite alternate;
-        }
-        @keyframes logoGlow {
-            from { filter: drop-shadow(0 0 5px rgba(255,255,255,0.4)); }
-            to { filter: drop-shadow(0 0 15px rgba(255,255,255,0.9)); }
-        }
-        .btn-bundle {
-            background: #007bff;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 25px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 0 15px #007bff;
-            transition: 0.3s;
-        }
-        .btn-bundle:hover { transform: scale(1.05); box-shadow: 0 0 25px #007bff; }
-
-        /* === SOFTWARE GRID === */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-        .card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(12px);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: var(--glass-shadow);
-            transition: transform 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
-        .card:hover { transform: translateY(-5px); }
-        
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        .card-header img {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-        }
-        .software-name {
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .price {
-            font-size: 14px;
-            color: #ffd700;
-            margin-top: 5px;
-        }
-        
-        select {
-            width: 100%;
-            padding: 10px;
-            border-radius: 10px;
-            background: rgba(0,0,0,0.5);
-            color: white;
-            border: 1px solid var(--glass-border);
-            margin-bottom: 15px;
-            outline: none;
-            cursor: pointer;
-        }
-        select option { background: #111; color: #fff; }
-
-        /* BUTTONS */
-        .btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-            margin-bottom: 10px;
-            transition: 0.3s;
-            color: white;
-        }
-        .btn-download { background: rgba(255, 255, 255, 0.1); border: 1px solid var(--glass-border); }
-        .btn-download:hover { background: rgba(255, 255, 255, 0.2); }
-        
-        .btn-password {
-            background: #28a745;
-            position: relative;
-            overflow: hidden;
-        }
-        /* Sliding Light Reflection Effect */
-        .btn-password::after {
-            content: "";
-            position: absolute;
-            top: 0; left: -100%;
-            width: 50%; height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
-            transform: skewX(-25deg);
-            animation: slideLight 3s infinite;
-        }
-        @keyframes slideLight {
-            0% { left: -100%; }
-            50% { left: 200%; }
-            100% { left: 200%; }
-        }
-        
-        .btn-video { background: #e50914; }
-        .btn-video:hover { background: #f40612; }
-        
-        .canva-text {
-            font-size: 13px;
-            color: #ccc;
-            text-align: center;
-            margin-top: 10px;
-            line-height: 1.4;
-        }
-
-        /* === VIDEO POPUP MODAL === */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            width: 90%;
-            max-width: 800px;
-            aspect-ratio: 16/9;
-            background: #000;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 0 30px rgba(0,0,0,1);
-        }
-        iframe { width: 100%; height: 100%; border: none; }
-
-        .no-result {
-            text-align: center;
-            display: none;
-            font-size: 20px;
-            color: #ff4d4d;
-            margin-top: 50px;
-        }
-
-        /* Mobile Adjustments */
-        @media (max-width: 768px) {
-            header { flex-direction: column; gap: 15px; }
-            .search-container { width: 100%; margin: 0; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mera Land 2026 🔥</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-family: 'Arial', sans-serif;
+    }
+    .container {
+      text-align: center;
+      position: relative;
+    }
+    h1 {
+      color: #ff00ff;
+      text-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff;
+      margin-bottom: 20px;
+      animation: glow 1.5s infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 20px #ff00ff; }
+      to { text-shadow: 0 0 60px #00ffff, 0 0 80px #ff00ff; }
+    }
+    .land {
+      width: 180px;
+      height: 420px;
+      position: relative;
+      filter: drop-shadow(0 0 30px #ff00ff);
+      animation: throb 1.2s infinite ease-in-out;
+    }
+    .shaft {
+      width: 100px;
+      height: 320px;
+      background: linear-gradient(#ff3366, #ff6699);
+      border-radius: 50px 50px 20px 20px;
+      position: absolute;
+      left: 40px;
+      top: 80px;
+      box-shadow: 0 0 40px #ff00ff inset;
+    }
+    .head {
+      width: 110px;
+      height: 90px;
+      background: #ff6699;
+      border-radius: 50%;
+      position: absolute;
+      left: 35px;
+      top: 20px;
+      box-shadow: 0 0 30px #ffff00;
+    }
+    .vein {
+      position: absolute;
+      width: 12px;
+      height: 220px;
+      background: rgba(255,255,255,0.4);
+      left: 65px;
+      top: 130px;
+      border-radius: 50%;
+      transform: rotate(12deg);
+    }
+    .balls {
+      width: 160px;
+      height: 90px;
+      position: absolute;
+      left: 10px;
+      top: 340px;
+      display: flex;
+      gap: 20px;
+    }
+    .ball {
+      width: 70px;
+      height: 70px;
+      background: #ff3366;
+      border-radius: 50%;
+      box-shadow: 0 0 25px #ff00ff;
+    }
+    .controls {
+      margin-top: 40px;
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 18px;
+      background: #00ffff;
+      color: #000;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 20px #00ffff;
+      transition: all 0.3s;
+    }
+    button:hover {
+      transform: scale(1.1);
+      background: #ff00ff;
+      color: white;
+    }
+    .size-slider {
+      width: 300px;
+    }
+  </style>
 </head>
 <body>
-
-    <div class="highlight-banner">
-        All software 99% off the official price + lifetime premium access
+  <div class="container">
+    <h1>MERA LAND 2026 🔥</h1>
+    
+    <div class="land" id="land">
+      <div class="shaft"></div>
+      <div class="head"></div>
+      <div class="vein"></div>
+      <div class="balls">
+        <div class="ball"></div>
+        <div class="ball"></div>
+      </div>
     </div>
 
-    <header>
-        <div class="os-logos">
-            <i class="fab fa-windows"></i>
-            <span>Windows</span>
-        </div>
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Search software...." oninput="searchSoftware()">
-        </div>
-        <a href="https://your-apple-website-link.com" class="apple-logo" target="_blank" title="Go to Mac Store">
-            <i class="fab fa-apple" style="font-size: 28px;"></i>
-        </a>
-    </header>
-
-    <div class="social-floating">
-        <a href="https://wa.me/message/MTTGHMIF7TNSC1" target="_blank" class="wa-btn"><i class="fab fa-whatsapp"></i></a>
-        <a href="https://t.me/Its_Maxado" target="_blank" class="tg-btn"><i class="fab fa-telegram-plane"></i></a>
+    <div class="controls">
+      <button onclick="throbSpeed(0.8)">Slow Throb</button>
+      <button onclick="throbSpeed(1.8)">Fast Throb</button>
+      <button onclick="changeColor()">Random Color</button>
+      <button onclick="bigLand()">Bada Karo</button>
+      <button onclick="smallLand()">Chhota Karo</button>
     </div>
 
-    <div class="container" id="bundleSection">
-        <div class="bundle-section">
-            <h2 class="bundle-title">Buy Now! Bundle plans at Half Price – Only ₹395</h2>
-            <div class="bundle-logos">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg" alt="Premiere">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" alt="After Effects">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" alt="Photoshop">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Filmora_logo.png" alt="Filmora">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/Adobe_Media_Encoder_Icon.svg" alt="Media Encoder">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/1/1d/Adobe_Audition_CC_icon_%282020%29.svg" alt="Audition">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Adobe_Photoshop_Lightroom_CC_logo.svg" alt="Lightroom">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg" alt="Illustrator">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Adobe_InDesign_CC_icon.svg" alt="InDesign">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Adobe_Animate_CC_icon_%282020%29.svg" alt="Animate">
-                </div>
-            <button class="btn-bundle" onclick="window.location.href='YOUR_BUNDLE_PAYMENT_LINK_HERE'">Buy Bundle Plans</button>
-        </div>
-    </div>
+    <input type="range" min="100" max="400" value="180" class="size-slider" id="size" oninput="resizeLand()">
+  </div>
 
-    <div class="container">
-        <div id="noResult" class="no-result">Software match nahi ho raha hai!</div>
-        <div class="grid" id="productGrid">
+  <script>
+    let speed = 1.2;
+    const land = document.getElementById('land');
 
-            <div class="card product-card" data-name="Adobe Premiere Pro">
-                <div class="card-header">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg" alt="Logo">
-                    <div>
-                        <div class="software-name">Adobe Premiere Pro <span class="version-title">2026</span></div>
-                        <div class="price">(Price ₹99)</div>
-                    </div>
-                </div>
-                <select onchange="updateLinks(this)">
-                    <option value="2026" data-dl="DL_LINK_2026" data-pay="PAY_LINK_2026" data-vid="https://drive.google.com/file/d/1eRc7C8OLn8G9_vUHfZdj6GYnmGOhiZlL/view?pli=1">2026</option>
-                    <option value="2025" data-dl="DL_LINK_2025" data-pay="PAY_LINK_2025" data-vid="VID_LINK_2025">2025</option>
-                    <option value="2024" data-dl="DL_LINK" data-pay="PAY_LINK" data-vid="">2024</option>
-                    <option value="2023" data-dl="DL_LINK" data-pay="PAY_LINK" data-vid="">2023</option>
-                    <option value="2022" data-dl="DL_LINK" data-pay="PAY_LINK" data-vid="">2022</option>
-                    <option value="2021" data-dl="DL_LINK" data-pay="PAY_LINK" data-vid="">2021</option>
-                </select>
-                <a href="#" class="btn btn-download dynamic-dl" target="_blank"><i class="fas fa-download"></i> Download</a>
-                <a href="#" class="btn btn-password dynamic-pay" target="_blank"><i class="fas fa-key"></i> Get Password (Pay)</a>
-                <button class="btn btn-video dynamic-vid" onclick="openVideo(this)" data-video=""><i class="fas fa-video"></i> Installation steps + proof video</button>
-            </div>
+    function throbSpeed(s) {
+      speed = s;
+      land.style.animationDuration = speed + 's';
+    }
 
-            <div class="card product-card" data-name="Adobe After Effects">
-                <div class="card-header">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" alt="Logo">
-                    <div>
-                        <div class="software-name">Adobe After Effects <span class="version-title">2026</span></div>
-                        <div class="price">(Price ₹100)</div>
-                    </div>
-                </div>
-                <select onchange="updateLinks(this)">
-                    <option value="2026" data-dl="" data-pay="" data-vid="">2026</option>
-                    <option value="2025" data-dl="" data-pay="" data-vid="">2025</option>
-                    <option value="2024" data-dl="" data-pay="" data-vid="">2024</option>
-                    <option value="2023" data-dl="" data-pay="" data-vid="">2023</option>
-                    <option value="2022" data-dl="" data-pay="" data-vid="">2022</option>
-                    <option value="2021" data-dl="" data-pay="" data-vid="">2021</option>
-                </select>
-                <a href="#" class="btn btn-download dynamic-dl" target="_blank"><i class="fas fa-download"></i> Download</a>
-                <a href="#" class="btn btn-password dynamic-pay" target="_blank"><i class="fas fa-key"></i> Get Password (Pay)</a>
-                <button class="btn btn-video dynamic-vid" onclick="openVideo(this)"><i class="fas fa-video"></i> Installation steps + proof video</button>
-            </div>
+    function changeColor() {
+      const colors = ['#ff3366', '#00ffcc', '#ffff00', '#ff00ff', '#00ffff'];
+      const random = colors[Math.floor(Math.random()*colors.length)];
+      document.querySelector('.shaft').style.background = `linear-gradient(${random}, #ff99cc)`;
+      document.querySelector('.head').style.background = random;
+    }
 
-            <div class="card product-card" data-name="Adobe Photoshop">
-                <div class="card-header">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" alt="Logo">
-                    <div>
-                        <div class="software-name">Adobe Photoshop <span class="version-title">2026</span></div>
-                        <div class="price">(Price ₹98)</div>
-                    </div>
-                </div>
-                <select onchange="updateLinks(this)">
-                    <option value="2026" data-dl="" data-pay="" data-vid="">2026</option>
-                    <option value="2025" data-dl="" data-pay="" data-vid="">2025</option>
-                    <option value="2024" data-dl="" data-pay="" data-vid="">2024</option>
-                    <option value="2023" data-dl="" data-pay="" data-vid="">2023</option>
-                    <option value="2022" data-dl="" data-pay="" data-vid="">2022</option>
-                    <option value="2021" data-dl="" data-pay="" data-vid="">2021</option>
-                </select>
-                <a href="#" class="btn btn-download dynamic-dl" target="_blank"><i class="fas fa-download"></i> Download</a>
-                <a href="#" class="btn btn-password dynamic-pay" target="_blank"><i class="fas fa-key"></i> Get Password (Pay)</a>
-                <button class="btn btn-video dynamic-vid" onclick="openVideo(this)"><i class="fas fa-video"></i> Installation steps + proof video</button>
-            </div>
+    function bigLand() {
+      land.style.transform = 'scale(1.4)';
+      setTimeout(() => land.style.transform = 'scale(1)', 800);
+    }
 
-            <div class="card product-card" data-name="Wondershare Filmora">
-                <div class="card-header">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Filmora_logo.png" alt="Logo">
-                    <div>
-                        <div class="software-name">Wondershare Filmora <span class="version-title">15</span></div>
-                        <div class="price">(Price ₹96)</div>
-                    </div>
-                </div>
-                <select onchange="updateLinks(this)">
-                    <option value="15" data-dl="" data-pay="" data-vid="">15</option>
-                    <option value="14" data-dl="" data-pay="" data-vid="">14</option>
-                    <option value="13" data-dl="" data-pay="" data-vid="">13</option>
-                </select>
-                <a href="#" class="btn btn-download dynamic-dl" target="_blank"><i class="fas fa-download"></i> Download</a>
-                <a href="#" class="btn btn-password dynamic-pay" target="_blank"><i class="fas fa-key"></i> Get Password (Pay)</a>
-                <button class="btn btn-video dynamic-vid" onclick="openVideo(this)"><i class="fas fa-video"></i> Installation steps + proof video</button>
-            </div>
+    function smallLand() {
+      land.style.transform = 'scale(0.6)';
+      setTimeout(() => land.style.transform = 'scale(1)', 800);
+    }
 
-            <div class="card product-card" data-name="Canva Pro">
-                <div class="card-header">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Canva_icon_2021.svg" alt="Logo">
-                    <div>
-                        <div class="software-name">Canva Pro <span class="version-title">Lifetime</span></div>
-                        <div class="price">(Price ₹199)</div>
-                    </div>
-                </div>
-                <div style="flex-grow: 1;"></div> <a href="CANVA_PAY_LINK_HERE" class="btn btn-password" target="_blank"><i class="fas fa-key"></i> Pay</a>
-                <div class="canva-text">Pay kro & WhatsApp ya telegram me screenshot do.<br>(Email Login) Android iOS windows MacOS all device supported</div>
-            </div>
+    function resizeLand() {
+      const size = document.getElementById('size').value;
+      land.style.width = size + 'px';
+      land.style.height = (size * 2.33) + 'px';
+    }
 
-            <div class="card product-card" data-name="Adobe Media Encoder">
-                <div class="card-header">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/Adobe_Media_Encoder_Icon.svg" alt="Logo">
-                    <div>
-                        <div class="software-name">Adobe Media Encoder <span class="version-title">2026</span></div>
-                        <div class="price">(Price ₹188)</div>
-                    </div>
-                </div>
-                <select onchange="updateLinks(this)">
-                    <option value="2026" data-dl="" data-pay="" data-vid="">2026</option>
-                    <option value="2025" data-dl="" data-pay="" data-vid="">2025</option>
-                    <option value="2024" data-dl="" data-pay="" data-vid="">2024</option>
-                    <option value="2023" data-dl="" data-pay="" data-vid="">2023</option>
-                    <option value="2022" data-dl="" data-pay="" data-vid="">2022</option>
-                    <option value="2021" data-dl="" data-pay="" data-vid="">2021</option>
-                </select>
-                <a href="#" class="btn btn-download dynamic-dl" target="_blank"><i class="fas fa-download"></i> Download</a>
-                <a href="#" class="btn btn-password dynamic-pay" target="_blank"><i class="fas fa-key"></i> Get Password (Pay)</a>
-                <button class="btn btn-video dynamic-vid" onclick="openVideo(this)"><i class="fas fa-video"></i> Installation steps + proof video</button>
-            </div>
+    // Auto bounce on click
+    land.addEventListener('click', () => {
+      land.style.transform = 'scale(1.6) rotate(8deg)';
+      setTimeout(() => land.style.transform = 'scale(1) rotate(0)', 400);
+    });
 
-             <div class="card product-card" data-name="Adobe Audition">
-                <div class="card-header">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/1/1d/Adobe_Audition_CC_icon_%282020%29.svg" alt="Logo">
-                    <div>
-                        <div class="software-name">Adobe Audition <span class="version-title">2026</span></div>
-                        <div class="price">(Price ₹77)</div>
-                    </div>
-                </div>
-                <select onchange="updateLinks(this)">
-                    <option value="2026">2026</option><option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option>
-                </select>
-                <a href="#" class="btn btn-download dynamic-dl"><i class="fas fa-download"></i> Download</a>
-                <a href="#" class="btn btn-password dynamic-pay"><i class="fas fa-key"></i> Get Password (Pay)</a>
-                <button class="btn btn-video dynamic-vid" onclick="openVideo(this)"><i class="fas fa-video"></i> Installation steps + proof video</button>
-            </div>
-
-            <div class="card product-card" data-name="Adobe Lightroom">
-                <div class="card-header">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Adobe_Photoshop_Lightroom_CC_logo.svg" alt="Logo">
-                    <div>
-                        <div class="software-name">Adobe Lightroom <span class="version-title">2026</span></div>
-                        <div class="price">(Price ₹69)</div>
-                    </div>
-                </div>
-                <select onchange="updateLinks(this)">
-                    <option value="2026">2026</option><option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option>
-                </select>
-                <a href="#" class="btn btn-download dynamic-dl"><i class="fas fa-download"></i> Download</a>
-                <a href="#" class="btn btn-password dynamic-pay"><i class="fas fa-key"></i> Get Password (Pay)</a>
-                <button class="btn btn-video dynamic-vid" onclick="openVideo(this)"><i class="fas fa-video"></i> Installation steps + proof video</button>
-            </div>
-
-             <div class="card product-card" data-name="Adobe Illustrator">
-                <div class="card-header">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg" alt="Logo">
-                    <div>
-                        <div class="software-name">Adobe Illustrator <span class="version-title">2026</span></div>
-                        <div class="price">(Price ₹89)</div>
-                    </div>
-                </div>
-                <select onchange="updateLinks(this)">
-                    <option value="2026">2026</option><option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option>
-                </select>
-                <a href="#" class="btn btn-download dynamic-dl"><i class="fas fa-download"></i> Download</a>
-                <a href="#" class="btn btn-password dynamic-pay"><i class="fas fa-key"></i> Get Password (Pay)</a>
-                <button class="btn btn-video dynamic-vid" onclick="openVideo(this)"><i class="fas fa-video"></i> Installation steps + proof video</button>
-            </div>
-
-             <div class="card product-card" data-name="Adobe InDesign">
-                <div class="card-header">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Adobe_InDesign_CC_icon.svg" alt="Logo">
-                    <div>
-                        <div class="software-name">Adobe InDesign <span class="version-title">2026</span></div>
-                        <div class="price">(Price ₹78)</div>
-                    </div>
-                </div>
-                <select onchange="updateLinks(this)">
-                    <option value="2026">2026</option><option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option>
-                </select>
-                <a href="#" class="btn btn-download dynamic-dl"><i class="fas fa-download"></i> Download</a>
-                <a href="#" class="btn btn-password dynamic-pay"><i class="fas fa-key"></i> Get Password (Pay)</a>
-                <button class="btn btn-video dynamic-vid" onclick="openVideo(this)"><i class="fas fa-video"></i> Installation steps + proof video</button>
-            </div>
-
-            <div class="card product-card" data-name="Adobe Animate">
-                <div class="card-header">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Adobe_Animate_CC_icon_%282020%29.svg" alt="Logo">
-                    <div>
-                        <div class="software-name">Adobe Animate <span class="version-title">2026</span></div>
-                        <div class="price">(Price ₹84)</div>
-                    </div>
-                </div>
-                <select onchange="updateLinks(this)">
-                    <option value="2026">2026</option><option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option>
-                </select>
-                <a href="#" class="btn btn-download dynamic-dl"><i class="fas fa-download"></i> Download</a>
-                <a href="#" class="btn btn-password dynamic-pay"><i class="fas fa-key"></i> Get Password (Pay)</a>
-                <button class="btn btn-video dynamic-vid" onclick="openVideo(this)"><i class="fas fa-video"></i> Installation steps + proof video</button>
-            </div>
-
-            <div class="card product-card" data-name="Adobe Character Animator">
-                <div class="card-header">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/Adobe_Character_Animator_icon.svg" alt="Logo">
-                    <div>
-                        <div class="software-name">Character Animator <span class="version-title">2026</span></div>
-                        <div class="price">(Price ₹83)</div>
-                    </div>
-                </div>
-                <select onchange="updateLinks(this)">
-                    <option value="2026">2026</option><option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option>
-                </select>
-                <a href="#" class="btn btn-download dynamic-dl"><i class="fas fa-download"></i> Download</a>
-                <a href="#" class="btn btn-password dynamic-pay"><i class="fas fa-key"></i> Get Password (Pay)</a>
-                <button class="btn btn-video dynamic-vid" onclick="openVideo(this)"><i class="fas fa-video"></i> Installation steps + proof video</button>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="videoModal" onclick="closeVideo()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <iframe id="videoFrame" src="" allowfullscreen></iframe>
-        </div>
-    </div>
-
-    <script>
-        // === ANTI-INSPECT SYSTEM (BLOCK RIGHT CLICK & SHORTCUTS) ===
-        document.addEventListener('contextmenu', event => event.preventDefault());
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123) return false; // F12
-            if(e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) return false;
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
-        }
-
-        // === INITIALIZE ALL CARDS ON PAGE LOAD ===
-        document.addEventListener('DOMContentLoaded', () => {
-            const selects = document.querySelectorAll('select');
-            selects.forEach(select => updateLinks(select));
-        });
-
-        // === DYNAMIC VERSION & LINK UPDATER ===
-        function updateLinks(selectElement) {
-            let card = selectElement.closest('.product-card');
-            let selectedOption = selectElement.options[selectElement.selectedIndex];
-            
-            // Update Title Text
-            let titleSpan = card.querySelector('.version-title');
-            if(titleSpan) titleSpan.innerText = selectedOption.value;
-
-            // Get buttons
-            let btnDl = card.querySelector('.dynamic-dl');
-            let btnPay = card.querySelector('.dynamic-pay');
-            let btnVid = card.querySelector('.dynamic-vid');
-
-            // Set Links (If link is empty, it puts a #)
-            if(btnDl) btnDl.href = selectedOption.getAttribute('data-dl') || '#';
-            if(btnPay) btnPay.href = selectedOption.getAttribute('data-pay') || '#';
-            if(btnVid) btnVid.setAttribute('data-video', selectedOption.getAttribute('data-vid') || '');
-        }
-
-        // === FUZZY SEARCH SYSTEM ===
-        function searchSoftware() {
-            let input = document.getElementById('searchInput').value.toLowerCase().replace(/\s/g, '');
-            let bundleSection = document.getElementById('bundleSection');
-            let products = document.querySelectorAll('.product-card');
-            let noResult = document.getElementById('noResult');
-            let foundAny = false;
-
-            // Hide bundle if searching
-            bundleSection.style.display = input.length > 0 ? 'none' : 'block';
-
-            products.forEach(p => {
-                let nameText = p.getAttribute('data-name').toLowerCase().replace(/\s/g, '');
-                // Also check if they typed year in search (e.g. premierepro2026)
-                let titleText = p.querySelector('.version-title').innerText.toLowerCase().replace(/\s/g, '');
-                let fullText = nameText + titleText;
-
-                if(fullText.includes(input) || nameText.includes(input)) {
-                    p.style.display = 'flex';
-                    foundAny = true;
-                } else {
-                    p.style.display = 'none';
-                }
-            });
-
-            // Show error if nothing found
-            if(input.length > 0 && !foundAny) {
-                noResult.style.display = 'block';
-            } else {
-                noResult.style.display = 'none';
-            }
-        }
-
-        // === GOOGLE DRIVE VIDEO POPUP SYSTEM ===
-        function openVideo(btnElement) {
-            let rawUrl = btnElement.getAttribute('data-video');
-            if(!rawUrl || rawUrl === '#') {
-                alert("Video abhi add nahi kiya gaya hai!");
-                return;
-            }
-            
-            // Auto convert Google Drive 'view' link to 'preview' for iframe embed
-            let embedUrl = rawUrl.replace('/view?pli=1', '/preview').replace('/view', '/preview');
-            
-            document.getElementById('videoFrame').src = embedUrl;
-            document.getElementById('videoModal').style.display = 'flex';
-        }
-
-        // Close by clicking anywhere on the overlay
-        function closeVideo() {
-            document.getElementById('videoModal').style.display = 'none';
-            document.getElementById('videoFrame').src = ""; // Stop playing video
-        }
-    </script>
+    // Keyboard control (arrow up = bada, down = chhota)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowUp') bigLand();
+      if (e.key === 'ArrowDown') smallLand();
+    });
+  </script>
 </body>
 </html>
