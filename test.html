@@ -33,13 +33,13 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        /* --- TOP BANNER (Updated to match screenshot colors) --- */
+        /* --- TOP BANNER (Background removed to match theme) --- */
         .top-banner {
             text-align: center;
             padding: 15px;
             font-size: 20px;
             font-weight: 700;
-            background: linear-gradient(90deg, #df4bba 0%, #51abff 100%);
+            background: transparent; /* Color removed, matches website theme */
             border-bottom: 1px solid rgba(255,255,255,0.1);
             letter-spacing: 0.5px;
             color: white;
@@ -94,17 +94,28 @@
             box-shadow: 0 0 15px rgba(255,255,255,0.2);
         }
 
-        /* --- BUNDLE PLAN (Updated exactly like Screenshot) --- */
+        /* --- BUNDLE PLAN (White background replaced with glowing glass effect) --- */
         .bundle-section {
             text-align: center;
             margin: 40px auto;
             width: 90%;
             max-width: 1000px;
             padding: 50px 30px;
-            background: linear-gradient(180deg, #d8f1ff 0%, #eef6f9 100%); /* Light background like SS */
-            border-radius: 0; /* Boxy feel or slight radius */
-            color: black;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            
+            /* Glass effect */
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            
+            /* Glowing Shadow Effect */
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2), 0 0 60px rgba(255, 0, 255, 0.2);
+            animation: bundleGlow 3s infinite alternate;
+        }
+
+        @keyframes bundleGlow {
+            0% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.2), 0 0 40px rgba(255, 0, 255, 0.2); }
+            100% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.4), 0 0 80px rgba(255, 0, 255, 0.4); }
         }
 
         .bundle-title-wrapper {
@@ -163,7 +174,7 @@
         }
 
         .btn-bundle {
-            background: #0d3bdf; /* Solid blue like SS */
+            background: #0d3bdf;
             color: white;
             padding: 12px 30px;
             border: none;
@@ -226,7 +237,7 @@
         }
         .version-select option { background: #24243e; }
 
-        /* --- BUTTONS (Floating ZoomIn Animation added) --- */
+        /* --- BUTTONS --- */
         .card-btns { width: 100%; display: flex; flex-direction: column; gap: 12px; }
         
         .btn {
@@ -245,10 +256,9 @@
             gap: 10px;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smooth floating transition */
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* Hover Effect for all buttons (Floating ZoomIn) */
         .btn:hover {
             transform: scale(1.05) translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
@@ -275,7 +285,7 @@
         /* Yellow Video Button */
         .btn-video { 
             background: #ffcc00; 
-            color: #000; /* Black text for visibility on yellow */
+            color: #000; 
             border: 1px solid #e6b800; 
         }
         .btn-video:hover { background: #ffd633; }
@@ -293,21 +303,28 @@
         .whatsapp { background: #25D366; }
         .telegram { background: #0088cc; }
 
-        /* --- VIDEO POPUP MODAL --- */
+        /* --- VIDEO POPUP MODAL (Smooth open & close animation) --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8);
             backdrop-filter: blur(5px); z-index: 2000; display: none; justify-content: center; align-items: center;
+            opacity: 0; 
+            transition: opacity 0.3s ease-out; /* Fade out effect */
+        }
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1; /* Fade in effect */
         }
         .modal-content {
             width: 80%; max-width: 800px; aspect-ratio: 16/9; background: #000; border-radius: 10px;
-            /* Glowing Shadow for Dialog Box */
             box-shadow: 0 0 30px rgba(0, 255, 255, 0.6), 0 0 60px rgba(255, 0, 255, 0.6);
             position: relative;
-            animation: modalPop 0.4s ease-out forwards;
+            transform: scale(0.8); /* Shrink state for close */
+            opacity: 0;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out; /* Smooth transition */
         }
-        @keyframes modalPop {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+        .modal-overlay.active .modal-content {
+            transform: scale(1); /* Full size state for open */
+            opacity: 1;
         }
         .modal-content iframe { width: 100%; height: 100%; border-radius: 10px; border: none; }
 
@@ -545,6 +562,29 @@
             "animate": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } }
         };
 
+        // OPEN VIDEO MODAL ANIMATION
+        function openVideo(link) {
+            document.getElementById('videoIframe').src = link;
+            const modal = document.getElementById('videoModal');
+            modal.style.display = 'flex';
+            // slight delay to allow display:flex to apply before transition triggers
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10);
+        }
+
+        // CLOSE VIDEO MODAL ANIMATION
+        function closeVideo() {
+            const modal = document.getElementById('videoModal');
+            modal.classList.remove('active'); // Removes active class -> triggers closing transition
+            
+            // Wait for 0.3s transition to finish before hiding display
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.getElementById('videoIframe').src = ""; 
+            }, 300);
+        }
+
         function updateCardLinks(card) {
             const select = card.querySelector('.version-select');
             const softId = select.getAttribute('data-id');
@@ -573,8 +613,7 @@
                         return;
                     }
                     if(vLink.includes('/view')) vLink = vLink.replace(/\/view.*/, '/preview');
-                    document.getElementById('videoIframe').src = vLink;
-                    document.getElementById('videoModal').style.display = 'flex';
+                    openVideo(vLink);
                 };
             }
         }
@@ -585,9 +624,7 @@
             selectBox.addEventListener('change', () => updateCardLinks(card));
         });
 
-        // --- NEW DEEP SEARCH LOGIC (Fixes Adobe & Pro issues + Typo Match) ---
-        
-        // Function to check if a word matches closely (allows 1-2 mistakes for words > 3 letters)
+        // --- SEARCH LOGIC ---
         function getEditDistance(a, b) {
             if(a.length === 0) return b.length;
             if(b.length === 0) return a.length;
@@ -605,11 +642,10 @@
 
         function isWordMatch(searchWord, targetName) {
             if (targetName.includes(searchWord)) return true;
-            if (searchWord.length <= 3) return false; // Don't fuzzy match short words
+            if (searchWord.length <= 3) return false;
 
             let targetWords = targetName.split(' ');
             for(let tWord of targetWords) {
-                // If it's a long word and typing distance is small (max 2 mistakes allowed)
                 if(tWord.length > 3 && getEditDistance(searchWord, tWord) <= 2) {
                     return true;
                 }
@@ -636,14 +672,12 @@
             const yearMatch = query.match(/\d{2,4}/);
             const searchYear = yearMatch ? yearMatch[0] : null;
 
-            // Extract words ignoring the numbers
             const queryWords = query.replace(/[0-9]/g, '').trim().split(/\s+/).filter(w => w.length > 0);
             let matchFound = false;
 
             allCards.forEach(card => {
                 const softName = card.getAttribute('data-name');
                 
-                // EVERY word user typed MUST match the software name (solves the "Adobe" and "Pro" bug)
                 let matchesAllWords = true;
                 if (queryWords.length > 0) {
                     for(let word of queryWords) {
@@ -654,7 +688,6 @@
                     }
                 }
 
-                // Show if name matches, OR if they ONLY typed a year
                 if ((queryWords.length > 0 && matchesAllWords) || (queryWords.length === 0 && searchYear)) {
                     card.style.display = 'flex';
                     matchFound = true;
@@ -677,12 +710,6 @@
             if(!matchFound) searchError.style.display = 'block';
             else searchError.style.display = 'none';
         });
-
-        // Close Video Modal
-        function closeVideo() {
-            document.getElementById('videoModal').style.display = 'none';
-            document.getElementById('videoIframe').src = ""; 
-        }
 
         // ANTI-INSPECT SYSTEM
         document.addEventListener('contextmenu', event => event.preventDefault());
