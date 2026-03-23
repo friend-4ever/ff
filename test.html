@@ -33,32 +33,34 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        /* --- TOP BANNER (Background removed to match theme) --- */
+        /* --- HEADER AREA (Seamless blending without borders) --- */
+        .top-wrapper {
+            background: rgba(15, 12, 41, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding-bottom: 15px;
+        }
+
         .top-banner {
             text-align: center;
             padding: 15px;
             font-size: 20px;
             font-weight: 700;
-            background: transparent; /* Color removed, matches website theme */
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: transparent;
             letter-spacing: 0.5px;
             color: white;
         }
-        .top-banner .discount { color: #ff0000; } /* 99% Red */
-        .top-banner .lifetime { color: #ffffff; } /* Lifetime White */
-        .top-banner .premium { color: #ffff00; } /* Premium Access Yellow */
+        .top-banner .discount { color: #ff0000; }
+        .top-banner .lifetime { color: #ffffff; }
+        .top-banner .premium { color: #ffff00; }
 
-        /* --- HEADER AREA --- */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 5%;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(15, 12, 41, 0.8);
-            backdrop-filter: blur(10px);
+            padding: 0 5%;
         }
 
         .os-logo {
@@ -94,28 +96,26 @@
             box-shadow: 0 0 15px rgba(255,255,255,0.2);
         }
 
-        /* --- BUNDLE PLAN (White background replaced with glowing glass effect) --- */
+        /* --- BUNDLE PLAN (Slower, separate shadow glow) --- */
         .bundle-section {
             text-align: center;
             margin: 40px auto;
             width: 90%;
             max-width: 1000px;
             padding: 50px 30px;
-            
-            /* Glass effect */
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             
-            /* Glowing Shadow Effect */
+            /* Slower, out-of-sync glow */
             box-shadow: 0 0 30px rgba(0, 255, 255, 0.2), 0 0 60px rgba(255, 0, 255, 0.2);
-            animation: bundleGlow 3s infinite alternate;
+            animation: bundleGlow 4s infinite alternate ease-in-out; 
         }
 
         @keyframes bundleGlow {
-            0% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.2), 0 0 40px rgba(255, 0, 255, 0.2); }
-            100% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.4), 0 0 80px rgba(255, 0, 255, 0.4); }
+            0% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.1), 0 0 40px rgba(255, 0, 255, 0.1); }
+            100% { box-shadow: 0 0 50px rgba(0, 255, 255, 0.4), 0 0 90px rgba(255, 0, 255, 0.4); }
         }
 
         .bundle-title-wrapper {
@@ -126,67 +126,33 @@
             margin-bottom: 30px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
+        .bundle-title { font-size: 18px; font-weight: 700; color: black; margin: 0; letter-spacing: 0.5px; }
 
-        .bundle-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: black;
-            margin: 0;
-            letter-spacing: 0.5px;
-        }
-
-        .bundle-logos-wrapper {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-
-        /* Green Glowing background exactly like screenshot behind logos */
+        .bundle-logos-wrapper { position: relative; display: flex; justify-content: center; margin-bottom: 30px; }
         .bundle-logos-wrapper::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60%;
-            height: 70px;
-            background: #2fff00;
-            filter: blur(40px);
-            opacity: 0.8;
-            z-index: 0;
+            content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 60%; height: 70px; background: #2fff00; filter: blur(40px); opacity: 0.8; z-index: 0;
         }
 
-        .bundle-logos {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .bundle-logos img {
-            width: 35px;
-            height: 35px;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        }
+        .bundle-logos { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; position: relative; z-index: 1; }
+        .bundle-logos img { width: 35px; height: 35px; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
 
+        /* BUNDLE BUTTON WITH GLOW & ROUNDED EDGES */
         .btn-bundle {
             background: #0d3bdf;
             color: white;
-            padding: 12px 30px;
+            padding: 14px 40px;
             border: none;
-            border-radius: 4px;
-            font-size: 16px;
+            border-radius: 30px; /* Rounded Edge */
+            font-size: 18px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             text-decoration: none;
             display: inline-block;
+            box-shadow: 0 0 20px rgba(13, 59, 223, 0.7); /* Glowing Container Effect */
         }
-        .btn-bundle:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(13, 59, 223, 0.5); }
+        .btn-bundle:hover { transform: scale(1.05); box-shadow: 0 0 35px rgba(13, 59, 223, 0.9); }
 
         /* --- SOFTWARE GRID --- */
         .software-container {
@@ -206,19 +172,21 @@
             transition: 0.3s;
         }
 
-        /* Neon Glow effect for software logos */
+        /* NEON MULTI-GLOW LOGO EFFECT (Desynchronized & Multi-colored) */
         .software-logo {
             width: 80px;
             height: 80px;
             margin-bottom: 15px;
             border-radius: 15px;
-            filter: drop-shadow(0 0 15px #00d2ff) drop-shadow(0 0 25px #ff00ff);
-            animation: logoPulse 3s infinite alternate;
+            /* Faster animation, completely different timing from bundle */
+            animation: logoPulse 2.5s infinite linear; 
         }
 
         @keyframes logoPulse {
             0% { filter: drop-shadow(0 0 10px #00d2ff) drop-shadow(0 0 20px #ff00ff); }
-            100% { filter: drop-shadow(0 0 20px #00d2ff) drop-shadow(0 0 40px #ff00ff); }
+            33% { filter: drop-shadow(0 0 15px #ff00ff) drop-shadow(0 0 25px #00ffcc); }
+            66% { filter: drop-shadow(0 0 10px #00ffcc) drop-shadow(0 0 30px #ffff00); }
+            100% { filter: drop-shadow(0 0 10px #00d2ff) drop-shadow(0 0 20px #ff00ff); }
         }
 
         .software-title { font-size: 20px; font-weight: 600; margin-bottom: 5px; }
@@ -241,91 +209,58 @@
         .card-btns { width: 100%; display: flex; flex-direction: column; gap: 12px; }
         
         .btn {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            font-size: 15px;
-            font-weight: 600;
-            color: white;
-            cursor: pointer;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            width: 100%; padding: 12px; border-radius: 10px; border: none; font-size: 15px; font-weight: 600;
+            color: white; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center;
+            gap: 10px; position: relative; overflow: hidden; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        .btn:hover {
-            transform: scale(1.05) translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-            z-index: 2;
-        }
+        .btn:hover { transform: scale(1.05) translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); z-index: 2; }
 
         .btn-download { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); }
         .btn-download:hover { background: rgba(255, 255, 255, 0.2); }
 
-        /* Green Password Button */
         .btn-password { background: #1b8a36; border: 1px solid #28a745; }
         .btn-password::before {
             content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
             background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
-            transform: skewX(-20deg);
-            animation: slideLight 4s infinite linear;
+            transform: skewX(-20deg); animation: slideLight 4s infinite linear;
         }
-        
-        @keyframes slideLight {
-            0% { left: -100%; }
-            100% { left: 200%; }
-        }
+        @keyframes slideLight { 0% { left: -100%; } 100% { left: 200%; } }
 
-        /* Yellow Video Button */
-        .btn-video { 
-            background: #ffcc00; 
-            color: #000; 
-            border: 1px solid #e6b800; 
-        }
+        .btn-video { background: #ffcc00; color: #000; border: 1px solid #e6b800; }
         .btn-video:hover { background: #ffd633; }
         
-        /* Canva Special Button */
-        .btn-canva-pay { background: #8a2be2; font-size: 13px; line-height: 1.4; padding: 15px 10px; text-align: center;}
+        /* Canva Special Button (Yellow) */
+        .btn-canva-pay { background: #ffcc00; color: #000; font-size: 13px; line-height: 1.4; padding: 15px 10px; text-align: center; border: 1px solid #e6b800;}
 
-        /* --- FLOATING CONTACT ICONS --- */
+        /* --- MODERN TRANSLUCENT FLOATING ICONS --- */
         .floating-social { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 1000; }
         .floating-social a {
-            width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 25px; color: white; text-decoration: none; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: 0.3s;
+            width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 30px; text-decoration: none; transition: 0.3s;
+            /* Modern Translucent Custom Look */
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
         }
-        .floating-social a:hover { transform: scale(1.1); }
-        .whatsapp { background: #25D366; }
-        .telegram { background: #0088cc; }
+        .floating-social a:hover { transform: scale(1.1); box-shadow: 0 15px 30px rgba(0,0,0,0.8); }
+        .whatsapp { color: #25D366; text-shadow: 0 0 10px rgba(37, 211, 102, 0.5); }
+        .telegram { color: #0088cc; text-shadow: 0 0 10px rgba(0, 136, 204, 0.5); }
 
-        /* --- VIDEO POPUP MODAL (Smooth open & close animation) --- */
+        /* --- VIDEO POPUP MODAL --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8);
             backdrop-filter: blur(5px); z-index: 2000; display: none; justify-content: center; align-items: center;
-            opacity: 0; 
-            transition: opacity 0.3s ease-out; /* Fade out effect */
+            opacity: 0; transition: opacity 0.3s ease-out;
         }
-        .modal-overlay.active {
-            display: flex;
-            opacity: 1; /* Fade in effect */
-        }
+        .modal-overlay.active { display: flex; opacity: 1; }
         .modal-content {
             width: 80%; max-width: 800px; aspect-ratio: 16/9; background: #000; border-radius: 10px;
             box-shadow: 0 0 30px rgba(0, 255, 255, 0.6), 0 0 60px rgba(255, 0, 255, 0.6);
-            position: relative;
-            transform: scale(0.8); /* Shrink state for close */
-            opacity: 0;
-            transition: transform 0.3s ease-out, opacity 0.3s ease-out; /* Smooth transition */
+            position: relative; transform: scale(0.8); opacity: 0; transition: transform 0.3s ease-out, opacity 0.3s ease-out;
         }
-        .modal-overlay.active .modal-content {
-            transform: scale(1); /* Full size state for open */
-            opacity: 1;
-        }
+        .modal-overlay.active .modal-content { transform: scale(1); opacity: 1; }
         .modal-content iframe { width: 100%; height: 100%; border-radius: 10px; border: none; }
 
         #search-error { text-align: center; color: #ff4d4d; font-size: 20px; display: none; width: 100%; margin-top: 50px; }
@@ -340,17 +275,18 @@
 </head>
 <body>
 
-    <div class="top-banner">
-        All software at <span class="discount">99%</span> off the official price + <span class="lifetime">Lifetime</span> <span class="premium">Premium Access</span>
-    </div>
-
-    <header>
-        <a href="#" class="os-logo" title="Windows Supported"><i class="fa-brands fa-windows"></i> Windows</a>
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Search software....">
+    <div class="top-wrapper">
+        <div class="top-banner">
+            All software at <span class="discount">99%</span> off the official price + <span class="lifetime">Lifetime</span> <span class="premium">Premium Access</span>
         </div>
-        <a href="#" class="os-logo" id="appleLink" title="Mac Supported"><i class="fa-brands fa-apple"></i></a>
-    </header>
+        <header>
+            <a href="#" class="os-logo" title="Windows Supported"><i class="fa-brands fa-windows"></i> Windows</a>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search software....">
+            </div>
+            <a href="#" class="os-logo" id="appleLink" title="Mac Supported"><i class="fa-brands fa-apple"></i></a>
+        </header>
+    </div>
 
     <div class="bundle-section" id="bundleSection">
         <div class="bundle-title-wrapper">
@@ -371,7 +307,6 @@
                 <img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/Adobe_Animate_CC_icon.svg" alt="An">
             </div>
         </div>
-        
         <a href="#" class="btn-bundle">Buy Bundle Plans</a>
     </div>
 
@@ -437,12 +372,12 @@
 
         <div class="software-card glass-panel" data-name="canva pro">
             <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Canva_icon_2021.svg" alt="Logo" class="software-logo">
-            <div class="software-title">Canva Pro <span class="year-text">Lifetime</span></div>
+            <div class="software-title">Canva Pro <span style="color: #00ff00; font-size: 16px;">(Lifetime)</span></div>
             <div class="price-tag">(Price₹199)</div>
             <select class="version-select" data-id="canva" style="display:none;"><option value="lifetime">Lifetime</option></select>
             <div class="card-btns">
                 <a href="#" class="btn btn-password action-btn"><i class="fa-solid fa-key"></i> Pay</a>
-                <a href="#" class="btn btn-canva-pay action-btn"><i class="fa-brands fa-whatsapp"></i> Pay kro & WhatsApp ya telegram me screenshot do. (Email Login) Android iOS windows MacOS all device supported</a>
+                <a href="#" class="btn btn-canva-pay action-btn"><i class="fa-brands fa-whatsapp"></i> <i class="fa-brands fa-telegram"></i> Pay kro & WhatsApp ya telegram me screenshot do. (Email Login) Android iOS windows MacOS all device supported</a>
             </div>
         </div>
 
@@ -530,7 +465,17 @@
             </div>
         </div>
 
-    </div>
+        <div class="software-card glass-panel" data-name="payment test testing">
+            <i class="fa-solid fa-money-check-dollar" style="font-size: 60px; color: #00ffcc; margin-bottom: 15px; filter: drop-shadow(0 0 15px #00ffcc);"></i>
+            <div class="software-title">Payment Testing System</div>
+            <p style="font-size: 13px; color: #ccc; margin-bottom: 15px; line-height: 1.4;">Yah sirf website redirect aur payment testing ke liye hai. Isse koi software download nahi hoga.</p>
+            <select class="version-select" data-id="test-pay" style="display:none;"><option value="test">Test</option></select>
+            <div class="card-btns">
+                <a href="#" class="btn btn-password action-btn" style="background:#0056b3; border-color:#004494;"><i class="fa-solid fa-flask"></i> Test Payment Link</a>
+            </div>
+        </div>
+
+        </div>
 
     <div class="floating-social">
         <a href="https://wa.me/message/MTTGHMIF7TNSC1" target="_blank" class="whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
@@ -546,10 +491,7 @@
     <script>
         // LINK MANAGER
         const softwareData = {
-            "premiere-pro": {
-                "2026": { download: "#", pay: "#", video: "https://drive.google.com/file/d/1eRc7C8OLn8G9_vUHfZdj6GYnmGOhiZlL/preview" },
-                "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" }
-            },
+            "premiere-pro": { "2026": { download: "#", pay: "#", video: "https://drive.google.com/file/d/1eRc7C8OLn8G9_vUHfZdj6GYnmGOhiZlL/preview" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
             "after-effects": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
             "photoshop": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
             "filmora": { "15": { download: "#", pay: "#", video: "#" }, "14": { download: "#", pay: "#", video: "#" }, "13": { download: "#", pay: "#", video: "#" } },
@@ -559,30 +501,30 @@
             "lightroom": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
             "illustrator": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
             "indesign": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
-            "animate": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } }
+            "animate": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
+            "test-pay": { "test": { pay: "#" } } // For Testing Section Only
+
+            /* ================= ADD NEW SOFTWARE LINKS BELOW THIS LINE ================= */
+            /* Jab upar HTML me software add karoge, toh uska id aur version k links yahan add karna hoga. 
+            Jaise:
+            "software-ki-unique-id": { 
+                "2026": { download: "link_here", pay: "link_here", video: "link_here" },
+                "2025": { download: "link_here", pay: "link_here", video: "link_here" }
+            }
+            */
         };
 
-        // OPEN VIDEO MODAL ANIMATION
         function openVideo(link) {
             document.getElementById('videoIframe').src = link;
             const modal = document.getElementById('videoModal');
             modal.style.display = 'flex';
-            // slight delay to allow display:flex to apply before transition triggers
-            setTimeout(() => {
-                modal.classList.add('active');
-            }, 10);
+            setTimeout(() => { modal.classList.add('active'); }, 10);
         }
 
-        // CLOSE VIDEO MODAL ANIMATION
         function closeVideo() {
             const modal = document.getElementById('videoModal');
-            modal.classList.remove('active'); // Removes active class -> triggers closing transition
-            
-            // Wait for 0.3s transition to finish before hiding display
-            setTimeout(() => {
-                modal.style.display = 'none';
-                document.getElementById('videoIframe').src = ""; 
-            }, 300);
+            modal.classList.remove('active'); 
+            setTimeout(() => { modal.style.display = 'none'; document.getElementById('videoIframe').src = ""; }, 300);
         }
 
         function updateCardLinks(card) {
@@ -598,7 +540,8 @@
             const videoBtn = card.querySelector('.btn-video');
             const canvaBtn = card.querySelector('.btn-canva-pay');
 
-            const links = softwareData[softId][version];
+            // Handle missing links gracefully if template is added but JS is not updated yet
+            const links = (softwareData[softId] && softwareData[softId][version]) ? softwareData[softId][version] : { download: "#", pay: "#", video: "#" };
 
             if(downloadBtn) downloadBtn.href = links.download;
             if(payBtn) payBtn.href = links.pay;
@@ -608,10 +551,7 @@
                 videoBtn.onclick = function(e) {
                     e.preventDefault();
                     let vLink = links.video;
-                    if(vLink === "#" || vLink === "") {
-                        alert("Video link not added yet!");
-                        return;
-                    }
+                    if(vLink === "#" || vLink === "") { alert("Video link not added yet!"); return; }
                     if(vLink.includes('/view')) vLink = vLink.replace(/\/view.*/, '/preview');
                     openVideo(vLink);
                 };
@@ -621,7 +561,7 @@
         document.querySelectorAll('.software-card').forEach(card => {
             updateCardLinks(card);
             const selectBox = card.querySelector('.version-select');
-            selectBox.addEventListener('change', () => updateCardLinks(card));
+            if(selectBox) selectBox.addEventListener('change', () => updateCardLinks(card));
         });
 
         // --- SEARCH LOGIC ---
@@ -643,12 +583,9 @@
         function isWordMatch(searchWord, targetName) {
             if (targetName.includes(searchWord)) return true;
             if (searchWord.length <= 3) return false;
-
             let targetWords = targetName.split(' ');
             for(let tWord of targetWords) {
-                if(tWord.length > 3 && getEditDistance(searchWord, tWord) <= 2) {
-                    return true;
-                }
+                if(tWord.length > 3 && getEditDistance(searchWord, tWord) <= 2) return true;
             }
             return false;
         }
@@ -677,29 +614,21 @@
 
             allCards.forEach(card => {
                 const softName = card.getAttribute('data-name');
-                
                 let matchesAllWords = true;
                 if (queryWords.length > 0) {
                     for(let word of queryWords) {
-                        if(!isWordMatch(word, softName)) {
-                            matchesAllWords = false;
-                            break;
-                        }
+                        if(!isWordMatch(word, softName)) { matchesAllWords = false; break; }
                     }
                 }
 
                 if ((queryWords.length > 0 && matchesAllWords) || (queryWords.length === 0 && searchYear)) {
                     card.style.display = 'flex';
                     matchFound = true;
-                    
                     if(searchYear) {
                         const selectBox = card.querySelector('.version-select');
                         if (selectBox) {
                             let optionExists = Array.from(selectBox.options).some(opt => opt.value === searchYear);
-                            if(optionExists) {
-                                selectBox.value = searchYear;
-                                updateCardLinks(card); 
-                            }
+                            if(optionExists) { selectBox.value = searchYear; updateCardLinks(card); }
                         }
                     }
                 } else {
