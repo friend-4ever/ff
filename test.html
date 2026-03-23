@@ -9,9 +9,12 @@
     
     <style>
         /* --- GLOBAL STYLES & GLASSMORPHISM --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; 
+            -webkit-user-drag: none; /* Prevents global element dragging */
+        }
 
-        /* TEXT SELECTION BLOCKED FOR ENTIRE WEBSITE */
+        /* TEXT SELECTION & DRAG BLOCKED FOR ENTIRE WEBSITE */
         body {
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             background-attachment: fixed; color: white; min-height: 100vh; overflow-x: hidden;
@@ -26,6 +29,14 @@
             -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text;
         }
 
+        /* Specifically target links and images to prevent dragging 'ghost' elements */
+        a, img, .btn {
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+        }
+
         .glass-panel {
             background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
@@ -35,7 +46,6 @@
         .top-wrapper {
             background: rgba(15, 12, 41, 0.8); backdrop-filter: blur(10px);
             position: sticky; top: 0; z-index: 100; padding-bottom: 15px;
-            /* Added beautiful drop shadow and bottom border to the top section */
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
@@ -112,7 +122,6 @@
 
         .software-card { padding: 25px; display: flex; flex-direction: column; align-items: center; text-align: center; transition: 0.3s; position: relative; }
 
-        /* Smooth Animation when software card appears after searching */
         @keyframes searchPop {
             0% { opacity: 0; transform: translateY(30px) scale(0.9); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
@@ -666,11 +675,10 @@
             if (query === "") {
                 bundleSection.style.display = 'block'; searchError.style.display = 'none';
                 allCards.forEach(card => {
-                    // Trigger animation only if it was hidden
                     if(card.style.display === 'none' || card.style.display === '') {
                         card.style.display = 'flex';
                         card.style.animation = 'none';
-                        void card.offsetWidth; // Trigger reflow for restart
+                        void card.offsetWidth; 
                         card.style.animation = 'searchPop 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards';
                     }
                 }); 
@@ -694,7 +702,7 @@
                     if(card.style.display !== 'flex') {
                         card.style.display = 'flex';
                         card.style.animation = 'none';
-                        void card.offsetWidth; // Trigger reflow
+                        void card.offsetWidth; 
                         card.style.animation = 'searchPop 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards';
                     }
                     matchFound = true;
@@ -712,8 +720,10 @@
             if(!matchFound) searchError.style.display = 'block'; else searchError.style.display = 'none';
         });
 
-        // ANTI-INSPECT SYSTEM
+        // --- ANTI-INSPECT & ANTI-DRAG SYSTEM ---
         document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('dragstart', event => event.preventDefault()); // Blocks dragging ghost items globally
+        
         document.onkeydown = function(e) {
             if(e.keyCode == 123) return false;
             if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
