@@ -72,7 +72,6 @@
         .bundle-section {
             text-align: center; margin: 40px auto; width: 90%; max-width: 1000px; padding: 50px 30px;
             background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1);
-            /* Removed glowing animation, kept static deep shadow */
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
         }
 
@@ -83,30 +82,43 @@
         .bundle-title { font-size: 18px; font-weight: 700; color: black; margin: 0; letter-spacing: 0.5px; }
 
         .bundle-logos-wrapper { position: relative; display: flex; justify-content: center; margin-bottom: 30px; }
-        .bundle-logos-wrapper::before {
-            content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 60%; height: 70px; background: #2fff00; filter: blur(40px); opacity: 0.8; z-index: 0;
-        }
+        
+        /* Removed the solid green background behind the logos */
+        .bundle-logos-wrapper::before { display: none; }
 
         .bundle-logos { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; position: relative; z-index: 1; }
         
-        /* Butter Smooth Multiple Effect Glowing Animation for Logos inside Bundle */
+        /* 10 Different Colors Slow Smooth Glowing Animation */
         .bundle-logos img { 
             width: 35px; height: 35px; border-radius: 5px; 
-            animation: bundleLogoMultiGlow 6s infinite alternate ease-in-out;
+            animation: bundleLogo10ColorGlow 15s infinite linear; /* Super slow and smooth */
         }
         
-        @keyframes bundleLogoMultiGlow {
-            0% { filter: drop-shadow(0 0 8px #ff00ff) drop-shadow(0 0 15px #00d2ff); }
-            33% { filter: drop-shadow(0 0 8px #00ffcc) drop-shadow(0 0 15px #ffff00); }
-            66% { filter: drop-shadow(0 0 8px #ff00ff) drop-shadow(0 0 15px #ff0000); }
-            100% { filter: drop-shadow(0 0 8px #00d2ff) drop-shadow(0 0 15px #00ffcc); }
+        @keyframes bundleLogo10ColorGlow {
+            0%   { filter: drop-shadow(0 0 12px #ff0000); } /* Red */
+            10%  { filter: drop-shadow(0 0 12px #ff7f00); } /* Orange */
+            20%  { filter: drop-shadow(0 0 12px #ffff00); } /* Yellow */
+            30%  { filter: drop-shadow(0 0 12px #00ff00); } /* Green */
+            40%  { filter: drop-shadow(0 0 12px #00ffcc); } /* Cyan */
+            50%  { filter: drop-shadow(0 0 12px #00d2ff); } /* Light Blue */
+            60%  { filter: drop-shadow(0 0 12px #0000ff); } /* Blue */
+            70%  { filter: drop-shadow(0 0 12px #8b00ff); } /* Violet */
+            80%  { filter: drop-shadow(0 0 12px #ff00ff); } /* Magenta */
+            90%  { filter: drop-shadow(0 0 12px #ff0088); } /* Pink */
+            100% { filter: drop-shadow(0 0 12px #ff0000); } /* Red */
         }
 
+        /* Buy Bundle Button with Slide Animation */
         .btn-bundle {
             background: #0d3bdf; color: white; padding: 14px 40px; border: none; border-radius: 30px;
             font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s; text-decoration: none;
             display: inline-block; box-shadow: 0 0 20px rgba(13, 59, 223, 0.7);
+            position: relative; overflow: hidden; /* Added for slide effect */
+        }
+        .btn-bundle::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+            transform: skewX(-20deg); animation: slideLight 4s infinite linear;
         }
         .btn-bundle:hover { transform: scale(1.05); box-shadow: 0 0 35px rgba(13, 59, 223, 0.9); }
 
@@ -115,7 +127,6 @@
 
         .software-card { padding: 25px; display: flex; flex-direction: column; align-items: center; text-align: center; transition: 0.3s; }
 
-        /* Butter Smooth Animation for Main Logos */
         .software-logo {
             width: 80px; height: 80px; margin-bottom: 15px; border-radius: 15px;
             animation: logoPulse 5s infinite alternate ease-in-out; 
@@ -131,18 +142,31 @@
         .software-title { font-size: 20px; font-weight: 600; margin-bottom: 5px; }
         
         .price-tag { font-size: 16px; margin-bottom: 15px; color: #ddd; }
-        .highlight-price {
-            color: #00ff00;
-            font-weight: 700;
-            text-shadow: 0 0 8px rgba(255, 255, 255, 1);
-            letter-spacing: 0.5px;
-        }
+        .highlight-price { color: #00ff00; font-weight: 700; text-shadow: 0 0 8px rgba(255, 255, 255, 1); letter-spacing: 0.5px; }
 
+        /* Butter Smooth Version Dropdown Styling */
         .version-select {
-            width: 100%; padding: 10px; border-radius: 10px; background: rgba(0,0,0,0.5); color: white;
+            width: 100%; padding: 12px 15px; border-radius: 10px; color: white;
+            background: rgba(0,0,0,0.5) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>') no-repeat right 15px center;
+            background-size: 15px;
             border: 1px solid rgba(255,255,255,0.2); margin-bottom: 20px; font-size: 15px; outline: none;
+            cursor: pointer;
+            appearance: none; -webkit-appearance: none; -moz-appearance: none; /* Hide default arrow */
+            transition: all 0.3s ease-in-out; /* Butter smooth transitions */
         }
-        .version-select option { background: #24243e; }
+        .version-select:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .version-select:focus {
+            background-color: rgba(0,0,0,0.7);
+            border-color: #00d2ff;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
+            transform: scale(1.02);
+        }
+        .version-select option { background: #24243e; color: white; padding: 10px; font-size: 15px;}
 
         /* --- BUTTONS --- */
         .card-btns { width: 100%; display: flex; flex-direction: column; gap: 12px; }
@@ -193,7 +217,6 @@
         .modal-overlay.active .modal-content { transform: scale(1); opacity: 1; }
         .modal-content iframe { width: 100%; height: 100%; border-radius: 10px; border: none; }
 
-        /* Contact Popup Modal Specific Styles (Themed like Floating Icons) */
         .contact-modal-content {
             width: 90%; max-width: 400px; padding: 40px; display: flex; flex-direction: column; gap: 20px;
             background: rgba(20,20,40,0.9); border: 1px solid rgba(255,255,255,0.2); text-align: center;
@@ -392,17 +415,19 @@
         <div class="software-card glass-panel" data-name="payment test testing website builder">
             <i class="fa-solid fa-money-check-dollar" style="font-size: 60px; color: #00ffcc; margin-bottom: 15px; filter: drop-shadow(0 0 15px #00ffcc);"></i>
             <div class="software-title">Payment Testing System</div>
-            <p style="font-size: 13px; color: #ccc; margin-bottom: 10px; line-height: 1.4;">Yah sirf website redirect aur payment testing ke liye hai. Isse koi software download nahi hoga.</p>
+            <p style="font-size: 13px; color: #ccc; margin-bottom: 10px; line-height: 1.4;">
+                Yah sirf website redirect aur payment testing ke liye hai. Matlab tum jo payment karoge uske bad vah payment website mein success hota hai ya nahin hota hai vah dekhne ke liye sirf yah payment hai. Isse koi software download nahi hoga.
+            </p>
             
             <div style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 10px; margin-bottom: 20px;">
                 <p style="font-size: 13px; color: #fff; line-height: 1.5; margin: 0;">
-                    Agar tumko exactly Aisa website banana hai to mujhse contact kar sakte ho. FIR tum bhi Aisa website own karoge, software send karoge ya FIR kuchh bhi sell kar sakte ho Jo Tum chaho.
+                    Agar tumko exactly Aisa website banana hai to mujhse contact kar sakte ho. FIR tum bhi Aisa website own karoge, software sell karoge ya FIR kuchh bhi sell kar sakte ho Jo Tum chaho.
                 </p>
             </div>
 
             <select class="version-select" data-id="test-pay" style="display:none;"><option value="test">Test</option></select>
             <div class="card-btns">
-                <a href="#" class="btn btn-password action-btn" style="background:#0056b3; border-color:#004494;"><i class="fa-solid fa-credit-card"></i> Test Payment (<span style="color:#00ff00;">₹1</span>)</a>
+                <a href="#" class="btn btn-password action-btn" style="background:#0056b3; border-color:#004494;"><i class="fa-solid fa-credit-card"></i> Test Payment (<span style="color:#00ff00; text-shadow: 0 0 5px rgba(255,255,255,0.5);">₹1</span>)</a>
             </div>
         </div>
 
@@ -509,7 +534,6 @@
             if(selectBox) selectBox.addEventListener('change', () => updateCardLinks(card));
         });
 
-        // --- SEARCH LOGIC ---
         function getEditDistance(a, b) {
             if(a.length === 0) return b.length;
             if(b.length === 0) return a.length;
@@ -585,7 +609,6 @@
             else searchError.style.display = 'none';
         });
 
-        // ANTI-INSPECT SYSTEM
         document.addEventListener('contextmenu', event => event.preventDefault());
         document.onkeydown = function(e) {
             if(e.keyCode == 123) return false;
