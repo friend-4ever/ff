@@ -1,571 +1,489 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Software - Windows Lifetime Access</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Premium Software Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        
-        :root {
-            --neon-cyan: #00f5ff;
-            --neon-purple: #c026d3;
+        /* === GLOBAL STYLES & APPLE LIQUID GLASS THEME === */
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            user-select: none; /* Prevent text selection */
         }
-        
         body {
-            font-family: 'Inter', system-ui, sans-serif;
+            background: radial-gradient(circle top right, #1c1c28, #0a0a0f);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 50px;
         }
         
-        /* Liquid Glass Theme */
+        /* Transparent Glass Effect */
         .glass {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-        }
-        
-        .neon-glow {
-            box-shadow: 0 0 15px var(--neon-cyan),
-                        0 0 30px var(--neon-cyan),
-                        0 0 50px rgba(0, 245, 255, 0.3);
-        }
-        
-        .card-hover {
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        
-        .card-hover:hover {
-            transform: translateY(-12px) scale(1.03);
-            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4);
-        }
-        
-        /* Shine Animation for Buttons */
-        .shine-btn {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .shine-btn::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -100%;
-            width: 50%;
-            height: 300%;
-            background: linear-gradient(
-                120deg,
-                transparent,
-                rgba(255, 255, 255, 0.4),
-                transparent
-            );
-            animation: shine 4s infinite;
-        }
-        
-        @keyframes shine {
-            0% { left: -100%; }
-            20% { left: 200%; }
-            100% { left: 200%; }
-        }
-        
-        /* Neon Bundle Logos Animation */
-        .bundle-logo {
-            transition: all 0.3s ease;
-        }
-        
-        .bundle-logo:hover {
-            transform: scale(1.15) rotate(5deg);
-            filter: drop-shadow(0 0 25px #00f5ff);
-        }
-        
-        /* Version Selector */
-        .version-btn {
-            transition: all 0.3s ease;
-        }
-        
-        .version-btn.active {
-            background-color: #22c55e;
-            color: white;
-            box-shadow: 0 0 15px #22c55e;
-        }
-        
-        /* Modal */
-        .modal {
-            animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        
-        @keyframes modalPop {
-            0% { transform: scale(0.6); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        
-        /* Search Input Glass */
-        .search-glass {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
         }
+
+        /* === TOP NAVIGATION === */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-radius: 0 0 20px 20px;
+            border-top: none;
+        }
+        .os-tag { display: flex; align-items: center; gap: 8px; font-weight: 500; font-size: 1.1rem;}
+        .apple-link { color: #fff; font-size: 1.5rem; transition: 0.3s; cursor: pointer; }
+        .apple-link:hover { color: #ccc; transform: scale(1.1); }
+
+        /* === MAIN HEADINGS === */
+        .hero { text-align: center; padding: 40px 20px 20px; }
+        .hero h1 { font-size: 2.5rem; font-weight: 700; background: linear-gradient(90deg, #ff8a00, #e52e71); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.1rem; color: #bbb; margin-top: 10px; }
+
+        /* === SEARCH BAR === */
+        .search-container {
+            display: flex; justify-content: center; margin: 20px auto 40px; padding: 0 20px;
+        }
+        .search-box {
+            width: 100%; max-width: 500px; padding: 15px 25px; border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff; font-size: 1rem; outline: none; transition: 0.3s;
+        }
+        .search-box:focus { background: rgba(255, 255, 255, 0.15); border-color: #00d26a; }
+        .error-msg { text-align: center; color: #ff4757; display: none; margin-top: -20px; margin-bottom: 20px; font-weight: 600;}
+
+        /* === BUNDLE PLAN SECTION === */
+        .bundle-wrapper {
+            padding: 4px;
+            border-radius: 24px;
+            background: linear-gradient(90deg, #ff007f, #7f00ff, #00d2ff, #ff007f);
+            background-size: 400%;
+            animation: neonSlide 10s linear infinite;
+            margin: 0 auto 50px;
+            max-width: 900px;
+            width: 90%;
+        }
+        @keyframes neonSlide { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         
+        .bundle-content { padding: 30px; text-align: center; border-radius: 20px; background: #0f0f14;}
+        .bundle-content h2 { color: #fff; font-size: 1.5rem; margin-bottom: 20px;}
+        .bundle-logos { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 25px;}
+        .bundle-logos img { 
+            width: 40px; height: 40px; border-radius: 8px;
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.4));
+        }
+        .btn-blue {
+            background: #007bff; color: #fff; padding: 12px 30px; border: none;
+            border-radius: 30px; font-weight: 600; cursor: pointer; font-size: 1.1rem;
+            transition: 0.3s; box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
+        }
+        .btn-blue:hover { transform: translateY(-3px); box-shadow: 0 0 25px rgba(0, 123, 255, 0.8); }
+
+        /* === SOFTWARE GRID === */
         .software-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px; padding: 0 5%; max-width: 1400px; margin: auto;
+        }
+        .software-card {
+            padding: 20px; display: flex; flex-direction: column; gap: 15px;
+            transition: transform 0.3s;
+        }
+        .software-card:hover { transform: translateY(-5px); }
+        .card-header { display: flex; align-items: center; justify-content: space-between; }
+        .logo-title { display: flex; align-items: center; gap: 12px; flex: 1; }
+        .logo-title img { width: 45px; height: 45px; border-radius: 10px; object-fit: contain; }
+        .title-box { display: flex; flex-direction: column; }
+        .software-name { font-weight: 600; font-size: 1.1rem; }
+        .software-price { font-size: 0.9rem; color: #aaa; margin-top: 2px;}
+        
+        .version-select {
+            background: rgba(0,0,0,0.5); color: #fff; border: 1px solid rgba(255,255,255,0.2);
+            padding: 5px 10px; border-radius: 8px; outline: none; cursor: pointer;
+        }
+
+        /* === BUTTONS === */
+        .action-btns { display: flex; flex-direction: column; gap: 10px; margin-top: auto;}
+        .btn {
+            padding: 12px; border: none; border-radius: 12px; font-weight: 600;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            cursor: pointer; transition: 0.3s; color: #fff; text-decoration: none; font-size: 0.95rem;
+        }
+        .btn-download { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); }
+        .btn-download:hover { background: rgba(255, 255, 255, 0.2); }
+        
+        .btn-password {
+            background: #00d26a; color: #000; position: relative; overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 210, 106, 0.4);
+        }
+        /* Green sliding light reflect effect */
+        .btn-password::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            transform: skewX(-20deg); animation: shine 3s infinite;
+        }
+        @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+        
+        .btn-video { background: rgba(255, 0, 85, 0.8); }
+        .btn-video:hover { background: rgba(255, 0, 85, 1); box-shadow: 0 0 15px rgba(255,0,85,0.5);}
+
+        .btn-canva { background: linear-gradient(90deg, #00c4cc, #7d2ae8); font-size: 0.85rem;}
+
+        /* === FLOATING SOCIALS === */
+        .social-float {
+            position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 15px; z-index: 1000;
+        }
+        .social-btn {
+            width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; color: #fff; text-decoration: none; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        .social-btn.whatsapp { background: #25D366; }
+        .social-btn.telegram { background: #0088cc; }
+        .social-btn:hover { transform: scale(1.1); }
+
+        /* === VIDEO POPUP MODAL === */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+            display: none; justify-content: center; align-items: center; z-index: 2000;
+        }
+        .modal-content {
+            width: 90%; max-width: 800px; aspect-ratio: 16/9; background: #000;
+            border-radius: 12px; overflow: hidden; border: 2px solid rgba(255,255,255,0.2);
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+        .modal-content iframe { width: 100%; height: 100%; border: none; }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.8rem; }
+            .software-card { padding: 15px; }
+            .bundle-wrapper { width: 95%; }
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-zinc-950 via-black to-zinc-950 text-white min-h-screen overflow-x-hidden">
-    <!-- NAVBAR -->
-    <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <!-- Left: Windows Only -->
-            <div class="flex items-center gap-3">
-                <img id="windows-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Windows_logo_-_2021.svg/512px-Windows_logo_-_2021.svg.png" 
-                     alt="Windows" class="w-9 h-9">
-                <div>
-                    <p class="text-sm font-medium text-emerald-400">WINDOWS ONLY</p>
-                    <p class="text-xs text-white/60">Lifetime Premium Access</p>
-                </div>
-            </div>
-            
-            <!-- Center: Search -->
-            <div class="flex-1 max-w-md mx-8">
-                <div class="relative">
-                    <input id="search-input" 
-                           type="text" 
-                           placeholder="Search software... (e.g. Adobe Premiere Pro 2026)"
-                           class="search-glass w-full px-6 py-3 rounded-3xl text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400 border border-white/20">
-                    <i class="fa-solid fa-magnifying-glass absolute right-5 top-1/2 -translate-y-1/2 text-white/50"></i>
-                </div>
-            </div>
-            
-            <!-- Right: Social + Apple -->
-            <div class="flex items-center gap-6">
-                <!-- WhatsApp -->
-                <a href="https://wa.me/message/MTTGHMIF7TNSC1" target="_blank"
-                   class="flex items-center gap-2 hover:scale-110 transition-all">
-                    <img id="whatsapp-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/512px-WhatsApp.svg.png" 
-                         alt="WhatsApp" class="w-8 h-8">
-                </a>
-                
-                <!-- Telegram -->
-                <a href="https://t.me/Its_Maxado" target="_blank"
-                   class="flex items-center gap-2 hover:scale-110 transition-all">
-                    <img id="telegram-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/512px-Telegram_logo.svg.png" 
-                         alt="Telegram" class="w-8 h-8">
-                </a>
-                
-                <!-- Apple Redirect -->
-                <a href="ADD_APPLE_WEBSITE_LINK_HERE" target="_blank" 
-                   class="glass px-4 py-2 rounded-2xl flex items-center gap-2 hover:scale-110 transition-all">
-                    <img id="apple-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/512px-Apple_logo_black.svg.png" 
-                         alt="Apple" class="w-6 h-6">
-                    <span class="text-xs font-medium">Mac Version</span>
-                </a>
-            </div>
-        </div>
-    </nav>
+<body oncontextmenu="return false;">
 
-    <!-- HERO / BUNDLE HIGHLIGHT -->
-    <div class="pt-24 pb-12 px-6 max-w-7xl mx-auto">
-        <div class="glass rounded-3xl p-8 border border-white/20 neon-glow">
-            <div class="flex flex-col md:flex-row items-center gap-8">
-                <!-- Left Text -->
-                <div class="flex-1">
-                    <div class="inline-flex items-center gap-2 bg-white/10 px-5 py-2 rounded-full text-xs font-medium mb-4">
-                        <span class="text-emerald-400">99% OFF OFFICIAL PRICE</span>
-                    </div>
-                    <h1 class="text-5xl font-bold leading-tight">
-                        Buy Now! <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">Bundle Plans</span><br>
-                        at Half Price – Only ₹395
-                    </h1>
-                    <p class="mt-4 text-white/70 text-lg">10 Premium Softwares + Lifetime Access</p>
-                    
-                    <button onclick="buyBundle()" 
-                            class="shine-btn mt-8 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-10 py-4 rounded-2xl font-semibold text-lg flex items-center gap-3 hover:scale-105 transition-all">
-                        <i class="fa-solid fa-bolt"></i>
-                        BUY BUNDLE PLANS
-                    </button>
+    <header class="glass">
+        <div class="os-tag"><i class="fa-brands fa-windows" style="color:#00a4ef;"></i> Windows</div>
+        <a href="#" class="apple-link" title="Go to Apple Software"><i class="fa-brands fa-apple"></i></a>
+    </header>
+
+    <div class="hero">
+        <h1>Software Reselling</h1>
+        <p>Highlighted name all software 99% of the official price + lifetime premium access</p>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-box" placeholder="Search software..." onkeyup="searchSoftware()">
+    </div>
+    <div id="errorMsg" class="error-msg">No software found matching your search.</div>
+
+    <div class="bundle-wrapper" id="bundleSection">
+        <div class="bundle-content">
+            <h2>Buy Now! Bundle plans at Half Price – Only ₹395</h2>
+            <div class="bundle-logos">
                 </div>
-                
-                <!-- Bundle Logos -->
-                <div class="flex-1 grid grid-cols-5 gap-4" id="bundle-logos">
-                    <!-- JS se dynamically fill hoga -->
-                </div>
-            </div>
+            <button class="btn-blue">Buy Bundle Plans</button>
         </div>
     </div>
 
-    <!-- SOFTWARE GRID -->
-    <div class="max-w-7xl mx-auto px-6 pb-20">
-        <div class="software-grid" id="software-grid">
-            <!-- JS dynamically generate cards -->
+    <div class="software-grid" id="softwareContainer">
         </div>
+
+    <div class="social-float">
+        <a href="https://wa.me/message/MTTGHMIF7TNSC1" target="_blank" class="social-btn whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="https://t.me/Its_Maxado" target="_blank" class="social-btn telegram"><i class="fa-brands fa-telegram"></i></a>
     </div>
 
-    <!-- VIDEO MODAL -->
-    <div id="video-modal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-[9999]">
-        <div class="modal glass rounded-3xl max-w-4xl w-full mx-4 overflow-hidden">
-            <div class="relative">
-                <iframe id="video-iframe" 
-                        class="w-full aspect-video"
-                        allowfullscreen></iframe>
-            </div>
+    <div class="modal-overlay" id="videoModal">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <iframe id="videoIframe" src="" allowfullscreen></iframe>
         </div>
     </div>
 
     <script>
-        // Tailwind script run
-        function initializeTailwind() {
-            // Already loaded via CDN
+        /* =========================================================
+           🔒 ANTI-INSPECT SECURITY 
+           ========================================================= */
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) return false; // F12
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Ctrl+Shift+I
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Ctrl+Shift+C
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Ctrl+Shift+J
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
         }
+
+        /* =========================================================
+           📝 DATABASE & LINK CONFIGURATION (EDIT LINKS HERE)
+           Bhai, yahan apne saare Google Drive links, Payment links aur 
+           Installation Video links alag-alag daal do.
+           Blank chhodna hai toh usko "#" ya "" hi rehne do.
+           ========================================================= */
         
-        // All Software Data - Edit links here easily
-        const softwares = [
+        const standardVersions = ["2026", "2025", "2024", "2023", "2022", "2021"];
+        
+        // Use preview link for GDrive to play in iframe perfectly. Replace "/view?pli=1" with "/preview"
+        const demoVideoLink = "https://drive.google.com/file/d/1eRc7C8OLn8G9_vUHfZdj6GYnmGOhiZlL/preview";
+
+        const softwareDB = [
             {
-                id: 1,
-                name: "Adobe Premiere Pro",
-                logo: "https://toppng.com/public/uploads/preview/adobe-premiere-pro-video-logo-png-501895.png",
-                price: 100,
-                versions: ["2026", "2025", "2024", "2023", "2022", "2021"],
-                defaultVersion: "2026",
-                downloadLinks: {
-                    "2026": "ADD_DOWNLOAD_LINK_FOR_PREMIERE_2026_HERE",
-                    "2025": "ADD_DOWNLOAD_LINK_FOR_PREMIERE_2025_HERE",
-                    "2024": "ADD_DOWNLOAD_LINK_FOR_PREMIERE_2024_HERE",
-                    "2023": "ADD_DOWNLOAD_LINK_FOR_PREMIERE_2023_HERE",
-                    "2022": "ADD_DOWNLOAD_LINK_FOR_PREMIERE_2022_HERE",
-                    "2021": "ADD_DOWNLOAD_LINK_FOR_PREMIERE_2021_HERE"
-                },
-                passwordLinks: {
-                    "2026": "ADD_PASSWORD_LINK_FOR_PREMIERE_2026_HERE",
-                    "2025": "ADD_PASSWORD_LINK_FOR_PREMIERE_2025_HERE",
-                    "2024": "ADD_PASSWORD_LINK_FOR_PREMIERE_2024_HERE",
-                    "2023": "ADD_PASSWORD_LINK_FOR_PREMIERE_2023_HERE",
-                    "2022": "ADD_PASSWORD_LINK_FOR_PREMIERE_2022_HERE",
-                    "2021": "ADD_PASSWORD_LINK_FOR_PREMIERE_2021_HERE"
-                },
-                videoLink: "https://drive.google.com/file/d/1eRc7C8OLn8G9_vUHfZdj6GYnmGOhiZlL/preview"
+                id: "premiere", name: "Adobe Premiere Pro", price: 99, 
+                logo: "https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg",
+                versions: standardVersions,
+                links: {
+                    "2026": { down: "#", pay: "#", vid: demoVideoLink },
+                    "2025": { down: "#", pay: "#", vid: "#" },
+                    "2024": { down: "#", pay: "#", vid: "#" },
+                    "2023": { down: "#", pay: "#", vid: "#" },
+                    "2022": { down: "#", pay: "#", vid: "#" },
+                    "2021": { down: "#", pay: "#", vid: "#" }
+                }
             },
             {
-                id: 2,
-                name: "Adobe After Effects",
-                logo: "https://logos-world.net/wp-content/uploads/2020/11/After-Effects-Logo.png",
-                price: 100,
-                versions: ["2026", "2025", "2024", "2023", "2022", "2021"],
-                defaultVersion: "2026",
-                downloadLinks: {
-                    "2026": "ADD_DOWNLOAD_LINK_FOR_AFTEREFFECTS_2026_HERE",
-                    // ... same pattern for all versions
-                    "2025": "ADD_DOWNLOAD_LINK_FOR_AFTEREFFECTS_2025_HERE",
-                    "2024": "ADD_DOWNLOAD_LINK_FOR_AFTEREFFECTS_2024_HERE",
-                    "2023": "ADD_DOWNLOAD_LINK_FOR_AFTEREFFECTS_2023_HERE",
-                    "2022": "ADD_DOWNLOAD_LINK_FOR_AFTEREFFECTS_2022_HERE",
-                    "2021": "ADD_DOWNLOAD_LINK_FOR_AFTEREFFECTS_2021_HERE"
-                },
-                passwordLinks: {
-                    "2026": "ADD_PASSWORD_LINK_FOR_AFTEREFFECTS_2026_HERE",
-                    // ... same pattern
-                    "2025": "ADD_PASSWORD_LINK_FOR_AFTEREFFECTS_2025_HERE",
-                    "2024": "ADD_PASSWORD_LINK_FOR_AFTEREFFECTS_2024_HERE",
-                    "2023": "ADD_PASSWORD_LINK_FOR_AFTEREFFECTS_2023_HERE",
-                    "2022": "ADD_PASSWORD_LINK_FOR_AFTEREFFECTS_2022_HERE",
-                    "2021": "ADD_PASSWORD_LINK_FOR_AFTEREFFECTS_2021_HERE"
-                },
-                videoLink: "ADD_YOUR_VIDEO_LINK_FOR_AFTEREFFECTS_HERE"
+                id: "aftereffects", name: "Adobe After Effects", price: 100,
+                logo: "https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg",
+                versions: standardVersions,
+                links: {
+                    "2026": { down: "#", pay: "#", vid: "#" },
+                    "2025": { down: "#", pay: "#", vid: "#" },
+                    "2024": { down: "#", pay: "#", vid: "#" },
+                    "2023": { down: "#", pay: "#", vid: "#" },
+                    "2022": { down: "#", pay: "#", vid: "#" },
+                    "2021": { down: "#", pay: "#", vid: "#" }
+                }
             },
             {
-                id: 3,
-                name: "Adobe Photoshop",
-                logo: "https://pngimg.com/uploads/photoshop/photoshop_PNG1.png",
-                price: 98,
-                versions: ["2026", "2025", "2024", "2023", "2022", "2021"],
-                defaultVersion: "2026",
-                downloadLinks: { /* same pattern - fill blank */ "2026": "ADD_DOWNLOAD_LINK_FOR_PHOTOSHOP_2026_HERE", /* ... */ },
-                passwordLinks: { /* same */ },
-                videoLink: "ADD_YOUR_VIDEO_LINK_FOR_PHOTOSHOP_HERE"
+                id: "photoshop", name: "Adobe Photoshop", price: 98,
+                logo: "https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg",
+                versions: standardVersions,
+                links: { /* Same as above, edit your links per version */
+                    "2026": { down: "#", pay: "#", vid: "#" },
+                    "2025": { down: "#", pay: "#", vid: "#" },
+                    "2024": { down: "#", pay: "#", vid: "#" },
+                    "2023": { down: "#", pay: "#", vid: "#" },
+                    "2022": { down: "#", pay: "#", vid: "#" },
+                    "2021": { down: "#", pay: "#", vid: "#" }
+                }
             },
             {
-                id: 4,
-                name: "Wondershare Filmora",
-                logo: "https://www.pngmart.com/files/22/Filmora-Logo-PNG-Image.png",
-                price: 96,
+                id: "filmora", name: "Wondershare Filmora", price: 96,
+                logo: "https://upload.wikimedia.org/wikipedia/commons/4/41/Filmora_logo.png", // fallback logo
                 versions: ["15", "14", "13"],
-                defaultVersion: "15",
-                downloadLinks: { "15": "ADD_DOWNLOAD_LINK_FOR_FILMORA_15_HERE", "14": "ADD_DOWNLOAD_LINK_FOR_FILMORA_14_HERE", "13": "ADD_DOWNLOAD_LINK_FOR_FILMORA_13_HERE" },
-                passwordLinks: { "15": "ADD_PASSWORD_LINK_FOR_FILMORA_15_HERE", /* ... */ },
-                videoLink: "ADD_YOUR_VIDEO_LINK_FOR_FILMORA_HERE"
+                links: {
+                    "15": { down: "#", pay: "#", vid: "#" },
+                    "14": { down: "#", pay: "#", vid: "#" },
+                    "13": { down: "#", pay: "#", vid: "#" }
+                }
             },
             {
-                id: 5,
-                name: "Canva Pro",
-                logo: "https://upload.wikimedia.org/wikipedia/commons/0/0b/Canva_logo.svg",
-                price: 199,
-                versions: null,
-                defaultVersion: null,
-                downloadLinks: null,
-                passwordLinks: null,
-                videoLink: "ADD_YOUR_VIDEO_LINK_FOR_CANVA_HERE",
-                special: true
+                id: "encoder", name: "Adobe Media Encoder", price: 188,
+                logo: "https://upload.wikimedia.org/wikipedia/commons/b/b5/Adobe_Media_Encoder_Icon.svg",
+                versions: standardVersions,
+                links: { "2026": { down: "#", pay: "#", vid: "#" }, "2025": { down: "#", pay: "#", vid: "#" }, "2024": { down: "#", pay: "#", vid: "#" }, "2023": { down: "#", pay: "#", vid: "#" }, "2022": { down: "#", pay: "#", vid: "#" }, "2021": { down: "#", pay: "#", vid: "#" } }
             },
             {
-                id: 6,
-                name: "Adobe Media Encoder",
-                logo: "https://logowik.com/content/uploads/images/adobe-media-encoder-cc5988.logowik.com.png",
-                price: 188,
-                versions: ["2026", "2025", "2024", "2023", "2022", "2021"],
-                defaultVersion: "2026",
-                downloadLinks: { /* fill blanks */ },
-                passwordLinks: { /* fill blanks */ },
-                videoLink: "ADD_YOUR_VIDEO_LINK_FOR_MEDIAENCODER_HERE"
+                id: "audition", name: "Adobe Audition", price: 77,
+                logo: "https://upload.wikimedia.org/wikipedia/commons/0/02/Adobe_Audition_CC_icon.svg",
+                versions: standardVersions,
+                links: { "2026": { down: "#", pay: "#", vid: "#" }, "2025": { down: "#", pay: "#", vid: "#" }, "2024": { down: "#", pay: "#", vid: "#" }, "2023": { down: "#", pay: "#", vid: "#" }, "2022": { down: "#", pay: "#", vid: "#" }, "2021": { down: "#", pay: "#", vid: "#" } }
             },
             {
-                id: 7,
-                name: "Adobe Audition",
-                logo: "https://www.logo.wine/logo/Adobe_Audition",
-                price: 77,
-                versions: ["2026", "2025", "2024", "2023", "2022", "2021"],
-                defaultVersion: "2026",
-                downloadLinks: { /* fill */ },
-                passwordLinks: { /* fill */ },
-                videoLink: "ADD_YOUR_VIDEO_LINK_FOR_AUDITION_HERE"
+                id: "lightroom", name: "Adobe Lightroom", price: 69,
+                logo: "https://upload.wikimedia.org/wikipedia/commons/b/b6/Adobe_Photoshop_Lightroom_CC_logo.svg",
+                versions: standardVersions,
+                links: { "2026": { down: "#", pay: "#", vid: "#" }, "2025": { down: "#", pay: "#", vid: "#" }, "2024": { down: "#", pay: "#", vid: "#" }, "2023": { down: "#", pay: "#", vid: "#" }, "2022": { down: "#", pay: "#", vid: "#" }, "2021": { down: "#", pay: "#", vid: "#" } }
             },
             {
-                id: 8,
-                name: "Adobe Lightroom",
-                logo: "https://pngimg.com/uploads/lightroom/lightroom_PNG1.png",
-                price: 69,
-                versions: ["2026", "2025", "2024", "2023", "2022", "2021"],
-                defaultVersion: "2026",
-                downloadLinks: { /* fill */ },
-                passwordLinks: { /* fill */ },
-                videoLink: "ADD_YOUR_VIDEO_LINK_FOR_LIGHTROOM_HERE"
+                id: "illustrator", name: "Adobe Illustrator", price: 89,
+                logo: "https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg",
+                versions: standardVersions,
+                links: { "2026": { down: "#", pay: "#", vid: "#" }, "2025": { down: "#", pay: "#", vid: "#" }, "2024": { down: "#", pay: "#", vid: "#" }, "2023": { down: "#", pay: "#", vid: "#" }, "2022": { down: "#", pay: "#", vid: "#" }, "2021": { down: "#", pay: "#", vid: "#" } }
             },
             {
-                id: 9,
-                name: "Adobe Illustrator",
-                logo: "https://logos-world.net/wp-content/uploads/2020/11/Illustrator-Logo.png",
-                price: 89,
-                versions: ["2026", "2025", "2024", "2023", "2022", "2021"],
-                defaultVersion: "2026",
-                downloadLinks: { /* fill */ },
-                passwordLinks: { /* fill */ },
-                videoLink: "ADD_YOUR_VIDEO_LINK_FOR_ILLUSTRATOR_HERE"
+                id: "indesign", name: "Adobe InDesign", price: 78,
+                logo: "https://upload.wikimedia.org/wikipedia/commons/4/48/Adobe_InDesign_CC_icon.svg",
+                versions: standardVersions,
+                links: { "2026": { down: "#", pay: "#", vid: "#" }, "2025": { down: "#", pay: "#", vid: "#" }, "2024": { down: "#", pay: "#", vid: "#" }, "2023": { down: "#", pay: "#", vid: "#" }, "2022": { down: "#", pay: "#", vid: "#" }, "2021": { down: "#", pay: "#", vid: "#" } }
             },
             {
-                id: 10,
-                name: "Adobe InDesign",
-                logo: "https://logos-world.net/wp-content/uploads/2020/11/InDesign-Logo.png",
-                price: 78,
-                versions: ["2026", "2025", "2024", "2023", "2022", "2021"],
-                defaultVersion: "2026",
-                downloadLinks: { /* fill */ },
-                passwordLinks: { /* fill */ },
-                videoLink: "ADD_YOUR_VIDEO_LINK_FOR_INDESIGN_HERE"
+                id: "animate", name: "Adobe Animate", price: 84,
+                logo: "https://upload.wikimedia.org/wikipedia/commons/c/c3/Adobe_Animate_CC_icon.svg",
+                versions: standardVersions,
+                links: { "2026": { down: "#", pay: "#", vid: "#" }, "2025": { down: "#", pay: "#", vid: "#" }, "2024": { down: "#", pay: "#", vid: "#" }, "2023": { down: "#", pay: "#", vid: "#" }, "2022": { down: "#", pay: "#", vid: "#" }, "2021": { down: "#", pay: "#", vid: "#" } }
             },
             {
-                id: 11,
-                name: "Adobe Animate",
-                logo: "https://logos-world.net/wp-content/uploads/2020/11/Animate-Logo.png",
-                price: 84,
-                versions: ["2026", "2025", "2024", "2023", "2022", "2021"],
-                defaultVersion: "2026",
-                downloadLinks: { /* fill */ },
-                passwordLinks: { /* fill */ },
-                videoLink: "ADD_YOUR_VIDEO_LINK_FOR_ANIMATE_HERE"
+                id: "character", name: "Adobe Character Animator", price: 83,
+                logo: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Adobe_Character_Animator_CC_icon.svg",
+                versions: standardVersions,
+                links: { "2026": { down: "#", pay: "#", vid: "#" }, "2025": { down: "#", pay: "#", vid: "#" }, "2024": { down: "#", pay: "#", vid: "#" }, "2023": { down: "#", pay: "#", vid: "#" }, "2022": { down: "#", pay: "#", vid: "#" }, "2021": { down: "#", pay: "#", vid: "#" } }
             }
-        ]
+        ];
+
+        /* Special Canva Object */
+        const canvaData = {
+            id: "canva", name: "Canva Pro", price: 199,
+            logo: "https://upload.wikimedia.org/wikipedia/commons/0/08/Canva_icon_2021.svg",
+            linkText: "Pay kro & WhatsApp ya telegram me screenshot do. (Email Login) Android iOS windows MacOS all device supported",
+            paymentLink: "#"
+        };
+
+
+        /* =========================================================
+           🛠️ LOGIC & RENDER ENGINE
+           ========================================================= */
         
-        // Bundle logos (10 as per your list)
-        const bundleLogos = [
-            "https://toppng.com/public/uploads/preview/adobe-premiere-pro-video-logo-png-501895.png",
-            "https://logos-world.net/wp-content/uploads/2020/11/After-Effects-Logo.png",
-            "https://pngimg.com/uploads/photoshop/photoshop_PNG1.png",
-            "https://www.pngmart.com/files/22/Filmora-Logo-PNG-Image.png",
-            "https://logowik.com/content/uploads/images/adobe-media-encoder-cc5988.logowik.com.png",
-            "https://www.logo.wine/logo/Adobe_Audition",
-            "https://pngimg.com/uploads/lightroom/lightroom_PNG1.png",
-            "https://logos-world.net/wp-content/uploads/2020/11/Illustrator-Logo.png",
-            "https://logos-world.net/wp-content/uploads/2020/11/InDesign-Logo.png",
-            "https://logos-world.net/wp-content/uploads/2020/11/Animate-Logo.png"
-        ]
-        
-        // Render Bundle Logos
-        function renderBundleLogos() {
-            const container = document.getElementById('bundle-logos')
-            container.innerHTML = ''
-            bundleLogos.forEach(src => {
-                const img = document.createElement('img')
-                img.src = src
-                img.className = 'bundle-logo w-14 h-14 mx-auto object-contain'
-                container.appendChild(img)
-            })
-        }
-        
-        // Render All Software Cards
-        function renderSoftwareCards(filteredSoftwares = softwares) {
-            const grid = document.getElementById('software-grid')
-            grid.innerHTML = ''
-            
-            filteredSoftwares.forEach(soft => {
-                const card = document.createElement('div')
-                card.className = `glass rounded-3xl p-6 card-hover`
+        const container = document.getElementById('softwareContainer');
+        const bundleLogos = document.querySelector('.bundle-logos');
+
+        function renderUI() {
+            // Render Bundle Logos
+            softwareDB.forEach(sw => {
+                if(sw.id !== "character") { // Adding main logos to bundle
+                    bundleLogos.innerHTML += `<img src="${sw.logo}" alt="${sw.name}">`;
+                }
+            });
+
+            // Render Software Cards
+            softwareDB.forEach((sw, index) => {
+                let optionsHTML = sw.versions.map(v => `<option value="${v}">${v}</option>`).join('');
+                
+                let card = document.createElement('div');
+                card.className = "glass software-card";
+                card.setAttribute('data-name', sw.name.toLowerCase());
+                card.setAttribute('data-id', sw.id);
+                
                 card.innerHTML = `
-                    <div class="flex items-center gap-4 mb-6">
-                        <img src="${soft.logo}" class="w-16 h-16 object-contain">
-                        <div>
-                            <div class="flex items-baseline gap-2">
-                                <h3 id="name-${soft.id}" class="text-2xl font-bold">${soft.name}</h3>
-                                ${soft.versions ? `<span id="version-display-${soft.id}" class="text-emerald-400 font-mono text-lg">${soft.defaultVersion}</span>` : ''}
+                    <div class="card-header">
+                        <div class="logo-title">
+                            <img src="${sw.logo}" alt="Logo">
+                            <div class="title-box">
+                                <span class="software-name" id="title-${sw.id}">${sw.name} ${sw.versions[0]}</span>
+                                <span class="software-price">(Price₹${sw.price})</span>
                             </div>
-                            <div class="text-white/70 text-sm">Lifetime Premium • 99% OFF</div>
                         </div>
+                        <select class="version-select" onchange="updateLinks('${sw.id}', this.value, '${sw.name}')">
+                            ${optionsHTML}
+                        </select>
                     </div>
-                    
-                    <div class="text-5xl font-black text-white mb-8">₹${soft.price}</div>
-                    
-                    ${soft.versions ? `
-                    <div class="flex flex-wrap gap-2 mb-6">
-                        ${soft.versions.map(v => `
-                            <button onclick="changeVersion(${soft.id}, '${v}')" 
-                                    class="version-btn text-xs px-4 py-2 rounded-xl border border-white/30 ${v === soft.defaultVersion ? 'active' : ''}">
-                                ${v}
-                            </button>
-                        `).join('')}
-                    </div>` : ''}
-                    
-                    ${soft.special ? `
-                    <div class="text-center text-xs bg-white/10 p-4 rounded-2xl mb-4">
-                        <div class="font-medium text-cyan-400">ALL DEVICES SUPPORTED</div>
-                        <div class="text-white/60 text-[10px]">Android • iOS • Windows • macOS</div>
-                    </div>` : ''}
-                    
-                    <!-- Buttons -->
-                    <div class="space-y-3">
-                        <!-- Download -->
-                        <a id="download-btn-${soft.id}" href="${soft.versions ? soft.downloadLinks[soft.defaultVersion] : '#'}" 
-                           class="shine-btn flex items-center justify-center gap-3 bg-white/10 hover:bg-white/20 transition-all py-4 rounded-2xl font-medium text-sm border border-white/30">
-                            <i class="fa-solid fa-download"></i>
-                            DOWNLOAD
+                    <div class="action-btns">
+                        <a href="${sw.links[sw.versions[0]].down}" target="_blank" class="btn btn-download" id="dl-${sw.id}">
+                            <i class="fa-solid fa-download"></i> Download
                         </a>
-                        
-                        <!-- Get Password -->
-                        <a id="password-btn-${soft.id}" href="${soft.versions ? soft.passwordLinks[soft.defaultVersion] : '#'}" 
-                           class="shine-btn flex items-center justify-center gap-3 bg-emerald-500 hover:bg-emerald-600 text-white py-4 rounded-2xl font-medium text-sm neon-glow">
-                            <i class="fa-solid fa-key"></i>
-                            GET PASSWORD <span class="text-xs opacity-75">(Pay)</span>
+                        <a href="${sw.links[sw.versions[0]].pay}" target="_blank" class="btn btn-password" id="pay-${sw.id}">
+                            <i class="fa-solid fa-key"></i> Get Password (Pay)
                         </a>
-                        
-                        <!-- Installation Video -->
-                        <button onclick="openVideoModal('${soft.videoLink}')" 
-                                class="shine-btn w-full flex items-center justify-center gap-3 bg-white/10 hover:bg-white/20 transition-all py-4 rounded-2xl font-medium text-sm border border-white/30">
-                            <i class="fa-solid fa-video"></i>
-                            INSTALLATION STEPS + PROOF VIDEO
+                        <button class="btn btn-video" onclick="openVideo('${sw.links[sw.versions[0]].vid}')" id="vid-${sw.id}">
+                            <i class="fa-solid fa-circle-play"></i> Installation steps + proof video
                         </button>
                     </div>
-                `
-                grid.appendChild(card)
-            })
+                `;
+                container.appendChild(card);
+            });
+
+            // Render Canva Card
+            let canvaCard = document.createElement('div');
+            canvaCard.className = "glass software-card";
+            canvaCard.setAttribute('data-name', "canva pro");
+            canvaCard.innerHTML = `
+                <div class="card-header">
+                    <div class="logo-title">
+                        <img src="${canvaData.logo}" alt="Logo">
+                        <div class="title-box">
+                            <span class="software-name">Canva Pro</span>
+                            <span class="software-price">(Price₹${canvaData.price})</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-btns" style="margin-top:20px;">
+                    <a href="${canvaData.paymentLink}" target="_blank" class="btn btn-password btn-canva" style="text-align:center; display:block; padding:15px 10px;">
+                        ${canvaData.linkText}
+                    </a>
+                </div>
+            `;
+            container.appendChild(canvaCard);
         }
-        
-        // Change Version
-        window.changeVersion = function(id, newVersion) {
-            const soft = softwares.find(s => s.id === id)
-            if (!soft) return
-            
-            // Update display
-            const versionDisplay = document.getElementById(`version-display-${id}`)
-            if (versionDisplay) versionDisplay.textContent = newVersion
-            
-            // Update name
-            const nameEl = document.getElementById(`name-${id}`)
-            if (nameEl) nameEl.textContent = `${soft.name} ${newVersion}`
-            
-            // Update links
-            const downloadBtn = document.getElementById(`download-btn-${id}`)
-            const passwordBtn = document.getElementById(`password-btn-${id}`)
-            
-            if (downloadBtn) downloadBtn.href = soft.downloadLinks[newVersion] || '#'
-            if (passwordBtn) passwordBtn.href = soft.passwordLinks[newVersion] || '#'
-        }
-        
-        // Open Video Modal
-        window.openVideoModal = function(link) {
-            if (!link || link === "ADD_YOUR_VIDEO_LINK_FOR_..._HERE") {
-                alert("Video link abhi blank hai. Bad mein add kar dena!")
-                return
-            }
-            const modal = document.getElementById('video-modal')
-            const iframe = document.getElementById('video-iframe')
-            iframe.src = link
-            modal.classList.remove('hidden')
-            modal.onclick = function(e) {
-                if (e.target === modal) {
-                    modal.classList.add('hidden')
-                    iframe.src = ''
-                }
-            }
-        }
-        
-        // Search Filter
-        function setupSearch() {
-            const input = document.getElementById('search-input')
-            input.addEventListener('input', () => {
-                const term = input.value.toLowerCase().trim()
-                if (!term) {
-                    renderSoftwareCards(softwares)
-                    return
-                }
+
+        // Update Links dynamically when version dropdown changes
+        window.updateLinks = function(id, version, name) {
+            document.getElementById(`title-${id}`).innerText = `${name} ${version}`;
+            let sw = softwareDB.find(s => s.id === id);
+            if(sw && sw.links[version]) {
+                document.getElementById(`dl-${id}`).href = sw.links[version].down;
+                document.getElementById(`pay-${id}`).href = sw.links[version].pay;
                 
-                const filtered = softwares.filter(soft => {
-                    const fullName = (soft.name + (soft.defaultVersion ? ' ' + soft.defaultVersion : '')).toLowerCase()
-                    return fullName.includes(term)
-                })
-                renderSoftwareCards(filtered.length ? filtered : softwares)
-            })
+                let vidBtn = document.getElementById(`vid-${id}`);
+                vidBtn.setAttribute("onclick", `openVideo('${sw.links[version].vid}')`);
+            }
+        }
+
+        // Video Modal Logic
+        const modal = document.getElementById('videoModal');
+        const iframe = document.getElementById('videoIframe');
+
+        window.openVideo = function(link) {
+            if(!link || link === "#") {
+                alert("Installation video not added yet.");
+                return;
+            }
+            iframe.src = link;
+            modal.style.display = "flex";
         }
         
-        // Buy Bundle
-        window.buyBundle = function() {
-            alert("Bundle ₹395 ke liye WhatsApp/Telegram pe contact karo! (Payment link add kar dena)")
-        }
-        
-        // Right Click Block + Dev Tools Block
-        function blockInspect() {
-            document.addEventListener('contextmenu', e => e.preventDefault())
-            
-            document.addEventListener('keydown', e => {
-                if (e.key === "F12" || 
-                    (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "C")) ||
-                    (e.ctrlKey && e.key === "u")) {
-                    e.preventDefault()
+        // Close modal when clicking outside (on the overlay)
+        modal.addEventListener('click', function() {
+            modal.style.display = "none";
+            iframe.src = ""; // Stop video audio playing in background
+        });
+
+        // Fuzzy Search Logic
+        window.searchSoftware = function() {
+            let input = document.getElementById('searchInput').value.toLowerCase().replace(/\s/g, '');
+            let cards = document.querySelectorAll('.software-card');
+            let bundle = document.getElementById('bundleSection');
+            let errorMsg = document.getElementById('errorMsg');
+            let found = false;
+
+            if(input.length > 0) {
+                bundle.style.display = 'none'; // Hide bundle on search
+            } else {
+                bundle.style.display = 'block';
+            }
+
+            cards.forEach(card => {
+                // remove spaces from card name to match fuzzy typing
+                let name = card.getAttribute('data-name').replace(/\s/g, '');
+                // Check if search text is part of the name
+                if (name.includes(input) || input.includes(name)) {
+                    card.style.display = 'flex';
+                    found = true;
+                } else {
+                    card.style.display = 'none';
                 }
-            })
+            });
+
+            // Show error if nothing found
+            if(!found && input.length > 0) {
+                errorMsg.style.display = 'block';
+            } else {
+                errorMsg.style.display = 'none';
+            }
         }
-        
-        // Initialize Everything
-        function init() {
-            initializeTailwind()
-            renderBundleLogos()
-            renderSoftwareCards()
-            setupSearch()
-            blockInspect()
-            
-            // Auto close modal on escape
-            document.addEventListener('keydown', e => {
-                if (e.key === "Escape") {
-                    const modal = document.getElementById('video-modal')
-                    if (!modal.classList.contains('hidden')) {
-                        modal.classList.add('hidden')
-                        document.getElementById('video-iframe').src = ''
-                    }
-                }
-            })
-            
-            console.log('%c✅ Website Ready! All links blank hain – tum bad mein edit kar sakte ho.', 'color:#22c55e; font-size:14px')
-        }
-        
-        window.onload = init
+
+        // Initialize UI
+        renderUI();
+
     </script>
 </body>
 </html>
