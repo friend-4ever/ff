@@ -72,13 +72,8 @@
         .bundle-section {
             text-align: center; margin: 40px auto; width: 90%; max-width: 1000px; padding: 50px 30px;
             background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2), 0 0 60px rgba(255, 0, 255, 0.2);
-            animation: bundleContainerGlow 4s infinite alternate ease-in-out; 
-        }
-
-        @keyframes bundleContainerGlow {
-            0% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.1), 0 0 40px rgba(255, 0, 255, 0.1); }
-            100% { box-shadow: 0 0 50px rgba(0, 255, 255, 0.4), 0 0 90px rgba(255, 0, 255, 0.4); }
+            /* Removed glowing animation, kept static deep shadow */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
         }
 
         .bundle-title-wrapper {
@@ -95,10 +90,10 @@
 
         .bundle-logos { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; position: relative; z-index: 1; }
         
-        /* Multiple Effect Glowing Animation for Logos inside Bundle */
+        /* Butter Smooth Multiple Effect Glowing Animation for Logos inside Bundle */
         .bundle-logos img { 
             width: 35px; height: 35px; border-radius: 5px; 
-            animation: bundleLogoMultiGlow 3s infinite alternate linear;
+            animation: bundleLogoMultiGlow 6s infinite alternate ease-in-out;
         }
         
         @keyframes bundleLogoMultiGlow {
@@ -120,9 +115,10 @@
 
         .software-card { padding: 25px; display: flex; flex-direction: column; align-items: center; text-align: center; transition: 0.3s; }
 
+        /* Butter Smooth Animation for Main Logos */
         .software-logo {
             width: 80px; height: 80px; margin-bottom: 15px; border-radius: 15px;
-            animation: logoPulse 2.5s infinite linear; 
+            animation: logoPulse 5s infinite alternate ease-in-out; 
         }
 
         @keyframes logoPulse {
@@ -134,7 +130,6 @@
 
         .software-title { font-size: 20px; font-weight: 600; margin-bottom: 5px; }
         
-        /* Green Price Text + White Drop Shadow */
         .price-tag { font-size: 16px; margin-bottom: 15px; color: #ddd; }
         .highlight-price {
             color: #00ff00;
@@ -184,7 +179,7 @@
         /* --- MODAL (Video & Contact) --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(15px); /* Increased blur for deep focus */
+            backdrop-filter: blur(15px);
             z-index: 2000; display: none; justify-content: center; align-items: center;
             opacity: 0; transition: opacity 0.3s ease-out;
         }
@@ -198,7 +193,7 @@
         .modal-overlay.active .modal-content { transform: scale(1); opacity: 1; }
         .modal-content iframe { width: 100%; height: 100%; border-radius: 10px; border: none; }
 
-        /* Contact Popup Modal Specific Styles */
+        /* Contact Popup Modal Specific Styles (Themed like Floating Icons) */
         .contact-modal-content {
             width: 90%; max-width: 400px; padding: 40px; display: flex; flex-direction: column; gap: 20px;
             background: rgba(20,20,40,0.9); border: 1px solid rgba(255,255,255,0.2); text-align: center;
@@ -206,10 +201,12 @@
         .contact-modal-btn {
             display: flex; align-items: center; justify-content: center; gap: 15px; padding: 15px; border-radius: 15px;
             text-decoration: none; font-size: 20px; font-weight: 600;
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.6); transition: 0.3s;
+            backdrop-filter: blur(15px); box-shadow: 0 10px 25px rgba(0,0,0,0.6); transition: 0.3s;
         }
         .contact-modal-btn:hover { transform: scale(1.05); }
+        
+        .contact-whatsapp { background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.5); color: #25D366; text-shadow: 0 0 10px rgba(37,211,102,0.5); }
+        .contact-telegram { background: rgba(0, 136, 204, 0.15); border: 1px solid rgba(0, 136, 204, 0.5); color: #0088cc; text-shadow: 0 0 10px rgba(0,136,204,0.5); }
 
         #search-error { text-align: center; color: #ff4d4d; font-size: 20px; display: none; width: 100%; margin-top: 50px; }
         @media (max-width: 600px) { header { flex-wrap: wrap; gap: 15px; justify-content: center; } .search-container { order: 3; margin: 0; max-width: 100%; } }
@@ -392,17 +389,24 @@
             </div>
         </div>
 
-        <div class="software-card glass-panel" data-name="payment test testing">
+        <div class="software-card glass-panel" data-name="payment test testing website builder">
             <i class="fa-solid fa-money-check-dollar" style="font-size: 60px; color: #00ffcc; margin-bottom: 15px; filter: drop-shadow(0 0 15px #00ffcc);"></i>
             <div class="software-title">Payment Testing System</div>
-            <p style="font-size: 13px; color: #ccc; margin-bottom: 15px; line-height: 1.4;">Yah sirf website redirect aur payment testing ke liye hai. Isse koi software download nahi hoga.</p>
+            <p style="font-size: 13px; color: #ccc; margin-bottom: 10px; line-height: 1.4;">Yah sirf website redirect aur payment testing ke liye hai. Isse koi software download nahi hoga.</p>
+            
+            <div style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 10px; margin-bottom: 20px;">
+                <p style="font-size: 13px; color: #fff; line-height: 1.5; margin: 0;">
+                    Agar tumko exactly Aisa website banana hai to mujhse contact kar sakte ho. FIR tum bhi Aisa website own karoge, software send karoge ya FIR kuchh bhi sell kar sakte ho Jo Tum chaho.
+                </p>
+            </div>
+
             <select class="version-select" data-id="test-pay" style="display:none;"><option value="test">Test</option></select>
             <div class="card-btns">
-                <a href="#" class="btn btn-password action-btn" style="background:#0056b3; border-color:#004494;"><i class="fa-solid fa-credit-card"></i> Test Payment (₹1)</a>
+                <a href="#" class="btn btn-password action-btn" style="background:#0056b3; border-color:#004494;"><i class="fa-solid fa-credit-card"></i> Test Payment (<span style="color:#00ff00;">₹1</span>)</a>
             </div>
         </div>
 
-        </div>
+    </div>
 
     <div class="floating-social">
         <a href="https://wa.me/message/MTTGHMIF7TNSC1" target="_blank" class="whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
@@ -411,7 +415,7 @@
 
     <div class="modal-overlay" id="videoModal" onclick="closeVideo()">
         <div class="modal-content video-modal-content" onclick="event.stopPropagation()">
-            <iframe id="videoIframe" src="" allow="autoplay"></iframe>
+            <iframe id="videoIframe" src="" allow="autoplay; fullscreen" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"></iframe>
         </div>
     </div>
 
@@ -436,7 +440,7 @@
             "after-effects": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
             "photoshop": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
             "filmora": { "15": { download: "#", pay: "#", video: "#" }, "14": { download: "#", pay: "#", video: "#" }, "13": { download: "#", pay: "#", video: "#" } },
-            "canva": { "lifetime": { download: "#", pay: "#", video: "" } }, // Controlled by Popup Now
+            "canva": { "lifetime": { download: "#", pay: "#", video: "" } },
             "media-encoder": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
             "audition": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
             "lightroom": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
