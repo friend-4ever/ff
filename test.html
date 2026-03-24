@@ -9,33 +9,17 @@
     
     <style>
         /* --- GLOBAL STYLES & GLASSMORPHISM --- */
-        * { 
-            margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; 
-            -webkit-user-drag: none; /* Prevents global element dragging */
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-user-drag: none; }
 
-        /* TEXT SELECTION & DRAG BLOCKED FOR ENTIRE WEBSITE */
+        /* TEXT SELECTION & DRAG BLOCKED */
         body {
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             background-attachment: fixed; color: white; min-height: 100vh; overflow-x: hidden;
-            -webkit-user-select: none; /* Safari */
-            -moz-user-select: none;    /* Firefox */
-            -ms-user-select: none;     /* IE 10+ */
-            user-select: none;         /* Standard */
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
         }
 
-        /* Allow selection only inside the search input so typing works normally */
-        input {
-            -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text;
-        }
-
-        /* Specifically target links and images to prevent dragging 'ghost' elements */
-        a, img, .btn {
-            -webkit-user-drag: none;
-            -khtml-user-drag: none;
-            -moz-user-drag: none;
-            -o-user-drag: none;
-        }
+        input { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
+        a, img, .btn { -webkit-user-drag: none; -khtml-user-drag: none; -moz-user-drag: none; -o-user-drag: none; }
 
         .glass-panel {
             background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
@@ -46,8 +30,7 @@
         .top-wrapper {
             background: rgba(15, 12, 41, 0.8); backdrop-filter: blur(10px);
             position: sticky; top: 0; z-index: 100; padding-bottom: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7); border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
         .top-banner {
@@ -59,7 +42,6 @@
         .top-banner .premium { color: #ffff00; }
 
         header { display: flex; justify-content: space-between; align-items: center; padding: 0 5%; }
-
         .os-logo { font-size: 28px; color: #fff; text-decoration: none; transition: 0.3s; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
         .os-logo:hover { transform: scale(1.1); }
 
@@ -86,10 +68,7 @@
         .bundle-logos-wrapper { position: relative; display: flex; justify-content: center; margin-bottom: 30px; }
         .bundle-logos { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; position: relative; z-index: 1; }
         
-        .bundle-logos img { 
-            width: 35px; height: 35px; border-radius: 5px; 
-            animation: bundleLogo10ColorWideGlow 15s infinite linear; 
-        }
+        .bundle-logos img { width: 35px; height: 35px; border-radius: 5px; animation: bundleLogo10ColorWideGlow 15s infinite linear; }
         
         @keyframes bundleLogo10ColorWideGlow {
             0%   { filter: drop-shadow(0 0 15px #ff0000) drop-shadow(0 0 35px #ff0000); }
@@ -117,7 +96,7 @@
         }
         .btn-bundle:hover { transform: scale(1.05); box-shadow: 0 0 35px rgba(13, 59, 223, 0.9); }
 
-        /* --- SOFTWARE GRID & SEARCH ANIMATION --- */
+        /* --- SOFTWARE GRID --- */
         .software-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 20px 5%; margin-bottom: 50px; z-index: 10;}
 
         .software-card { padding: 25px; display: flex; flex-direction: column; align-items: center; text-align: center; transition: 0.3s; position: relative; }
@@ -139,7 +118,7 @@
         .price-tag { font-size: 16px; margin-bottom: 15px; color: #ddd; }
         .highlight-price { color: #00ff00; font-weight: 700; text-shadow: 0 0 8px rgba(255, 255, 255, 1); letter-spacing: 0.5px; }
 
-        /* --- BUTTER SMOOTH CUSTOM DROPDOWN --- */
+        /* --- CUSTOM DROPDOWN --- */
         .custom-select-wrapper { position: relative; width: 100%; margin-bottom: 20px; z-index: 50; }
         .custom-select-trigger {
             width: 100%; padding: 12px 15px; border-radius: 10px; color: white;
@@ -147,28 +126,17 @@
             font-size: 15px; display: flex; justify-content: space-between; align-items: center;
             cursor: pointer; transition: all 0.3s ease-in-out;
         }
-        .custom-select-trigger:hover {
-            background-color: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.4); box-shadow: 0 5px 15px rgba(0,0,0,0.3); transform: translateY(-2px);
-        }
-        .custom-select-trigger:focus {
-            background-color: rgba(0,0,0,0.7); border-color: #00d2ff; box-shadow: 0 0 15px rgba(0, 210, 255, 0.5); transform: scale(1.02);
-        }
+        .custom-select-trigger:hover { background-color: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.4); box-shadow: 0 5px 15px rgba(0,0,0,0.3); transform: translateY(-2px); }
         .custom-select-options {
-            position: absolute; display: block; top: 110%; left: 0; right: 0;
-            background: rgba(15, 12, 41, 0.95); backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2); border-radius: 10px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.8); z-index: 100;
-            opacity: 0; visibility: hidden; pointer-events: none;
-            transform: translateY(-15px); transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: absolute; display: block; top: 110%; left: 0; right: 0; background: rgba(15, 12, 41, 0.95); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; box-shadow: 0 15px 30px rgba(0,0,0,0.8); z-index: 100;
+            opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(-15px); transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             list-style: none; padding: 5px; max-height: 220px; overflow-y: auto;
         }
         .custom-select-wrapper.open .custom-select-options { opacity: 1; visibility: visible; pointer-events: all; transform: translateY(0); }
-        .custom-select-options li {
-            padding: 10px 15px; color: #ccc; cursor: pointer; border-radius: 5px; transition: all 0.2s ease-in-out; font-size: 14px; text-align: left;
-        }
+        .custom-select-options li { padding: 10px 15px; color: #ccc; cursor: pointer; border-radius: 5px; transition: all 0.2s ease-in-out; font-size: 14px; text-align: left; }
         .custom-select-options li:hover { background: rgba(0, 210, 255, 0.2); color: #fff; transform: translateX(5px); }
         .custom-select-options li.selected { background: rgba(0, 210, 255, 0.4); color: #fff; font-weight: 600; border-left: 3px solid #00d2ff;}
-        
         .custom-select-options::-webkit-scrollbar { width: 6px; }
         .custom-select-options::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
         .fa-chevron-down { transition: transform 0.3s ease; }
@@ -181,11 +149,9 @@
             color: white; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center;
             gap: 10px; position: relative; overflow: hidden; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
-
         .btn:hover { transform: scale(1.05) translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); z-index: 2; }
         .btn-download { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); }
         .btn-download:hover { background: rgba(255, 255, 255, 0.2); }
-        
         .btn-password { background: #1b8a36; border: 1px solid #28a745; }
         .btn-password::before {
             content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
@@ -193,10 +159,7 @@
             transform: skewX(-20deg); animation: slideLight 4s infinite linear;
         }
         @keyframes slideLight { 0% { left: -100%; } 100% { left: 200%; } }
-        
-        /* Class specifically to disable slide animation for Test Payment button */
         .btn-test-payment::before { display: none !important; }
-
         .btn-video { background: #ffcc00; color: #000; border: 1px solid #e6b800; }
         .btn-video:hover { background: #ffd633; }
         .btn-canva-pay { background: #ffcc00; color: #000; font-size: 13px; line-height: 1.4; padding: 15px 10px; text-align: left; border: 1px solid #e6b800;}
@@ -211,7 +174,7 @@
         .whatsapp { color: #25D366; text-shadow: 0 0 10px rgba(37, 211, 102, 0.5); }
         .telegram { color: #0088cc; text-shadow: 0 0 10px rgba(0, 136, 204, 0.5); }
 
-        /* --- MODAL (Video & Contact) --- */
+        /* --- MODAL --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(15px);
             z-index: 2000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease-out;
@@ -236,7 +199,6 @@
         .contact-modal-btn:hover { transform: scale(1.05); }
         .contact-whatsapp { background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.5); color: #25D366; text-shadow: 0 0 10px rgba(37,211,102,0.5); }
         .contact-telegram { background: rgba(0, 136, 204, 0.15); border: 1px solid rgba(0, 136, 204, 0.5); color: #0088cc; text-shadow: 0 0 10px rgba(0,136,204,0.5); }
-
         #search-error { text-align: center; color: #ff4d4d; font-size: 20px; display: none; width: 100%; margin-top: 50px; }
         @media (max-width: 600px) { header { flex-wrap: wrap; gap: 15px; justify-content: center; } .search-container { order: 3; margin: 0; max-width: 100%; } }
     </style>
@@ -294,7 +256,11 @@
                 </p>
             </div>
 
-            <div class="custom-select-wrapper" data-id="test-pay" data-value="test" style="display:none;"></div>
+            <div class="custom-select-wrapper" data-value="test" style="display:none;">
+                <ul class="custom-select-options">
+                    <li data-value="test" class="selected" data-pay="#">Test</li>
+                </ul>
+            </div>
 
             <div class="card-btns">
                 <a href="#" class="btn btn-password btn-test-payment action-btn" style="background:#0056b3; border-color:#004494;"><i class="fa-solid fa-credit-card"></i> Test Payment (<span style="color:#00ff00; text-shadow: 0 0 5px rgba(255,255,255,0.5);">₹1</span>)</a>
@@ -306,15 +272,15 @@
             <div class="software-title">Adobe Premiere Pro <span class="year-text">2026</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹99</span>)</div>
             
-            <div class="custom-select-wrapper" data-id="premiere-pro" data-value="2026">
+            <div class="custom-select-wrapper" data-value="2026">
                 <div class="custom-select-trigger"><span>Version 2026</span> <i class="fa-solid fa-chevron-down"></i></div>
                 <ul class="custom-select-options">
-                    <li data-value="2026" class="selected">Version 2026</li>
-                    <li data-value="2025">Version 2025</li>
-                    <li data-value="2024">Version 2024</li>
-                    <li data-value="2023">Version 2023</li>
-                    <li data-value="2022">Version 2022</li>
-                    <li data-value="2021">Version 2021</li>
+                    <li data-value="2026" class="selected" data-download="#" data-pay="#" data-video="https://drive.google.com/file/d/1eRc7C8OLn8G9_vUHfZdj6GYnmGOhiZlL/preview">Version 2026</li>
+                    <li data-value="2025" data-download="#" data-pay="#" data-video="#">Version 2025</li>
+                    <li data-value="2024" data-download="#" data-pay="#" data-video="#">Version 2024</li>
+                    <li data-value="2023" data-download="#" data-pay="#" data-video="#">Version 2023</li>
+                    <li data-value="2022" data-download="#" data-pay="#" data-video="#">Version 2022</li>
+                    <li data-value="2021" data-download="#" data-pay="#" data-video="#">Version 2021</li>
                 </ul>
             </div>
 
@@ -330,12 +296,15 @@
             <div class="software-title">Adobe After Effects <span class="year-text">2026</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹100</span>)</div>
             
-            <div class="custom-select-wrapper" data-id="after-effects" data-value="2026">
+            <div class="custom-select-wrapper" data-value="2026">
                 <div class="custom-select-trigger"><span>Version 2026</span> <i class="fa-solid fa-chevron-down"></i></div>
                 <ul class="custom-select-options">
-                    <li data-value="2026" class="selected">Version 2026</li><li data-value="2025">Version 2025</li>
-                    <li data-value="2024">Version 2024</li><li data-value="2023">Version 2023</li>
-                    <li data-value="2022">Version 2022</li><li data-value="2021">Version 2021</li>
+                    <li data-value="2026" class="selected" data-download="#" data-pay="#" data-video="#">Version 2026</li>
+                    <li data-value="2025" data-download="#" data-pay="#" data-video="#">Version 2025</li>
+                    <li data-value="2024" data-download="#" data-pay="#" data-video="#">Version 2024</li>
+                    <li data-value="2023" data-download="#" data-pay="#" data-video="#">Version 2023</li>
+                    <li data-value="2022" data-download="#" data-pay="#" data-video="#">Version 2022</li>
+                    <li data-value="2021" data-download="#" data-pay="#" data-video="#">Version 2021</li>
                 </ul>
             </div>
 
@@ -351,12 +320,15 @@
             <div class="software-title">Adobe Photoshop <span class="year-text">2026</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹98</span>)</div>
             
-            <div class="custom-select-wrapper" data-id="photoshop" data-value="2026">
+            <div class="custom-select-wrapper" data-value="2026">
                 <div class="custom-select-trigger"><span>Version 2026</span> <i class="fa-solid fa-chevron-down"></i></div>
                 <ul class="custom-select-options">
-                    <li data-value="2026" class="selected">Version 2026</li><li data-value="2025">Version 2025</li>
-                    <li data-value="2024">Version 2024</li><li data-value="2023">Version 2023</li>
-                    <li data-value="2022">Version 2022</li><li data-value="2021">Version 2021</li>
+                    <li data-value="2026" class="selected" data-download="#" data-pay="#" data-video="#">Version 2026</li>
+                    <li data-value="2025" data-download="#" data-pay="#" data-video="#">Version 2025</li>
+                    <li data-value="2024" data-download="#" data-pay="#" data-video="#">Version 2024</li>
+                    <li data-value="2023" data-download="#" data-pay="#" data-video="#">Version 2023</li>
+                    <li data-value="2022" data-download="#" data-pay="#" data-video="#">Version 2022</li>
+                    <li data-value="2021" data-download="#" data-pay="#" data-video="#">Version 2021</li>
                 </ul>
             </div>
 
@@ -372,12 +344,12 @@
             <div class="software-title">Wondershare Filmora <span class="year-text">15</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹96</span>)</div>
             
-            <div class="custom-select-wrapper" data-id="filmora" data-value="15">
+            <div class="custom-select-wrapper" data-value="15">
                 <div class="custom-select-trigger"><span>Version 15</span> <i class="fa-solid fa-chevron-down"></i></div>
                 <ul class="custom-select-options">
-                    <li data-value="15" class="selected">Version 15</li>
-                    <li data-value="14">Version 14</li>
-                    <li data-value="13">Version 13</li>
+                    <li data-value="15" class="selected" data-download="#" data-pay="#" data-video="#">Version 15</li>
+                    <li data-value="14" data-download="#" data-pay="#" data-video="#">Version 14</li>
+                    <li data-value="13" data-download="#" data-pay="#" data-video="#">Version 13</li>
                 </ul>
             </div>
 
@@ -393,7 +365,11 @@
             <div class="software-title">Canva Pro <span style="color: #00ff00; font-size: 16px;">(Lifetime)</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹199</span>)</div>
             
-            <div class="custom-select-wrapper" data-id="canva" data-value="lifetime" style="display:none;"></div>
+            <div class="custom-select-wrapper" data-value="lifetime" style="display:none;">
+                <ul class="custom-select-options">
+                    <li data-value="lifetime" class="selected" data-pay="#">Lifetime</li>
+                </ul>
+            </div>
 
             <div class="card-btns">
                 <a href="#" class="btn btn-password action-btn"><i class="fa-solid fa-key"></i> Pay</a>
@@ -412,10 +388,15 @@
             <div class="software-title">Adobe Media Encoder <span class="year-text">2026</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹188</span>)</div>
             
-            <div class="custom-select-wrapper" data-id="media-encoder" data-value="2026">
+            <div class="custom-select-wrapper" data-value="2026">
                 <div class="custom-select-trigger"><span>Version 2026</span> <i class="fa-solid fa-chevron-down"></i></div>
                 <ul class="custom-select-options">
-                    <li data-value="2026" class="selected">Version 2026</li><li data-value="2025">Version 2025</li><li data-value="2024">Version 2024</li><li data-value="2023">Version 2023</li><li data-value="2022">Version 2022</li><li data-value="2021">Version 2021</li>
+                    <li data-value="2026" class="selected" data-download="#" data-pay="#" data-video="#">Version 2026</li>
+                    <li data-value="2025" data-download="#" data-pay="#" data-video="#">Version 2025</li>
+                    <li data-value="2024" data-download="#" data-pay="#" data-video="#">Version 2024</li>
+                    <li data-value="2023" data-download="#" data-pay="#" data-video="#">Version 2023</li>
+                    <li data-value="2022" data-download="#" data-pay="#" data-video="#">Version 2022</li>
+                    <li data-value="2021" data-download="#" data-pay="#" data-video="#">Version 2021</li>
                 </ul>
             </div>
 
@@ -431,10 +412,15 @@
             <div class="software-title">Adobe Audition <span class="year-text">2026</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹77</span>)</div>
             
-            <div class="custom-select-wrapper" data-id="audition" data-value="2026">
+            <div class="custom-select-wrapper" data-value="2026">
                 <div class="custom-select-trigger"><span>Version 2026</span> <i class="fa-solid fa-chevron-down"></i></div>
                 <ul class="custom-select-options">
-                    <li data-value="2026" class="selected">Version 2026</li><li data-value="2025">Version 2025</li><li data-value="2024">Version 2024</li><li data-value="2023">Version 2023</li><li data-value="2022">Version 2022</li><li data-value="2021">Version 2021</li>
+                    <li data-value="2026" class="selected" data-download="#" data-pay="#" data-video="#">Version 2026</li>
+                    <li data-value="2025" data-download="#" data-pay="#" data-video="#">Version 2025</li>
+                    <li data-value="2024" data-download="#" data-pay="#" data-video="#">Version 2024</li>
+                    <li data-value="2023" data-download="#" data-pay="#" data-video="#">Version 2023</li>
+                    <li data-value="2022" data-download="#" data-pay="#" data-video="#">Version 2022</li>
+                    <li data-value="2021" data-download="#" data-pay="#" data-video="#">Version 2021</li>
                 </ul>
             </div>
 
@@ -450,10 +436,15 @@
             <div class="software-title">Adobe Lightroom <span class="year-text">2026</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹69</span>)</div>
             
-            <div class="custom-select-wrapper" data-id="lightroom" data-value="2026">
+            <div class="custom-select-wrapper" data-value="2026">
                 <div class="custom-select-trigger"><span>Version 2026</span> <i class="fa-solid fa-chevron-down"></i></div>
                 <ul class="custom-select-options">
-                    <li data-value="2026" class="selected">Version 2026</li><li data-value="2025">Version 2025</li><li data-value="2024">Version 2024</li><li data-value="2023">Version 2023</li><li data-value="2022">Version 2022</li><li data-value="2021">Version 2021</li>
+                    <li data-value="2026" class="selected" data-download="#" data-pay="#" data-video="#">Version 2026</li>
+                    <li data-value="2025" data-download="#" data-pay="#" data-video="#">Version 2025</li>
+                    <li data-value="2024" data-download="#" data-pay="#" data-video="#">Version 2024</li>
+                    <li data-value="2023" data-download="#" data-pay="#" data-video="#">Version 2023</li>
+                    <li data-value="2022" data-download="#" data-pay="#" data-video="#">Version 2022</li>
+                    <li data-value="2021" data-download="#" data-pay="#" data-video="#">Version 2021</li>
                 </ul>
             </div>
 
@@ -469,10 +460,15 @@
             <div class="software-title">Adobe Illustrator <span class="year-text">2026</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹89</span>)</div>
             
-            <div class="custom-select-wrapper" data-id="illustrator" data-value="2026">
+            <div class="custom-select-wrapper" data-value="2026">
                 <div class="custom-select-trigger"><span>Version 2026</span> <i class="fa-solid fa-chevron-down"></i></div>
                 <ul class="custom-select-options">
-                    <li data-value="2026" class="selected">Version 2026</li><li data-value="2025">Version 2025</li><li data-value="2024">Version 2024</li><li data-value="2023">Version 2023</li><li data-value="2022">Version 2022</li><li data-value="2021">Version 2021</li>
+                    <li data-value="2026" class="selected" data-download="#" data-pay="#" data-video="#">Version 2026</li>
+                    <li data-value="2025" data-download="#" data-pay="#" data-video="#">Version 2025</li>
+                    <li data-value="2024" data-download="#" data-pay="#" data-video="#">Version 2024</li>
+                    <li data-value="2023" data-download="#" data-pay="#" data-video="#">Version 2023</li>
+                    <li data-value="2022" data-download="#" data-pay="#" data-video="#">Version 2022</li>
+                    <li data-value="2021" data-download="#" data-pay="#" data-video="#">Version 2021</li>
                 </ul>
             </div>
 
@@ -488,10 +484,15 @@
             <div class="software-title">Adobe InDesign <span class="year-text">2026</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹78</span>)</div>
             
-            <div class="custom-select-wrapper" data-id="indesign" data-value="2026">
+            <div class="custom-select-wrapper" data-value="2026">
                 <div class="custom-select-trigger"><span>Version 2026</span> <i class="fa-solid fa-chevron-down"></i></div>
                 <ul class="custom-select-options">
-                    <li data-value="2026" class="selected">Version 2026</li><li data-value="2025">Version 2025</li><li data-value="2024">Version 2024</li><li data-value="2023">Version 2023</li><li data-value="2022">Version 2022</li><li data-value="2021">Version 2021</li>
+                    <li data-value="2026" class="selected" data-download="#" data-pay="#" data-video="#">Version 2026</li>
+                    <li data-value="2025" data-download="#" data-pay="#" data-video="#">Version 2025</li>
+                    <li data-value="2024" data-download="#" data-pay="#" data-video="#">Version 2024</li>
+                    <li data-value="2023" data-download="#" data-pay="#" data-video="#">Version 2023</li>
+                    <li data-value="2022" data-download="#" data-pay="#" data-video="#">Version 2022</li>
+                    <li data-value="2021" data-download="#" data-pay="#" data-video="#">Version 2021</li>
                 </ul>
             </div>
 
@@ -507,10 +508,15 @@
             <div class="software-title">Adobe Animate <span class="year-text">2026</span></div>
             <div class="price-tag">(<span class="highlight-price">Price ₹84</span>)</div>
             
-            <div class="custom-select-wrapper" data-id="animate" data-value="2026">
+            <div class="custom-select-wrapper" data-value="2026">
                 <div class="custom-select-trigger"><span>Version 2026</span> <i class="fa-solid fa-chevron-down"></i></div>
                 <ul class="custom-select-options">
-                    <li data-value="2026" class="selected">Version 2026</li><li data-value="2025">Version 2025</li><li data-value="2024">Version 2024</li><li data-value="2023">Version 2023</li><li data-value="2022">Version 2022</li><li data-value="2021">Version 2021</li>
+                    <li data-value="2026" class="selected" data-download="#" data-pay="#" data-video="#">Version 2026</li>
+                    <li data-value="2025" data-download="#" data-pay="#" data-video="#">Version 2025</li>
+                    <li data-value="2024" data-download="#" data-pay="#" data-video="#">Version 2024</li>
+                    <li data-value="2023" data-download="#" data-pay="#" data-video="#">Version 2023</li>
+                    <li data-value="2022" data-download="#" data-pay="#" data-video="#">Version 2022</li>
+                    <li data-value="2021" data-download="#" data-pay="#" data-video="#">Version 2021</li>
                 </ul>
             </div>
 
@@ -521,9 +527,7 @@
             </div>
         </div>
 
-    </div>
-
-    <div class="floating-social">
+    </div> <div class="floating-social">
         <a href="https://wa.me/message/MTTGHMIF7TNSC1" target="_blank" class="whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
         <a href="https://t.me/Its_Maxado" target="_blank" class="telegram"><i class="fa-brands fa-telegram"></i></a>
     </div>
@@ -544,21 +548,6 @@
     </div>
 
     <script>
-        const softwareData = {
-            "premiere-pro": { "2026": { download: "#", pay: "#", video: "https://drive.google.com/file/d/1eRc7C8OLn8G9_vUHfZdj6GYnmGOhiZlL/preview" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
-            "after-effects": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
-            "photoshop": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
-            "filmora": { "15": { download: "#", pay: "#", video: "#" }, "14": { download: "#", pay: "#", video: "#" }, "13": { download: "#", pay: "#", video: "#" } },
-            "canva": { "lifetime": { download: "#", pay: "#", video: "" } },
-            "media-encoder": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
-            "audition": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
-            "lightroom": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
-            "illustrator": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
-            "indesign": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
-            "animate": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
-            "test-pay": { "test": { pay: "#" } }
-        };
-
         // --- CUSTOM DROPDOWN LOGIC ---
         document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
             const trigger = wrapper.querySelector('.custom-select-trigger');
@@ -614,31 +603,37 @@
             modal.classList.remove('active'); setTimeout(() => { modal.style.display = 'none'; }, 300);
         }
 
-        // --- UPDATE LINKS BASED ON CUSTOM SELECT ---
+        // --- UPDATE LINKS DYNAMICALLY FROM HTML DATA ---
         function updateCardLinks(card) {
             const wrapper = card.querySelector('.custom-select-wrapper');
             if(!wrapper) return;
-            const softId = wrapper.getAttribute('data-id');
             const version = wrapper.getAttribute('data-value');
             const yearText = card.querySelector('.year-text');
             
             if(yearText) yearText.innerText = version;
 
+            // Find the selected <li> to get its specific links
+            const selectedOption = wrapper.querySelector(`li[data-value="${version}"]`);
+            if(!selectedOption) return;
+
+            const dlLink = selectedOption.getAttribute('data-download') || '#';
+            const payLink = selectedOption.getAttribute('data-pay') || '#';
+            const vidLink = selectedOption.getAttribute('data-video') || '#';
+
             const downloadBtn = card.querySelector('.btn-download');
             const payBtn = card.querySelector('.btn-password');
             const videoBtn = card.querySelector('.btn-video');
             
-            const links = (softwareData[softId] && softwareData[softId][version]) ? softwareData[softId][version] : { download: "#", pay: "#", video: "#" };
-
-            if(downloadBtn) downloadBtn.href = links.download;
-            if(payBtn) payBtn.href = links.pay;
+            if(downloadBtn) downloadBtn.href = dlLink;
+            if(payBtn) payBtn.href = payLink;
             
             if(videoBtn) {
                 videoBtn.onclick = function(e) {
-                    e.preventDefault(); let vLink = links.video;
-                    if(vLink === "#" || vLink === "") { alert("Video link not added yet!"); return; }
-                    if(vLink.includes('/view')) vLink = vLink.replace(/\/view.*/, '/preview');
-                    openVideo(vLink);
+                    e.preventDefault(); 
+                    if(vidLink === "#" || vidLink === "") { alert("Video link not added yet!"); return; }
+                    let finalLink = vidLink;
+                    if(finalLink.includes('/view')) finalLink = finalLink.replace(/\/view.*/, '/preview');
+                    openVideo(finalLink);
                 };
             }
         }
