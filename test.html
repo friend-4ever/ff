@@ -13,10 +13,44 @@
 
         /* TEXT SELECTION & DRAG BLOCKED */
         body {
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background: #0a0a1a; /* Changed to solid dark base to highlight animations */
             background-attachment: fixed; color: white; min-height: 100vh; overflow-x: hidden;
             -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
         }
+
+        /* --- NEW ANIMATED BACKGROUND STYLES --- */
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; overflow: hidden;
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.6;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+        .orb-1 {
+            width: 450px; height: 450px; background: #ff00cc;
+            top: -10%; left: -10%; animation-duration: 25s;
+        }
+        .orb-2 {
+            width: 550px; height: 550px; background: #333399;
+            bottom: -20%; right: -10%; animation-duration: 22s; animation-delay: -5s;
+        }
+        .orb-3 {
+            width: 400px; height: 400px; background: #00d2ff;
+            top: 40%; left: 50%; animation-duration: 28s; animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(40px, -60px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.9); }
+            100% { transform: translate(50px, 50px) scale(1.05); }
+        }
+        /* -------------------------------------- */
 
         input { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
         a, img, .btn { -webkit-user-drag: none; -khtml-user-drag: none; -moz-user-drag: none; -o-user-drag: none; }
@@ -205,6 +239,11 @@
 </head>
 <body>
 
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
     <div class="top-wrapper">
         <div class="top-banner">
             All software at <span class="discount">99%</span> off the official price + <span class="lifetime">Lifetime</span> <span class="premium">Premium Access</span>
@@ -551,7 +590,9 @@
             </div>
         </div>
 
-    </div> <div class="floating-social">
+    </div> 
+    
+    <div class="floating-social">
         <a href="https://wa.me/message/MTTGHMIF7TNSC1" target="_blank" class="whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
         <a href="https://t.me/Its_Maxado" target="_blank" class="telegram"><i class="fa-brands fa-telegram"></i></a>
     </div>
