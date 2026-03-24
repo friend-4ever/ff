@@ -185,6 +185,7 @@
         .btn:hover { transform: scale(1.05) translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); z-index: 2; }
         .btn-download { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); }
         .btn-download:hover { background: rgba(255, 255, 255, 0.2); }
+        
         .btn-password { background: #1b8a36; border: 1px solid #28a745; }
         .btn-password::before {
             content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
@@ -192,6 +193,10 @@
             transform: skewX(-20deg); animation: slideLight 4s infinite linear;
         }
         @keyframes slideLight { 0% { left: -100%; } 100% { left: 200%; } }
+        
+        /* Class specifically to disable slide animation for Test Payment button */
+        .btn-test-payment::before { display: none !important; }
+
         .btn-video { background: #ffcc00; color: #000; border: 1px solid #e6b800; }
         .btn-video:hover { background: #ffd633; }
         .btn-canva-pay { background: #ffcc00; color: #000; font-size: 13px; line-height: 1.4; padding: 15px 10px; text-align: left; border: 1px solid #e6b800;}
@@ -292,7 +297,7 @@
             <div class="custom-select-wrapper" data-id="test-pay" data-value="test" style="display:none;"></div>
 
             <div class="card-btns">
-                <a href="#" class="btn btn-password action-btn" style="background:#0056b3; border-color:#004494;"><i class="fa-solid fa-credit-card"></i> Test Payment (<span style="color:#00ff00; text-shadow: 0 0 5px rgba(255,255,255,0.5);">₹1</span>)</a>
+                <a href="#" class="btn btn-password btn-test-payment action-btn" style="background:#0056b3; border-color:#004494;"><i class="fa-solid fa-credit-card"></i> Test Payment (<span style="color:#00ff00; text-shadow: 0 0 5px rgba(255,255,255,0.5);">₹1</span>)</a>
             </div>
         </div>
 
@@ -516,25 +521,6 @@
             </div>
         </div>
 
-         <div class="software-card glass-panel" data-name="adobe character animator">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Adobe_InDesign_CC_icon.svg" alt="Logo" class="software-logo">
-            <div class="software-title">Adobe Character Animator <span class="year-text">2026</span></div>
-            <div class="price-tag">(<span class="highlight-price">Price ₹10</span>)</div>
-            
-            <div class="custom-select-wrapper" data-id="character" data-value="2026">
-                <div class="custom-select-trigger"><span>Version 2026</span> <i class="fa-solid fa-chevron-down"></i></div>
-                <ul class="custom-select-options">
-                    <li data-value="2026" class="selected">Version 2026</li><li data-value="2025">Version 2025</li><li data-value="2024">Version 2024</li><li data-value="2023">Version 2023</li><li data-value="2022">Version 2022</li><li data-value="2021">Version 2021</li>
-                </ul>
-            </div>
-
-            <div class="card-btns">
-                <a href="#" class="btn btn-download action-btn"><i class="fa-solid fa-download"></i> Download</a>
-                <a href="#" class="btn btn-password action-btn"><i class="fa-solid fa-key"></i> Get Password (Pay)</a>
-                <button class="btn btn-video action-btn"><i class="fa-solid fa-video"></i> Installation steps + proof video</button>
-            </div>
-        </div>
-
     </div>
 
     <div class="floating-social">
@@ -568,9 +554,8 @@
             "audition": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
             "lightroom": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
             "illustrator": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
-            "indesign": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "https://drive.google.com/file/d/1eRc7C8OLn8G9_vUHfZdj6GYnmGOhiZlL/preview", pay: "https://youtu.be/Y9ozt29tzgs?si=Y5AAKvL-pMudujqG", video: "https://drive.google.com/file/d/1eRc7C8OLn8G9_vUHfZdj6GYnmGOhiZlL/preview" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
-            "animate": { "2026": { download: "#", pay: "https://youtu.be/Y9ozt29tzgs?si=Y5AAKvL-pMudujqG", video: "#" }, "2025": { download: "#", pay: "#", video: "https://drive.google.com/file/d/1eRc7C8OLn8G9_vUHfZdj6GYnmGOhiZlL/preview" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
-            "character-animator": { "2026": { download: "#", pay: "https://youtu.be/Y9ozt29tzgs?si=Y5AAKvL-pMudujqG", video: "#" }, "2025": { download: "#", pay: "#", video: "https://drive.google.com/file/d/1eRc7C8OLn8G9_vUHfZdj6GYnmGOhiZlL/preview" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
+            "indesign": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
+            "animate": { "2026": { download: "#", pay: "#", video: "#" }, "2025": { download: "#", pay: "#", video: "#" }, "2024": { download: "#", pay: "#", video: "#" }, "2023": { download: "#", pay: "#", video: "#" }, "2022": { download: "#", pay: "#", video: "#" }, "2021": { download: "#", pay: "#", video: "#" } },
             "test-pay": { "test": { pay: "#" } }
         };
 
@@ -742,7 +727,7 @@
 
         // --- ANTI-INSPECT & ANTI-DRAG SYSTEM ---
         document.addEventListener('contextmenu', event => event.preventDefault());
-        document.addEventListener('dragstart', event => event.preventDefault()); // Blocks dragging ghost items globally
+        document.addEventListener('dragstart', event => event.preventDefault()); 
         
         document.onkeydown = function(e) {
             if(e.keyCode == 123) return false;
