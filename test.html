@@ -13,7 +13,7 @@
 
         /* TEXT SELECTION & DRAG BLOCKED */
         body {
-            background: #0a0a1a; /* Changed to solid dark base to highlight animations */
+            background: #0a0a1a; 
             background-attachment: fixed; color: white; min-height: 100vh; overflow-x: hidden;
             -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
         }
@@ -27,28 +27,23 @@
         .orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(90px);
-            opacity: 0.6;
-            animation: float 20s infinite ease-in-out alternate;
+            filter: blur(150px); /* Increased blur for smoother blending */
+            opacity: 0.3; /* Lowered opacity to keep focus on main software cards */
+            animation: float 30s infinite ease-in-out alternate; /* Slower, smoother animation */
         }
         .orb-1 {
-            width: 450px; height: 450px; background: #ff00cc;
-            top: -10%; left: -10%; animation-duration: 25s;
+            width: 600px; height: 600px; background: #ff00cc; /* Kept left color */
+            top: 0%; left: -10%; animation-duration: 35s;
         }
         .orb-2 {
-            width: 550px; height: 550px; background: #333399;
-            bottom: -20%; right: -10%; animation-duration: 22s; animation-delay: -5s;
-        }
-        .orb-3 {
-            width: 400px; height: 400px; background: #00d2ff;
-            top: 40%; left: 50%; animation-duration: 28s; animation-delay: -10s;
+            width: 650px; height: 650px; background: #ffffff; /* Changed right color to white */
+            bottom: -10%; right: -10%; animation-duration: 28s; animation-delay: -5s;
         }
 
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(40px, -60px) scale(1.1); }
-            66% { transform: translate(-30px, 30px) scale(0.9); }
-            100% { transform: translate(50px, 50px) scale(1.05); }
+            50% { transform: translate(150px, -100px) scale(1.2); }
+            100% { transform: translate(-100px, 150px) scale(1.1); }
         }
         /* -------------------------------------- */
 
@@ -242,8 +237,8 @@
     <div class="bg-animation">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
     </div>
+    
     <div class="top-wrapper">
         <div class="top-banner">
             All software at <span class="discount">99%</span> off the official price + <span class="lifetime">Lifetime</span> <span class="premium">Premium Access</span>
