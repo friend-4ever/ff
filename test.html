@@ -13,44 +13,58 @@
 
         /* TEXT SELECTION & DRAG BLOCKED */
         body {
-            background: #0a0a1a; /* Changed to solid dark base to highlight animations */
+            background: transparent; /* Changed to transparent so bg-animation shows clearly */
             background-attachment: fixed; color: white; min-height: 100vh; overflow-x: hidden;
             -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
         }
 
-        /* --- NEW ANIMATED BACKGROUND STYLES --- */
+        /* --- NEW PREMIUM TECH ANIMATED BACKGROUND --- */
         .bg-animation {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1; overflow: hidden;
-        }
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(90px);
-            opacity: 0.6;
-            animation: float 20s infinite ease-in-out alternate;
-        }
-        .orb-1 {
-            width: 450px; height: 450px; background: #ff00cc;
-            top: -10%; left: -10%; animation-duration: 25s;
-        }
-        .orb-2 {
-            width: 550px; height: 550px; background: #333399;
-            bottom: -20%; right: -10%; animation-duration: 22s; animation-delay: -5s;
-        }
-        .orb-3 {
-            width: 400px; height: 400px; background: #00d2ff;
-            top: 40%; left: 50%; animation-duration: 28s; animation-delay: -10s;
+            z-index: -1;
+            /* Smooth moving dark gradient */
+            background: linear-gradient(135deg, #090a0f, #1b2735, #0f0c29, #110e2d);
+            background-size: 300% 300%;
+            animation: gradientBG 20s ease infinite;
+            overflow: hidden;
         }
 
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(40px, -60px) scale(1.1); }
-            66% { transform: translate(-30px, 30px) scale(0.9); }
-            100% { transform: translate(50px, 50px) scale(1.05); }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        /* -------------------------------------- */
+
+        /* Floating Glass Shapes */
+        .glass-shape {
+            position: absolute;
+            bottom: -150px;
+            background: rgba(255, 255, 255, 0.02); /* Very subtle transparency */
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            animation: floatUp infinite linear;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            pointer-events: none; /* Users can't click them */
+        }
+
+        /* Different sizes, positions, and speeds for a natural look */
+        .shape1 { width: 80px; height: 80px; left: 10%; animation-duration: 22s; animation-delay: 0s; }
+        .shape2 { width: 120px; height: 120px; left: 25%; animation-duration: 28s; animation-delay: 5s; }
+        .shape3 { width: 60px; height: 60px; left: 45%; animation-duration: 18s; animation-delay: 2s; }
+        .shape4 { width: 150px; height: 150px; left: 65%; animation-duration: 35s; animation-delay: 0s; }
+        .shape5 { width: 90px; height: 90px; left: 85%; animation-duration: 24s; animation-delay: 7s; }
+        .shape6 { width: 50px; height: 50px; left: 55%; animation-duration: 20s; animation-delay: 12s; border-radius: 50%; } /* Floating circle */
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+        /* ------------------------------------------------- */
 
         input { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
         a, img, .btn { -webkit-user-drag: none; -khtml-user-drag: none; -moz-user-drag: none; -o-user-drag: none; }
@@ -240,9 +254,12 @@
 <body>
 
     <div class="bg-animation">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
+        <div class="glass-shape shape1"></div>
+        <div class="glass-shape shape2"></div>
+        <div class="glass-shape shape3"></div>
+        <div class="glass-shape shape4"></div>
+        <div class="glass-shape shape5"></div>
+        <div class="glass-shape shape6"></div>
     </div>
     <div class="top-wrapper">
         <div class="top-banner">
