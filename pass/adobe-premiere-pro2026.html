@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adobe Premiere Pro - Password</title>
+    <title>Adobe Premiere Pro - Password & Download</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     
@@ -19,6 +19,7 @@
             background-attachment: fixed; color: white; min-height: 100vh; overflow-x: hidden;
             -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
             display: flex; justify-content: center; align-items: center; flex-direction: column;
+            position: relative; /* Confetti needs a stack context */
         }
 
         a, img { -webkit-user-drag: none; -khtml-user-drag: none; -moz-user-drag: none; -o-user-drag: none; }
@@ -53,7 +54,7 @@
             100% { filter: drop-shadow(0 0 10px #00d2ff) drop-shadow(0 0 20px #ff00ff); }
         }
 
-        .software-title { font-size: 24px; font-weight: 600; margin-bottom: 5px; }
+        .software-title { font-size: 24px; font-weight: 600; margin-bottom: 5px; color: #00d2ff; }
         .year-text { color: #00d2ff; }
 
         /* --- PASSWORD BOX (SELECTABLE) --- */
@@ -76,6 +77,29 @@
             cursor: text;
         }
 
+        /* --- NEW DOWNLOAD BUTTON --- */
+        .btn-download {
+            width: 100%; padding: 15px; border-radius: 10px; border: none; font-size: 16px; font-weight: 600;
+            color: white; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center;
+            gap: 10px; position: relative; overflow: hidden; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            margin-top: 25px;
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(5px);
+        }
+        .btn-download:hover { 
+            transform: scale(1.05) translateY(-5px); 
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); 
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Shining effect animation */
+        .btn-download::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+            transform: skewX(-20deg); animation: slideLight 4s infinite linear;
+        }
+        @keyframes slideLight { 0% { left: -100%; } 100% { left: 200%; } }
+
         /* --- FLOATING ICONS --- */
         .floating-social { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 1000; }
         .floating-social a {
@@ -97,6 +121,10 @@
             <span class="password-label">Password</span>
             <span class="selectable-password">60083</span>
         </div>
+
+        <a href="URL_KO_YAHAN_DALEN" target="_blank" class="btn-download">
+            <i class="fa-solid fa-download"></i> Download
+        </a>
     </div>
 
     <div class="floating-social">
@@ -105,26 +133,31 @@
     </div>
 
     <script>
-        // --- CELEBRATION ANIMATION (CONFETTI) ---
+        // --- CELEBRATION ANIMATION (CONFETTI - FULL SCREEN & SHORTER) ---
         window.addEventListener('load', function() {
-            var duration = 2500; // 2.5 seconds
+            var duration = 1500; // Shorter duration: 1.5 seconds
             var end = Date.now() + duration;
 
             (function frame() {
-                // Left side confetti
+                // Centered bursts to cover the whole screen, including overlapping the card
                 confetti({
-                    particleCount: 5,
+                    particleCount: 15,
                     angle: 60,
-                    spread: 55,
-                    origin: { x: 0 },
+                    spread: 80,
+                    origin: { x: 0.1, y: 0.1 }, // Top left
                     colors: ['#00ff00', '#00d2ff', '#ff00ff', '#ffff00']
                 });
-                // Right side confetti
                 confetti({
-                    particleCount: 5,
+                    particleCount: 15,
                     angle: 120,
-                    spread: 55,
-                    origin: { x: 1 },
+                    spread: 80,
+                    origin: { x: 0.9, y: 0.1 }, // Top right
+                    colors: ['#00ff00', '#00d2ff', '#ff00ff', '#ffff00']
+                });
+                 confetti({
+                    particleCount: 20,
+                    spread: 100,
+                    origin: { x: 0.5, y: 0.3 }, // Center top, dropping over card
                     colors: ['#00ff00', '#00d2ff', '#ff00ff', '#ffff00']
                 });
 
