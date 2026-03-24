@@ -13,12 +13,12 @@
 
         /* TEXT SELECTION & DRAG BLOCKED */
         body {
-            background: #0a0a1a; 
+            background: #0a0a1a; /* Dark solid base for better contrast */
             background-attachment: fixed; color: white; min-height: 100vh; overflow-x: hidden;
             -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
         }
 
-        /* --- NEW ANIMATED BACKGROUND STYLES (UPDATED FOR SMOOTH BLEND & LOWER OPACITY) --- */
+        /* --- UPDATED ANIMATED BACKGROUND STYLES (Orange & White Slow Blend) --- */
         .bg-animation {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -27,30 +27,29 @@
         .orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(130px); /* Increased blur for buttery smooth edges */
-            opacity: 0.35; /* Lowered opacity to focus on content */
-            mix-blend-mode: screen; /* Smooth color blending when they overlap */
+            filter: blur(150px); /* Increased blur for ultra-smooth buttery blending */
+            opacity: 0.6;
             animation: float 20s infinite ease-in-out alternate;
         }
+        
+        /* Updated Orb 1: Orange (e.g., Warm Orange) */
         .orb-1 {
-            width: 550px; height: 550px; background: #ff00cc;
-            top: -10%; left: -10%; animation-duration: 28s;
+            width: 500px; height: 500px; background: #ff8800;
+            top: -10%; left: -10%; animation-duration: 35s; /* Very Slow Motion */
         }
+        
+        /* Updated Orb 2: White (Butter Smooth Blend) */
         .orb-2 {
-            width: 650px; height: 650px; background: #333399;
-            bottom: -20%; right: -10%; animation-duration: 25s; animation-delay: -5s;
-        }
-        .orb-3 {
-            width: 500px; height: 500px; background: #00d2ff;
-            top: 20%; left: 30%; animation-duration: 32s; animation-delay: -10s;
+            width: 600px; height: 600px; background: #ffffff;
+            bottom: -20%; right: -10%; animation-duration: 30s; /* Very Slow Motion */ animation-delay: -5s;
         }
 
-        /* Updated keyframes so they move across each other and blend */
+        /* Updated float animation for wider, smoother travel */
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(25vw, 15vh) scale(1.2); }
-            66% { transform: translate(-15vw, -20vh) scale(0.9); }
-            100% { transform: translate(10vw, 25vh) scale(1.1); }
+            33% { transform: translate(15vw, 10vh) scale(1.1); }
+            66% { transform: translate(-10vw, -15vh) scale(0.9); }
+            100% { transform: translate(10vw, 20vh) scale(1.05); }
         }
         /* -------------------------------------- */
 
@@ -244,8 +243,7 @@
     <div class="bg-animation">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
+        </div>
     <div class="top-wrapper">
         <div class="top-banner">
             All software at <span class="discount">99%</span> off the official price + <span class="lifetime">Lifetime</span> <span class="premium">Premium Access</span>
