@@ -13,54 +13,44 @@
 
         /* TEXT SELECTION & DRAG BLOCKED */
         body {
-            /* Smooth Tech Nebula Base */
-            background-color: #05050a; 
-            color: white; min-height: 100vh; overflow-x: hidden;
+            background: #0a0a1a; /* Changed to solid dark base to highlight animations */
+            background-attachment: fixed; color: white; min-height: 100vh; overflow-x: hidden;
             -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
-            position: relative;
         }
 
-        /* --- NEW BUTTER SMOOTH ABSTRACT MESH BACKGROUND --- */
-        .main-bg-animation {
+        /* --- NEW ANIMATED BACKGROUND STYLES --- */
+        .bg-animation {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -10; /* Deep background layer */
-            overflow: hidden;
-            opacity: 0.3; /* Subtle so cards pop */
+            z-index: -1; overflow: hidden;
         }
-
-        .main-bg-animation::before,
-        .main-bg-animation::after {
-            content: '';
+        .orb {
             position: absolute;
-            top: -50vh; left: -50vw;
-            width: 200vw; height: 200vh;
-            background-size: 50% 50%;
-            background-repeat: no-repeat;
-            backface-visibility: hidden; /* Prevents flicker */
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.6;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+        .orb-1 {
+            width: 450px; height: 450px; background: #ff00cc;
+            top: -10%; left: -10%; animation-duration: 25s;
+        }
+        .orb-2 {
+            width: 550px; height: 550px; background: #333399;
+            bottom: -20%; right: -10%; animation-duration: 22s; animation-delay: -5s;
+        }
+        .orb-3 {
+            width: 400px; height: 400px; background: #00d2ff;
+            top: 40%; left: 50%; animation-duration: 28s; animation-delay: -10s;
         }
 
-        /* Swirling Radial Gradients for smooth blending */
-        .main-bg-animation::before {
-            background-image: 
-                radial-gradient(at 10% 10%, #00bbcc 0px, transparent 50%),
-                radial-gradient(at 90% 90%, #9900ee 0px, transparent 50%);
-            animation: swirl 25s ease-in-out infinite;
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(40px, -60px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.9); }
+            100% { transform: translate(50px, 50px) scale(1.05); }
         }
-
-        .main-bg-animation::after {
-            background-image: 
-                radial-gradient(at 90% 10%, #331144 0px, transparent 50%),
-                radial-gradient(at 10% 90%, #112244 0px, transparent 50%);
-            animation: swirl 30s ease-in-out infinite alternate-reverse;
-        }
-
-        @keyframes swirl {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.1); }
-            100% { transform: rotate(360deg) scale(1); }
-        }
-        /* -------------------------------------------------- */
+        /* -------------------------------------- */
 
         input { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
         a, img, .btn { -webkit-user-drag: none; -khtml-user-drag: none; -moz-user-drag: none; -o-user-drag: none; }
@@ -249,7 +239,11 @@
 </head>
 <body>
 
-    <div class="main-bg-animation"></div>
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
     <div class="top-wrapper">
         <div class="top-banner">
             All software at <span class="discount">99%</span> off the official price + <span class="lifetime">Lifetime</span> <span class="premium">Premium Access</span>
@@ -688,7 +682,7 @@
             if(!selectedOption) return;
 
             const dlLink = selectedOption.getAttribute('data-download') || '#';
-            const payLink = selectedOption.getAttribute('data-pay) || '#';
+            const payLink = selectedOption.getAttribute('data-pay') || '#';
             const vidLink = selectedOption.getAttribute('data-video') || '#';
 
             const downloadBtn = card.querySelector('.btn-download');
