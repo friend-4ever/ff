@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
         /* --- GLOBAL STYLES & GLASSMORPHISM --- */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-user-drag: none; }
@@ -31,6 +33,7 @@
             padding: 40px; display: flex; flex-direction: column; align-items: center; 
             text-align: center; width: 90%; max-width: 400px; position: relative;
             animation: searchPop 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+            z-index: 10;
         }
 
         @keyframes searchPop {
@@ -91,11 +94,9 @@
         <div class="software-title">Adobe Premiere Pro <span class="year-text">2026</span></div>
         
         <div class="password-box">
-            <span class="password-label">Extraction Password</span>
+            <span class="password-label">Password</span>
             <span class="selectable-password">60083</span>
         </div>
-        
-        <p style="font-size: 13px; color: #999; margin-top: 15px;">Long press or double click on the password to select and copy.</p>
     </div>
 
     <div class="floating-social">
@@ -104,6 +105,35 @@
     </div>
 
     <script>
+        // --- CELEBRATION ANIMATION (CONFETTI) ---
+        window.addEventListener('load', function() {
+            var duration = 2500; // 2.5 seconds
+            var end = Date.now() + duration;
+
+            (function frame() {
+                // Left side confetti
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#00ff00', '#00d2ff', '#ff00ff', '#ffff00']
+                });
+                // Right side confetti
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#00ff00', '#00d2ff', '#ff00ff', '#ffff00']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        });
+
         // --- ANTI-INSPECT & ANTI-DRAG SYSTEM ---
         document.addEventListener('contextmenu', event => event.preventDefault());
         document.addEventListener('dragstart', event => event.preventDefault()); 
