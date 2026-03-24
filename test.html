@@ -13,12 +13,12 @@
 
         /* TEXT SELECTION & DRAG BLOCKED */
         body {
-            background: #0a0a1a; /* Changed to solid dark base to highlight animations */
+            background: #0a0a1a; 
             background-attachment: fixed; color: white; min-height: 100vh; overflow-x: hidden;
             -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
         }
 
-        /* --- NEW ANIMATED BACKGROUND STYLES --- */
+        /* --- NEW ANIMATED BACKGROUND STYLES (UPDATED FOR SMOOTH BLEND & LOWER OPACITY) --- */
         .bg-animation {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -27,28 +27,30 @@
         .orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(90px);
-            opacity: 0.6;
+            filter: blur(130px); /* Increased blur for buttery smooth edges */
+            opacity: 0.35; /* Lowered opacity to focus on content */
+            mix-blend-mode: screen; /* Smooth color blending when they overlap */
             animation: float 20s infinite ease-in-out alternate;
         }
         .orb-1 {
-            width: 450px; height: 450px; background: #ff00cc;
-            top: -10%; left: -10%; animation-duration: 25s;
+            width: 550px; height: 550px; background: #ff00cc;
+            top: -10%; left: -10%; animation-duration: 28s;
         }
         .orb-2 {
-            width: 550px; height: 550px; background: #333399;
-            bottom: -20%; right: -10%; animation-duration: 22s; animation-delay: -5s;
+            width: 650px; height: 650px; background: #333399;
+            bottom: -20%; right: -10%; animation-duration: 25s; animation-delay: -5s;
         }
         .orb-3 {
-            width: 400px; height: 400px; background: #00d2ff;
-            top: 40%; left: 50%; animation-duration: 28s; animation-delay: -10s;
+            width: 500px; height: 500px; background: #00d2ff;
+            top: 20%; left: 30%; animation-duration: 32s; animation-delay: -10s;
         }
 
+        /* Updated keyframes so they move across each other and blend */
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(40px, -60px) scale(1.1); }
-            66% { transform: translate(-30px, 30px) scale(0.9); }
-            100% { transform: translate(50px, 50px) scale(1.05); }
+            33% { transform: translate(25vw, 15vh) scale(1.2); }
+            66% { transform: translate(-15vw, -20vh) scale(0.9); }
+            100% { transform: translate(10vw, 25vh) scale(1.1); }
         }
         /* -------------------------------------- */
 
