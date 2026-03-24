@@ -13,7 +13,7 @@
 
         /* TEXT SELECTION & DRAG BLOCKED */
         body {
-            background: #0a0a1a; 
+            background: #0a0a1a; /* Changed to solid dark base to highlight animations */
             background-attachment: fixed; color: white; min-height: 100vh; overflow-x: hidden;
             -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
         }
@@ -22,40 +22,33 @@
         .bg-animation {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -2; overflow: hidden;
+            z-index: -1; overflow: hidden;
         }
         .orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(200px); /* Increased blur for aggressive blending/mixing */
-            animation: float 30s infinite ease-in-out alternate;
+            filter: blur(90px);
+            opacity: 0.6;
+            animation: float 20s infinite ease-in-out alternate;
         }
         .orb-1 {
-            width: 700px; height: 700px; background: #ff00cc; 
-            top: -10%; left: -20%; animation-duration: 35s;
-            opacity: 0.3; /* Kept left opacity visible */
+            width: 450px; height: 450px; background: #ff00cc;
+            top: -10%; left: -10%; animation-duration: 25s;
         }
         .orb-2 {
-            width: 800px; height: 800px; background: #ffffff; 
-            bottom: -20%; right: -20%; animation-duration: 28s; animation-delay: -5s;
-            opacity: 0.1; /* Super low opacity for the right white color */
+            width: 550px; height: 550px; background: #333399;
+            bottom: -20%; right: -10%; animation-duration: 22s; animation-delay: -5s;
+        }
+        .orb-3 {
+            width: 400px; height: 400px; background: #00d2ff;
+            top: 40%; left: 50%; animation-duration: 28s; animation-delay: -10s;
         }
 
-        /* Making them cross paths more to blend in the middle */
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(30vw, -15vh) scale(1.3); }
-            100% { transform: translate(-10vw, 25vh) scale(1.1); }
-        }
-
-        /* --- RAIN CANVAS LAYER --- */
-        #rainCanvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            z-index: 999; /* Over everything except modals */
-            pointer-events: none; /* IMPORTANT: So it doesn't block clicks */
-            opacity: 0.6; /* Adjust visibility of rain */
+            33% { transform: translate(40px, -60px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.9); }
+            100% { transform: translate(50px, 50px) scale(1.05); }
         }
         /* -------------------------------------- */
 
@@ -249,8 +242,8 @@
     <div class="bg-animation">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
     </div>
-    
     <div class="top-wrapper">
         <div class="top-banner">
             All software at <span class="discount">99%</span> off the official price + <span class="lifetime">Lifetime</span> <span class="premium">Premium Access</span>
@@ -790,69 +783,6 @@
                 }
             });
             if(!matchFound) searchError.style.display = 'block'; else searchError.style.display = 'none';
-        });
-
-        // --- REALISTIC RAIN EFFECT SCRIPT ---
-        const canvas = document.getElementById('rainCanvas');
-        const ctx = canvas.getContext('2d');
-        
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        
-        const drops = [];
-        const maxDrops = 150; // Baarish ki intensity control karne ke liye
-
-        for(let i = 0; i < maxDrops; i++) {
-            drops.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                len: Math.random() * 20 + 10,
-                speed: Math.random() * 5 + 10,
-                opacity: Math.random() * 0.3 + 0.1
-            });
-        }
-
-        function drawRain() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.lineCap = 'round';
-            for(let i = 0; i < maxDrops; i++) {
-                const drop = drops[i];
-                
-                // Gradient for realistic water drop look
-                let grad = ctx.createLinearGradient(drop.x, drop.y, drop.x, drop.y + drop.len);
-                grad.addColorStop(0, `rgba(255, 255, 255, 0)`);
-                grad.addColorStop(1, `rgba(255, 255, 255, ${drop.opacity})`);
-                
-                ctx.beginPath();
-                ctx.moveTo(drop.x, drop.y);
-                ctx.lineTo(drop.x + 1, drop.y + drop.len); // slight wind effect
-                ctx.strokeStyle = grad;
-                ctx.lineWidth = 1.5;
-                ctx.stroke();
-                
-                // Drop movement
-                drop.y += drop.speed;
-                drop.x += 0.5; // wind push
-                
-                // Reset drop to top if it goes off screen
-                if(drop.y > canvas.height) {
-                    drop.y = -drop.len;
-                    drop.x = Math.random() * canvas.width;
-                }
-                if(drop.x > canvas.width) {
-                    drop.x = 0;
-                }
-            }
-            requestAnimationFrame(drawRain);
-        }
-        
-        drawRain();
-
-        // Adjust canvas on resize
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
         });
 
         // --- ANTI-INSPECT & ANTI-DRAG SYSTEM ---
