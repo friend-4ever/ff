@@ -13,103 +13,54 @@
 
         /* TEXT SELECTION & DRAG BLOCKED */
         body {
-            background: #0d1117; /* Editor Dark Theme Background */
-            background-attachment: fixed; color: white; min-height: 100vh; overflow-x: hidden;
+            /* Smooth Tech Nebula Base */
+            background-color: #05050a; 
+            color: white; min-height: 100vh; overflow-x: hidden;
             -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+            position: relative;
         }
 
-        /* --- NEW VIDEO EDITING TIMELINE BACKGROUND --- */
-        .editor-timeline-bg {
+        /* --- NEW BUTTER SMOOTH ABSTRACT MESH BACKGROUND --- */
+        .main-bg-animation {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1;
-            opacity: 0.25; /* Subtle opacity to keep focus on software */
+            z-index: -10; /* Deep background layer */
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 5px;
-            pointer-events: none;
+            opacity: 0.3; /* Subtle so cards pop */
         }
 
-        /* Playhead (Red Line) */
-        .playhead {
+        .main-bg-animation::before,
+        .main-bg-animation::after {
+            content: '';
             position: absolute;
-            top: 0; left: 30%;
-            width: 2px;
-            height: 100%;
-            background: #ff3333;
-            z-index: 10;
-            box-shadow: 0 0 10px rgba(255, 51, 51, 0.8);
-        }
-        .playhead::before {
-            content: ''; position: absolute; top: 0; left: -6px;
-            border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 12px solid #ff3333;
+            top: -50vh; left: -50vw;
+            width: 200vw; height: 200vh;
+            background-size: 50% 50%;
+            background-repeat: no-repeat;
+            backface-visibility: hidden; /* Prevents flicker */
         }
 
-        /* Time Ruler */
-        .time-ruler {
-            position: absolute; top: 0; left: 0; width: 100%; height: 30px;
-            background-image: repeating-linear-gradient(90deg, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0.3) 1px, transparent 1px, transparent 50px);
-            z-index: 1;
+        /* Swirling Radial Gradients for smooth blending */
+        .main-bg-animation::before {
+            background-image: 
+                radial-gradient(at 10% 10%, #00bbcc 0px, transparent 50%),
+                radial-gradient(at 90% 90%, #9900ee 0px, transparent 50%);
+            animation: swirl 25s ease-in-out infinite;
         }
 
-        /* Tracks container animating to the left */
-        .track-container {
-            width: 200vw; /* Double width for infinite scroll effect */
-            animation: playTimeline linear infinite;
+        .main-bg-animation::after {
+            background-image: 
+                radial-gradient(at 90% 10%, #331144 0px, transparent 50%),
+                radial-gradient(at 10% 90%, #112244 0px, transparent 50%);
+            animation: swirl 30s ease-in-out infinite alternate-reverse;
         }
 
-        @keyframes playTimeline {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+        @keyframes swirl {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
         }
-
-        .track {
-            height: 60px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-            background: rgba(0, 0, 0, 0.2);
-            margin-bottom: 5px;
-        }
-        .track.audio { height: 50px; }
-
-        /* Clips (Video & Audio Blocks) */
-        .clip {
-            position: absolute; height: 80%; top: 10%; border-radius: 4px;
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2), inset 0px 5px 10px rgba(0,0,0,0.3);
-            display: flex; align-items: center; padding-left: 10px;
-            font-size: 10px; color: rgba(255,255,255,0.5); font-weight: 600;
-        }
-        
-        /* Video Track Colors (Blue/Purple like Premiere/Resolve) */
-        .v-clip1 { width: 300px; left: 5%; background: #2f80ed; }
-        .v-clip2 { width: 450px; left: 30%; background: #9b51e0; }
-        .v-clip3 { width: 250px; left: 65%; background: #2f80ed; }
-        .v-clip4 { width: 400px; left: 85%; background: #f2994a; }
-
-        .v-clip5 { width: 200px; left: 15%; background: #f2994a; }
-        .v-clip6 { width: 500px; left: 40%; background: #2f80ed; }
-        
-        /* Audio Track Colors (Green/Teal) */
-        .a-clip1 { width: 300px; left: 5%; background: #219653; }
-        .a-clip2 { width: 450px; left: 30%; background: #219653; }
-        .a-clip3 { width: 250px; left: 65%; background: #219653; }
-        .a-clip4 { width: 400px; left: 85%; background: #219653; }
-
-        /* Fake Audio Waveforms */
-        .audio-wave {
-            position: absolute; left: 0; top: 0; width: 100%; height: 100%;
-            background-image: repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.2) 3px, rgba(0,0,0,0.2) 6px);
-            border-radius: 4px; pointer-events: none;
-        }
-
-        /* Different scroll speeds for a parallax editing feel */
-        .speed-1 { animation-duration: 30s; }
-        .speed-2 { animation-duration: 40s; }
-        .speed-3 { animation-duration: 35s; }
-        /* ------------------------------------------------- */
+        /* -------------------------------------------------- */
 
         input { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
         a, img, .btn { -webkit-user-drag: none; -khtml-user-drag: none; -moz-user-drag: none; -o-user-drag: none; }
@@ -298,42 +249,7 @@
 </head>
 <body>
 
-    <div class="editor-timeline-bg">
-        <div class="time-ruler"></div>
-        <div class="playhead"></div>
-        
-        <div class="track-container speed-1">
-            <div class="track">
-                <div class="clip v-clip1">V2</div>
-                <div class="clip v-clip2">V2</div>
-                <div class="clip v-clip3">V2</div>
-                <div class="clip v-clip4">V2</div>
-            </div>
-        </div>
-        
-        <div class="track-container speed-2">
-            <div class="track">
-                <div class="clip v-clip5">V1</div>
-                <div class="clip v-clip6">V1</div>
-            </div>
-        </div>
-
-        <div class="track-container speed-1">
-            <div class="track audio">
-                <div class="clip a-clip1"><div class="audio-wave"></div>A1</div>
-                <div class="clip a-clip2"><div class="audio-wave"></div>A1</div>
-                <div class="clip a-clip3"><div class="audio-wave"></div>A1</div>
-                <div class="clip a-clip4"><div class="audio-wave"></div>A1</div>
-            </div>
-        </div>
-        
-        <div class="track-container speed-3">
-            <div class="track audio">
-                <div class="clip a-clip5" style="width: 600px; left: 20%; background: #219653;"><div class="audio-wave"></div>A2</div>
-                <div class="clip a-clip6" style="width: 300px; left: 80%; background: #219653;"><div class="audio-wave"></div>A2</div>
-            </div>
-        </div>
-    </div>
+    <div class="main-bg-animation"></div>
     <div class="top-wrapper">
         <div class="top-banner">
             All software at <span class="discount">99%</span> off the official price + <span class="lifetime">Lifetime</span> <span class="premium">Premium Access</span>
@@ -772,7 +688,7 @@
             if(!selectedOption) return;
 
             const dlLink = selectedOption.getAttribute('data-download') || '#';
-            const payLink = selectedOption.getAttribute('data-pay') || '#';
+            const payLink = selectedOption.getAttribute('data-pay) || '#';
             const vidLink = selectedOption.getAttribute('data-video') || '#';
 
             const downloadBtn = card.querySelector('.btn-download');
