@@ -13,12 +13,12 @@
 
         /* TEXT SELECTION & DRAG BLOCKED */
         body {
-            background: #0a0a1a; /* Dark solid base for better contrast */
+            background: #0a0a1a; /* Changed to solid dark base to highlight animations */
             background-attachment: fixed; color: white; min-height: 100vh; overflow-x: hidden;
             -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
         }
 
-        /* --- UPDATED ANIMATED BACKGROUND STYLES (Orange & White Slow Blend) --- */
+        /* --- NEW ANIMATED BACKGROUND STYLES --- */
         .bg-animation {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -27,29 +27,28 @@
         .orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(150px); /* Increased blur for ultra-smooth buttery blending */
+            filter: blur(90px);
             opacity: 0.6;
             animation: float 20s infinite ease-in-out alternate;
         }
-        
-        /* Updated Orb 1: Orange (e.g., Warm Orange) */
         .orb-1 {
-            width: 500px; height: 500px; background: #ff8800;
-            top: -10%; left: -10%; animation-duration: 35s; /* Very Slow Motion */
+            width: 450px; height: 450px; background: #ff00cc;
+            top: -10%; left: -10%; animation-duration: 25s;
         }
-        
-        /* Updated Orb 2: White (Butter Smooth Blend) */
         .orb-2 {
-            width: 600px; height: 600px; background: #ffffff;
-            bottom: -20%; right: -10%; animation-duration: 30s; /* Very Slow Motion */ animation-delay: -5s;
+            width: 550px; height: 550px; background: #333399;
+            bottom: -20%; right: -10%; animation-duration: 22s; animation-delay: -5s;
+        }
+        .orb-3 {
+            width: 400px; height: 400px; background: #00d2ff;
+            top: 40%; left: 50%; animation-duration: 28s; animation-delay: -10s;
         }
 
-        /* Updated float animation for wider, smoother travel */
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(15vw, 10vh) scale(1.1); }
-            66% { transform: translate(-10vw, -15vh) scale(0.9); }
-            100% { transform: translate(10vw, 20vh) scale(1.05); }
+            33% { transform: translate(40px, -60px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.9); }
+            100% { transform: translate(50px, 50px) scale(1.05); }
         }
         /* -------------------------------------- */
 
@@ -243,7 +242,8 @@
     <div class="bg-animation">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
-        </div>
+        <div class="orb orb-3"></div>
+    </div>
     <div class="top-wrapper">
         <div class="top-banner">
             All software at <span class="discount">99%</span> off the official price + <span class="lifetime">Lifetime</span> <span class="premium">Premium Access</span>
