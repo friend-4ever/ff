@@ -19,7 +19,7 @@
             background-attachment: fixed; color: white; min-height: 100vh; overflow-x: hidden;
             -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
             display: flex; justify-content: center; align-items: center; flex-direction: column;
-            position: relative; /* Confetti needs a stack context */
+            position: relative; 
         }
 
         a, img { -webkit-user-drag: none; -khtml-user-drag: none; -moz-user-drag: none; -o-user-drag: none; }
@@ -54,7 +54,7 @@
             100% { filter: drop-shadow(0 0 10px #00d2ff) drop-shadow(0 0 20px #ff00ff); }
         }
 
-        .software-title { font-size: 24px; font-weight: 600; margin-bottom: 5px; color: #00d2ff; }
+        .software-title { font-size: 24px; font-weight: 600; margin-bottom: 5px; color: #fff; }
         .year-text { color: #00d2ff; }
 
         /* --- PASSWORD BOX (SELECTABLE) --- */
@@ -133,38 +133,24 @@
     </div>
 
     <script>
-        // --- CELEBRATION ANIMATION (CONFETTI - FULL SCREEN & SHORTER) ---
+        // --- CELEBRATION ANIMATION (BOTTOM TO TOP BURST) ---
         window.addEventListener('load', function() {
-            var duration = 1500; // Shorter duration: 1.5 seconds
-            var end = Date.now() + duration;
+            // Setup for the burst
+            const defaults = { 
+                startVelocity: 65, // Speed to shoot upwards
+                spread: 90,        // How wide it spreads
+                ticks: 200,        // How long particles last before disappearing (creates the 1-2 sec fall)
+                zIndex: 100,
+                colors: ['#00ff00', '#00d2ff', '#ff00ff', '#ffff00']
+            };
 
-            (function frame() {
-                // Centered bursts to cover the whole screen, including overlapping the card
-                confetti({
-                    particleCount: 15,
-                    angle: 60,
-                    spread: 80,
-                    origin: { x: 0.1, y: 0.1 }, // Top left
-                    colors: ['#00ff00', '#00d2ff', '#ff00ff', '#ffff00']
-                });
-                confetti({
-                    particleCount: 15,
-                    angle: 120,
-                    spread: 80,
-                    origin: { x: 0.9, y: 0.1 }, // Top right
-                    colors: ['#00ff00', '#00d2ff', '#ff00ff', '#ffff00']
-                });
-                 confetti({
-                    particleCount: 20,
-                    spread: 100,
-                    origin: { x: 0.5, y: 0.3 }, // Center top, dropping over card
-                    colors: ['#00ff00', '#00d2ff', '#ff00ff', '#ffff00']
-                });
-
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
-                }
-            }());
+            // Fire 3 quick bursts from the bottom instantly
+            // 1. Bottom Left
+            confetti(Object.assign({}, defaults, { particleCount: 60, angle: 60, origin: { x: 0, y: 1 } }));
+            // 2. Bottom Right
+            confetti(Object.assign({}, defaults, { particleCount: 60, angle: 120, origin: { x: 1, y: 1 } }));
+            // 3. Bottom Center (Shoots straight up and falls over the card)
+            confetti(Object.assign({}, defaults, { particleCount: 100, angle: 90, startVelocity: 85, spread: 120, origin: { x: 0.5, y: 1 } }));
         });
 
         // --- ANTI-INSPECT & ANTI-DRAG SYSTEM ---
