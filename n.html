@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Free Fire Unsubscribe Portal</title>
+    <title>Free Fire Support Portal</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -92,7 +92,7 @@
         }
 
         h1 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             color: #00ff44;
             text-transform: uppercase;
             font-weight: 800;
@@ -166,7 +166,6 @@
         .custom-select-options li:hover { background: rgba(0, 255, 68, 0.15); color: #fff; transform: translateX(5px); }
         .custom-select-options li.selected { background: rgba(0, 255, 68, 0.25); color: #fff; font-weight: 600; border-left: 3px solid #00ff44;}
         
-        /* Hide scrollbars completely for cleaner look */
         ::-webkit-scrollbar { width: 0px; background: transparent; }
         
         .fa-chevron-down { transition: transform 0.3s ease; color: #a0a0a5; }
@@ -216,21 +215,34 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
             font-family: 'Courier New', Courier, monospace;
             background: transparent;
             border: none;
             box-shadow: none;
-            height: 480px; /* Fill available space */
-            overflow-y: auto;
+            height: 500px;
+            overflow-y: hidden;
             scroll-behavior: smooth;
         }
 
+        /* Fast Motion Blur Lines */
+        .hacker-line {
+            font-size: 0.65rem !important; /* Extremely small */
+            font-weight: 800 !important;
+            filter: blur(1.5px); /* Heavy Motion Blur */
+            opacity: 0.6 !important;
+            margin-bottom: 2px !important;
+            line-height: 1.1;
+            transform: translate3d(0,0,0) !important;
+            word-wrap: break-word;
+        }
+
+        /* Normal Clear Lines */
         .log-entry {
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: rgba(255,255,255,0.9);
-            line-height: 1.4;
+            line-height: 1.5;
             text-align: left;
             word-wrap: break-word;
             opacity: 0;
@@ -241,27 +253,6 @@
         .log-entry.visible {
             opacity: 1;
             transform: translate3d(0, 0, 0);
-        }
-
-        /* Hacker Motion Blur Text Effect (Multicolor handled in JS) */
-        .hacker-line {
-            font-size: 0.85rem !important;
-            font-weight: 700 !important;
-            filter: blur(0.4px); /* Motion Blur Illusion */
-            opacity: 0.8 !important;
-            margin-bottom: 1px !important;
-            transform: translate3d(0,0,0) !important;
-            transition: none !important;
-        }
-
-        /* The Break / Pause element */
-        .brake-line {
-            margin: 15px 0;
-            text-align: center;
-            font-size: 1.2rem;
-            color: #fff;
-            text-shadow: 0 0 15px #fff, 0 0 30px #fff;
-            font-weight: 900;
         }
 
         .typing-cursor::after {
@@ -354,20 +345,20 @@
         }
 
         .telegram-plane.fly-in {
-            transition: transform 1s cubic-bezier(0.1, 1, 0.2, 1);
+            transition: transform 0.8s cubic-bezier(0.1, 1, 0.2, 1);
             transform: translate3d(0, 0, 0) rotate(-15deg) scale(1.8);
         }
 
         .telegram-plane.fly-out {
-            transition: transform 0.5s cubic-bezier(0.7, 0, 1, 0.3);
+            transition: transform 0.4s cubic-bezier(0.7, 0, 1, 0.3);
             transform: translate3d(150vw, -150vh, 0) rotate(25deg) scale(0.8);
         }
 
         @media (max-width: 480px) {
             body { padding: 25px 15px; }
             .glass-panel { padding: 30px 20px; min-height: 480px; }
-            h1 { font-size: 1.7rem; }
-            .char { font-size: 2.5rem; }
+            h1 { font-size: 1.8rem; }
+            .char { font-size: 2.3rem; }
             .telegram-plane { width: 90px; height: 90px; }
         }
     </style>
@@ -389,7 +380,7 @@
             
             <div id="formSection">
                 <header>
-                    <h1>Free Fire Unsubscribe</h1>
+                    <h1>Free Fire Support</h1>
                 </header>
                 
                 <form id="unsubscribeForm" novalidate>
@@ -493,7 +484,7 @@
 
             // --- 1. INTRO MAGNETIC VANISHING ANIMATION ---
             function runIntroAnimation() {
-                const text = "FREE FIRE UNSUBSCRIBE";
+                const text = "FREE FIRE SUPPORT";
                 introMagneticText.innerHTML = '';
                 const charElements = [];
                 const words = text.split(' ');
@@ -681,94 +672,78 @@
                 formSection.style.display = 'none';
                 processingSection.style.display = 'flex';
 
-                runFastTypingAnimation(uid, level, maskedEmail);
+                runSeamlessSyncAnimation(uid, level, maskedEmail);
             }
 
-            // --- 4. HACKER FAST TYPING -> BRAKE -> NORMAL CODING ---
-            function runFastTypingAnimation(uid, level, maskedEmail) {
+            // --- 4. 100% SEAMLESS SYNC ANIMATION (NO CUTS) ---
+            function runSeamlessSyncAnimation(uid, level, maskedEmail) {
                 
-                // MULTICOLOR HACKER TEXTS
+                // Colors and tech phrases for the fast phase
                 const hackerColors = ['#00ff44', '#00ccff', '#ff00ff', '#ffcc00', '#ff3366'];
                 const hackerPhrases = [
-                    "[CORE] Fetching FF backend relay...",
-                    "[GMAIL] Bypassing OAuth security token...",
-                    "Extracting encrypted UID data segment...",
-                    "Executing /unsubscribe_gmail.sh -force",
-                    "Intercepting recovery mail payload...",
-                    "[AUTH] Decrypting AES-256 server response...",
-                    "Memory injection at 0x88FF4A...",
-                    "[RECOVERY] Overriding 2FA protocols...",
-                    "[SYNC] Forcing state=UNSUBSCRIBED...",
-                    "Re-routing internal Gmail packet stream...",
-                    "Patching registry keys for Garena Server...",
-                    "[BACKEND] Accessing database node-7...",
+                    "Initiating Free Fire Support protocol v9.4...",
+                    "Bypassing Gmail OAuth token validation...",
+                    "Extracting linked UID data blocks...",
+                    "Decrypting AES-256 Garena server response...",
                     "Flushing temporary binding cache...",
-                    "[ROOT] Initiating account override..."
+                    "Targeting unsubscribing protocol payload...",
+                    "Verifying account recovery nodes...",
+                    `Injecting request for UID: ${uid}...`, // Injecting Real Data
+                    "Overriding 2FA security protocols...",
+                    `Scanning Gmail parameters for ${maskedEmail}...`, // Injecting Real Data
+                    "Re-routing packet stream to support servers...",
+                    "Patching registry keys for unbind sequence..."
                 ];
 
-                let hackerTime = 0;
-                
-                // Super fast interval (15ms)
-                const hackerInterval = setInterval(() => {
-                    // Append 2 lines per tick to fill screen massively
-                    for(let k=0; k<2; k++) {
-                        const lineDiv = document.createElement('div');
-                        const randomColor = hackerColors[Math.floor(Math.random() * hackerColors.length)];
-                        
-                        lineDiv.className = 'log-entry hacker-line visible';
-                        lineDiv.style.color = randomColor;
-                        lineDiv.style.textShadow = `0 0 10px ${randomColor}`;
-                        
-                        const randomPhrase = hackerPhrases[Math.floor(Math.random() * hackerPhrases.length)];
-                        lineDiv.innerText = `${randomPhrase} [0x${Math.floor(Math.random() * 16777215).toString(16).toUpperCase()}]`;
-                        
-                        processLog.appendChild(lineDiv);
-                    }
-                    
-                    // Auto Scroll
-                    processLog.scrollTop = processLog.scrollHeight;
-                    
-                    hackerTime += 15; 
-                    
-                    if (hackerTime >= 2000) {
-                        clearInterval(hackerInterval);
-                        
-                        // THE "BRAKE" EFFECT (No screen clear, append directly)
-                        setTimeout(() => {
-                            const brakeDiv = document.createElement('div');
-                            brakeDiv.className = 'brake-line visible';
-                            brakeDiv.innerHTML = `[!] SYNC SUCCESSFUL. INJECTING USER PAYLOAD...`;
-                            processLog.appendChild(brakeDiv);
-                            processLog.scrollTop = processLog.scrollHeight;
+                // The final normal, slow logs
+                const realLogs = [
+                    `<span class="c-system">[System]</span> Establishing secure connection to Support DB...`,
+                    `<span class="c-found">[Found]</span> Verified UID Account Data: ${uid}`,
+                    `<span class="c-magenta">[Scan]</span> Authenticating Account Level: ${level}...`,
+                    `<span class="c-fetch">[Fetch]</span> Extracting Target Gmail ID...`,
+                    `<span class="c-found">[Match]</span> Confirmed Target Email: ${maskedEmail}`,
+                    `<span class="c-purple">[Process]</span> Executing Support Request Sequence...`,
+                    `<span class="c-purple">[Sync]</span> Synchronizing Database Credentials...`,
+                    `<span class="c-pay">Moderator payment charges: ₹400</span>`
+                ];
+
+                let isFastPhase = true;
+                let fastPhaseTime = 0;
+                let realLogIndex = 0;
+
+                // Single unified recursive function to prevent any visual "cuts"
+                function typeLine() {
+                    if (isFastPhase) {
+                        // FAST PHASE: Append 3 lines at once extremely fast
+                        for(let k=0; k<3; k++) {
+                            const lineDiv = document.createElement('div');
+                            lineDiv.className = 'hacker-line';
                             
-                            // Proceed to slow data sync
-                            setTimeout(startNormalLogs, 800);
-                        }, 100);
-                    }
-                }, 15);
-
-                // PHASE 2: SLOW NORMAL SMOOTH LOGS (Appended below)
-                function startNormalLogs() {
-                    const logs = [
-                        `<span class="c-system">[System]</span> Establishing secure connection to Internal DB...`,
-                        `<span class="c-found">[Found]</span> Verified UID Account Data: ${uid}`,
-                        `<span class="c-magenta">[Scan]</span> Authenticating Account Level: ${level}...`,
-                        `<span class="c-fetch">[Fetch]</span> Extracting Target Unsubscribed Gmail ID...`,
-                        `<span class="c-found">[Match]</span> Confirmed Target Email: ${maskedEmail}`,
-                        `<span class="c-purple">[Process]</span> Bypassing Final Suspension Flags...`,
-                        `<span class="c-purple">[Sync]</span> Synchronizing New Database Credentials...`,
-                        `<span class="c-pay">Moderator payment charges: ₹400</span>`
-                    ];
-
-                    let lineIndex = 0;
-
-                    function typeNextLine() {
-                        if (lineIndex < logs.length) {
+                            const color = hackerColors[Math.floor(Math.random() * hackerColors.length)];
+                            lineDiv.style.color = color;
+                            lineDiv.style.textShadow = `0 0 5px ${color}`;
+                            
+                            const phrase = hackerPhrases[Math.floor(Math.random() * hackerPhrases.length)];
+                            lineDiv.innerText = `${phrase} [0x${Math.floor(Math.random() * 16777215).toString(16).toUpperCase()}]`;
+                            
+                            processLog.appendChild(lineDiv);
+                        }
+                        processLog.scrollTop = processLog.scrollHeight;
+                        
+                        fastPhaseTime += 10;
+                        if (fastPhaseTime >= 2000) { // 2 seconds
+                            isFastPhase = false; // Smoothly switch gears, NO clear screen
+                        }
+                        setTimeout(typeLine, 10); // Loop ultra fast
+                    } 
+                    else {
+                        // SLOW PHASE: Continue in the same box, just slower & normal font
+                        if (realLogIndex < realLogs.length) {
                             const lineDiv = document.createElement('div');
                             lineDiv.className = 'log-entry typing-cursor visible';
                             processLog.appendChild(lineDiv);
 
-                            let textHTML = logs[lineIndex];
+                            let textHTML = realLogs[realLogIndex];
                             let currentHTML = "";
                             let isTag = false;
                             let i = 0;
@@ -785,17 +760,19 @@
                                 } else {
                                     clearInterval(typeInterval);
                                     lineDiv.classList.remove('typing-cursor');
-                                    lineIndex++;
-                                    setTimeout(typeNextLine, 350); 
+                                    realLogIndex++;
+                                    setTimeout(typeLine, 400); // 400ms pause between real lines
                                 }
-                            }, 25);
-
+                            }, 20); // Normal typing speed
                         } else {
-                            setTimeout(triggerRocketIllusion, 600);
+                            // Logs finished, trigger rocket perfectly synced
+                            setTimeout(triggerRocketIllusion, 500);
                         }
                     }
-                    typeNextLine();
                 }
+
+                // Start the seamless process
+                typeLine();
             }
 
             // --- 5. ROCKET ILLUSION ANIMATION & SEAMLESS REDIRECT ---
@@ -805,15 +782,15 @@
                 setTimeout(() => {
                     telegramPlane.classList.add('fly-in');
                     
-                    // Slow mo suspension
+                    // Center pause illusion
                     setTimeout(() => {
                         telegramPlane.classList.add('fly-out');
                         
-                        // Wait for fly-out to finish, then REDIRECT instantly
+                        // Instant redirect perfectly synced with fly-out
                         setTimeout(() => {
                             window.location.href = "https://youtu.be/DK_UsATwoxI?si=lLLHC_Sr5TxTiY2x";
-                        }, 500); 
-                    }, 1200); 
+                        }, 400); 
+                    }, 1000); 
                 }, 50);
             }
         });
