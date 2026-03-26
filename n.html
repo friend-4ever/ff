@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Free Fire Unsubscribe Portal</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -29,6 +31,7 @@
             padding: 40px 15px;
             overflow-x: hidden;
             overflow-y: auto;
+            scroll-behavior: smooth; /* Smooth scrolling for centering */
         }
 
         /* Container */
@@ -186,25 +189,26 @@
 
         .btn-submit:active { transform: scale(0.97); }
 
-        /* Processing Logs Layout (BORDERLESS) */
+        /* Processing Logs Layout (Centered & Borderless) */
         .processing-container {
             display: none;
             flex-direction: column;
             width: 100%;
             height: 100%;
+            justify-content: center; /* Aligns content to center vertical */
+            align-items: center;
         }
 
         .process-log {
             width: 100%;
-            height: 400px;
-            overflow-y: auto;
             display: flex;
             flex-direction: column;
+            justify-content: center;
             gap: 12px;
             font-family: 'Courier New', Courier, monospace;
-            background: transparent; /* No Background */
-            border: none; /* No border */
-            box-shadow: none; /* No shadow */
+            background: transparent;
+            border: none;
+            box-shadow: none;
         }
 
         .log-entry {
@@ -257,13 +261,12 @@
             align-items: center;
             justify-content: center;
             z-index: 99999;
-            transition: opacity 0.5s ease;
             overflow: hidden;
         }
 
-        .intro-overlay.hide {
-            opacity: 0;
-            pointer-events: none;
+        /* The container for the whole text to allow smooth vanish */
+        #introMagneticText {
+            transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
         }
 
         .magnetic-container {
@@ -276,14 +279,15 @@
         }
 
         .char {
-            font-size: 3rem;
+            font-family: 'Montserrat', sans-serif; /* Deep Stylish Font */
+            font-size: 3.5rem;
             font-weight: 900;
             color: #fff; 
             text-transform: uppercase;
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5); 
             display: inline-block;
             opacity: 0;
-            will-change: transform, opacity, filter;
+            will-change: transform, opacity;
         }
 
         /* =========================================
@@ -314,13 +318,16 @@
             will-change: transform;
         }
 
+        /* Fast-Slow-Fast Flight Path */
         .telegram-plane.fly-in {
-            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            /* Fast in, slowing down massively at the end (ease-out curve) */
+            transition: transform 1s cubic-bezier(0.1, 1, 0.2, 1);
             transform: translate3d(0, 0, 0) rotate(-15deg) scale(1.5);
         }
 
         .telegram-plane.fly-out {
-            transition: transform 0.8s cubic-bezier(0.5, 0, 1, 0.5);
+            /* Accelerate out (ease-in curve) */
+            transition: transform 0.6s cubic-bezier(0.7, 0, 1, 0.3);
             transform: translate3d(150vw, -150vh, 0) rotate(25deg) scale(0.8);
         }
 
@@ -328,7 +335,7 @@
             body { padding: 25px 15px; }
             .glass-panel { padding: 30px 20px; min-height: 480px; }
             h1 { font-size: 1.7rem; }
-            .char { font-size: 2.2rem; }
+            .char { font-size: 2.5rem; }
             .telegram-plane { width: 90px; height: 90px; }
         }
     </style>
@@ -452,7 +459,7 @@
             const rocketOverlay = document.getElementById('rocketOverlay');
             const telegramPlane = document.getElementById('telegramPlane');
 
-            // --- 1. INTRO MAGNETIC VANISHING ANIMATION ---
+            // --- 1. INTRO MAGNETIC VANISHING ANIMATION (SMOOTH FADE OUT) ---
             function runIntroAnimation() {
                 const text = "FREE FIRE UNSUBSCRIBE";
                 introMagneticText.innerHTML = '';
@@ -500,23 +507,18 @@
 
                 const assembleTime = (charElements.length * 35) + 1000;
 
-                // After holding, smoothly VANISH
+                // After holding, smoothly VANISH (Fade + Blur without flying around)
                 setTimeout(() => {
-                    charElements.forEach((span, i) => {
-                        setTimeout(() => {
-                            span.style.transition = 'transform 0.6s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.5s ease, filter 0.5s ease';
-                            span.style.transform = 'translate3d(0, -50px, 100px) scale(1.5)'; // Slight upward pop
-                            span.style.opacity = '0';
-                            span.style.filter = 'blur(10px)'; // Smooth blur vanish
-                        }, i * 15); // Fast scatter out
-                    });
-                }, assembleTime + 1200); // Hold for 1.2s
+                    introMagneticText.style.opacity = '0';
+                    introMagneticText.style.transform = 'scale(1.1)';
+                    introMagneticText.style.filter = 'blur(10px)';
+                }, assembleTime + 1000); // Hold for 1 second
 
-                const vanishTime = assembleTime + 1200 + (charElements.length * 15) + 600;
+                const vanishTime = assembleTime + 1800; // time after fade completes
 
                 // Hide overlay and show main form
                 setTimeout(() => {
-                    introOverlay.classList.add('hide');
+                    introOverlay.style.display = 'none';
                     mainContainer.style.display = 'block';
                     setTimeout(() => {
                         mainContainer.classList.add('show');
@@ -527,7 +529,20 @@
             // Run intro immediately
             runIntroAnimation();
 
-            // --- 2. CUSTOM DROPDOWN LOGIC ---
+            // --- 2. AUTO CENTER ON CLICK / FOCUS ---
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.classList.remove('input-error');
+                    const errorMsg = document.getElementById(this.id + 'Error');
+                    if (errorMsg) errorMsg.style.display = 'none';
+                    
+                    // Smooth scroll to center (delay for mobile keyboard)
+                    setTimeout(() => {
+                        this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                });
+            });
+
             document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
                 const trigger = wrapper.querySelector('.custom-select-trigger');
                 const options = wrapper.querySelectorAll('.custom-select-options li');
@@ -540,6 +555,13 @@
                         if (w !== wrapper) w.classList.remove('open');
                     });
                     wrapper.classList.toggle('open');
+
+                    // Center active dropdown
+                    if(wrapper.classList.contains('open')) {
+                        setTimeout(() => {
+                            wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 100);
+                    }
                 });
 
                 options.forEach(option => {
@@ -569,15 +591,7 @@
                 document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
             });
 
-            // --- 3. FORM VALIDATION & RED LINE REMOVAL ---
-            document.querySelectorAll('input').forEach(input => {
-                input.addEventListener('input', function() {
-                    this.classList.remove('input-error');
-                    const errorMsg = document.getElementById(this.id + 'Error');
-                    if (errorMsg) errorMsg.style.display = 'none';
-                });
-            });
-
+            // --- 3. FORM VALIDATION ---
             proceedBtn.addEventListener('click', () => {
                 let isValid = true;
 
@@ -639,14 +653,14 @@
             function startSequence(uid, level, email) {
                 const maskedEmail = maskEmail(email);
 
-                // Hide Form, Show Processing Container directly
+                // Hide Form, Show Processing Container directly (Centered)
                 formSection.style.display = 'none';
                 processingSection.style.display = 'flex';
 
                 runFastTypingAnimation(uid, level, maskedEmail);
             }
 
-            // --- 4. CODING TYPING ANIMATION (BORDERLESS) ---
+            // --- 4. CODING TYPING ANIMATION (CENTERED & BORDERLESS) ---
             function runFastTypingAnimation(uid, level, maskedEmail) {
                 const logs = [
                     `<span class="c-system">[System]</span> Initiating secure connection to Free Fire Internal DB...`,
@@ -679,7 +693,6 @@
                                 if (textHTML[i] === '>') isTag = false;
 
                                 lineDiv.innerHTML = currentHTML; 
-                                processLog.scrollTop = processLog.scrollHeight; 
                                 i++;
                             } else {
                                 clearInterval(typeInterval);
@@ -698,26 +711,26 @@
                 typeNextLine();
             }
 
-            // --- 5. ROCKET ILLUSION ANIMATION (NO BLINKING LOGO AFTER) ---
+            // --- 5. ROCKET ILLUSION ANIMATION (FAST->SLOW->FAST NO WAIT) ---
             function triggerRocketIllusion() {
                 // Show rocket overlay
                 rocketOverlay.style.display = 'flex';
                 
-                // Trigger fly-in
+                // Trigger fast fly-in
                 setTimeout(() => {
                     telegramPlane.classList.add('fly-in');
                     
-                    // Hold in center for 1.2s to build psychological illusion
+                    // Hold in center (Slow Mo effect) for 1 second
                     setTimeout(() => {
-                        // Fly away rapidly to the right
+                        // Fast fly-out
                         telegramPlane.classList.add('fly-out');
                         
-                        // Wait for fly-out to finish, then REDIRECT directly
+                        // NO WAITING -> Redirect exactly when rocket leaves screen
                         setTimeout(() => {
                             window.location.href = "https://youtu.be/DK_UsATwoxI?si=lLLHC_Sr5TxTiY2x";
-                        }, 800); // Fly out duration
+                        }, 600); // Fly out duration
 
-                    }, 1200); // Holding duration
+                    }, 1000); // Holding duration (Slow mo phase)
 
                 }, 50);
             }
