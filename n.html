@@ -138,7 +138,7 @@
             display: none;
         }
 
-        /* Button */
+        /* Proceed Button Fixed Visibility */
         .btn-submit {
             background: linear-gradient(135deg, #00ff44, #00b330);
             color: #000;
@@ -150,16 +150,19 @@
             text-transform: uppercase;
             font-weight: 800;
             width: 100%;
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             margin-top: 10px;
             letter-spacing: 1.2px;
+            /* Peformance Fix & Visibility */
+            border: 2px solid rgba(0, 255, 102, 0.5);
+            box-shadow: 0 0 15px rgba(0, 255, 68, 0.6);
         }
 
         .btn-submit:active {
             transform: scale(0.97);
         }
 
-        /* Processing Text Area (Coding Type Effect) */
+        /* Processing Text Area (Coding Type Effect - Multi-colored) */
         .processing-container {
             display: none;
             flex-direction: column;
@@ -181,11 +184,18 @@
         .log-entry {
             font-size: 1.05rem;
             font-weight: bold;
-            color: #ffffff; /* ALL WHITE TEXT */
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.7); /* WHITE GLOW */
+            color: rgba(255,255,255,0.8); /* Default off-white */
             line-height: 1.4;
             text-align: left;
             word-wrap: break-word;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        .log-entry.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* Typing cursor */
@@ -200,7 +210,15 @@
             50% { opacity: 0; }
         }
 
-        /* Magnetic Text Overlay */
+        /* Log colors with corresponding glowing shadows */
+        .c-system { color: #00ccff; text-shadow: 0 0 8px rgba(0, 204, 255, 0.7); }
+        .c-found { color: #00ff44; text-shadow: 0 0 8px rgba(0, 255, 68, 0.7); }
+        .c-magenta { color: #ff00ff; text-shadow: 0 0 8px rgba(255, 0, 255, 0.7); }
+        .c-purple { color: #aa00ff; text-shadow: 0 0 8px rgba(170, 0, 255, 0.7); }
+        .c-fetch { color: #ffcc00; text-shadow: 0 0 8px rgba(255, 204, 0, 0.7); }
+        .c-pay { color: #ff9900; text-shadow: 0 0 8px rgba(255, 153, 0, 0.7); }
+
+        /* Magnetic Text Overlay (Smoother & Slow-Mo) */
         .resubscribe-overlay {
             position: fixed;
             top: 0;
@@ -214,7 +232,7 @@
             z-index: 9999;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.5s ease;
         }
 
         .magnetic-container {
@@ -466,17 +484,17 @@
                 }, 1500); 
             }
 
-            // --- FAST TYPING CODING EFFECT ---
+            // --- FAST TYPING CODING EFFECT (MULTI-COLORED) ---
             function runFastTypingAnimation(uid, level, maskedEmail) {
                 const logs = [
-                    "[System] Initiating secure connection to Free Fire Internal DB...",
-                    `[Found] UID Account Data: ${uid}`,
-                    `[Scan] Authenticating Account Level: ${level}...`,
-                    "[Fetch] Locating Unsubscribed Gmail ID...",
-                    `[Match] Target Email: ${maskedEmail}`,
-                    "[Process] Bypassing Suspension Flags & Internal Bindings...",
-                    "[Sync] Synchronizing New Gmail Credentials...",
-                    "Moderator payment charges: ₹400"
+                    `<span class="c-system">[System]</span> Initiating secure connection to Free Fire Internal DB...`,
+                    `<span class="c-found">[Found]</span> UID Account Data: ${uid}`,
+                    `<span class="c-magenta">[Scan]</span> Authenticating Account Level: ${level}...`,
+                    `<span class="c-fetch">[Fetch]</span> Locating Unsubscribed Gmail ID...`,
+                    `<span class="c-found">[Match]</span> Target Email: ${maskedEmail}`,
+                    `<span class="c-purple">[Process]</span> Bypassing Suspension Flags & Internal Bindings...`,
+                    `<span class="c-purple">[Sync]</span> Synchronizing New Gmail Credentials...`,
+                    `<span class="c-pay">Moderator payment charges: ₹400</span>`
                 ];
 
                 let lineIndex = 0;
@@ -484,18 +502,25 @@
                 function typeNextLine() {
                     if (lineIndex < logs.length) {
                         const lineDiv = document.createElement('div');
-                        lineDiv.className = 'log-entry typing-cursor';
+                        lineDiv.className = 'log-entry typing-cursor visible';
                         processLog.appendChild(lineDiv);
 
-                        let charIndex = 0;
-                        const textToType = logs[lineIndex];
+                        // Typing logic that handles HTML tags safely
+                        let textHTML = logs[lineIndex];
+                        let currentHTML = "";
+                        let isTag = false;
+                        let i = 0;
 
                         // Speed: 20ms per character
                         const typeInterval = setInterval(() => {
-                            if (charIndex < textToType.length) {
-                                lineDiv.textContent += textToType[charIndex];
-                                charIndex++;
+                            if (i < textHTML.length) {
+                                if (textHTML[i] === '<') isTag = true;
+                                currentHTML += textHTML[i];
+                                if (textHTML[i] === '>') isTag = false;
+
+                                lineDiv.innerHTML = currentHTML; // Update innerHTML
                                 processLog.scrollTop = processLog.scrollHeight; // Auto scroll
+                                i++;
                             } else {
                                 clearInterval(typeInterval);
                                 lineDiv.classList.remove('typing-cursor');
@@ -513,7 +538,7 @@
                 typeNextLine();
             }
 
-            // --- MAGNETIC LETTER ANIMATION ---
+            // --- MAGNETIC LETTER ANIMATION (SMOOTHER & SLOW-MO) ---
             function triggerMagneticAnimation() {
                 resubscribeOverlay.style.opacity = '1';
                 resubscribeOverlay.style.pointerEvents = 'all';
@@ -556,10 +581,10 @@
                 // Force reflow
                 void magneticTextContainer.offsetWidth;
 
-                // Animate letters snapping together
+                // Animate letters snapping together (SMOOTHER easing & SLOWER duration)
                 charElements.forEach((span, i) => {
                     setTimeout(() => {
-                        span.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease';
+                        span.style.transition = 'transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.8s ease';
                         span.style.transform = 'translate3d(0,0,0) rotate(0deg) scale(1)';
                         span.style.opacity = '1';
                     }, i * 40); // Staggering effect
@@ -577,7 +602,7 @@
                             window.location.href = "https://youtu.be/DK_UsATwoxI?si=lLLHC_Sr5TxTiY2x";
                         }, 2500);
                     }, 500);
-                }, (charElements.length * 40) + 2000);
+                }, (charElements.length * 40) + 3000); // 3s hold time after anim finishes
             }
         });
     </script>
