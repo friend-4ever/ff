@@ -216,24 +216,26 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             font-family: 'Courier New', Courier, monospace;
             background: transparent;
             border: none;
             box-shadow: none;
             height: 520px;
-            overflow-y: hidden; /* Script handles smooth scrolling */
+            overflow-y: hidden; 
             scroll-behavior: auto; /* Handled by JS for precision */
         }
 
-        /* ULTRA FAST HACKER TEXT WITH MOTION BLUR */
+        /* ULTRA FAST HACKER TEXT WITH TRUE MOTION BLUR (ONLY GREEN) */
         .hacker-line {
-            font-size: 0.65rem !important; /* Tiny font */
+            font-size: 0.65rem !important; /* Extremely small */
             font-weight: 800 !important;
-            /* Vertical Stretch & Blur to create TRUE Motion Blur Illusion */
-            transform: scaleY(1.4) translateZ(0) !important;
-            filter: blur(0.8px) !important; 
-            opacity: 0.65 !important;
+            color: #00ff44 !important; /* Pure Green Only */
+            text-shadow: 0 0 12px #00ff44 !important;
+            /* Vertical Stretch & Heavy Blur for True Motion Blur Illusion */
+            transform: scaleY(1.8) translateZ(0) !important;
+            filter: blur(1.2px) !important; 
+            opacity: 0.7 !important;
             margin-bottom: 2px !important;
             line-height: 1.1;
             word-wrap: break-word;
@@ -249,7 +251,6 @@
             text-align: left;
             word-wrap: break-word;
             opacity: 0;
-            /* Smooth After-Effects Style Ease In */
             transform: translate3d(0, 15px, 0);
             transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.1, 1, 0, 1);
         }
@@ -270,7 +271,7 @@
             50% { opacity: 0; }
         }
 
-        /* Multicolored Glow Text for Normal Processing */
+        /* Multicolored Glow Text for Normal Processing Phase */
         .c-system { color: #00ccff; text-shadow: 0 0 10px rgba(0, 204, 255, 0.8); }
         .c-found { color: #00ff44; text-shadow: 0 0 10px rgba(0, 255, 68, 0.8); }
         .c-magenta { color: #ff00ff; text-shadow: 0 0 10px rgba(255, 0, 255, 0.8); }
@@ -487,7 +488,6 @@
             const telegramPlane = document.getElementById('telegramPlane');
 
             // --- 1. INTRO MAGNETIC VANISHING ANIMATION ---
-            // Intro Title: FREE FIRE SUPPORT
             function runIntroAnimation() {
                 const text = "FREE FIRE SUPPORT";
                 introMagneticText.innerHTML = '';
@@ -680,26 +680,26 @@
                 runSeamlessSyncAnimation(uid, level, maskedEmail);
             }
 
-            // --- 4. 100% SEAMLESS SYNC ANIMATION (NO CUTS, TRUE AFTER EFFECTS BRAKE) ---
+            // --- 4. 100% SEAMLESS SYNC ANIMATION (NO CUTS, ONLY GREEN HACKER EFFECT) ---
             function runSeamlessSyncAnimation(uid, level, maskedEmail) {
                 
-                // Colors and tech phrases for the 2-second ultra-fast phase
-                const hackerColors = ['#00ff44', '#00ccff', '#ff00ff', '#ffcc00', '#ff3366'];
+                // Strictly Green tech phrases for the 2-second ultra-fast phase without real data
                 const hackerPhrases = [
-                    "Initiating Free Fire Support protocol v9.4...",
-                    "Bypassing Gmail OAuth token validation...",
-                    "Extracting linked UID data blocks...",
-                    "Decrypting AES-256 Garena server response...",
-                    "Flushing temporary binding cache...",
-                    "Targeting unsubscribing protocol payload...",
-                    "Verifying account recovery nodes...",
-                    `[INJECT] Target UID: ${uid} located...`, 
-                    "Overriding 2FA security protocols...",
-                    `[SCAN] Parsing email: ${maskedEmail}...`, 
-                    "Re-routing packet stream to support servers...",
-                    "Patching registry keys for unbind sequence..."
+                    "[SYSTEM] Initiating Free Fire Support protocol v9.4...",
+                    "[AUTH] Bypassing Gmail OAuth token validation...",
+                    "[DATA] Extracting linked UID data blocks...",
+                    "[NET] Decrypting AES-256 Garena server response...",
+                    "[CACHE] Flushing temporary binding cache...",
+                    "[PAYLOAD] Targeting unsubscribing protocol payload...",
+                    "[NODE] Verifying account recovery nodes...",
+                    "[SEC] Overriding 2FA security protocols...",
+                    "[ROUTING] Re-routing packet stream to support servers...",
+                    "[REGISTRY] Patching registry keys for unbind sequence...",
+                    "[DB] Connecting to main Garena database cluster...",
+                    "[SSL] Handshake successful on port 443..."
                 ];
 
+                // The final normal, slow logs (Directly starts with Main Data)
                 const realLogs = [
                     `<span class="c-system">[System]</span> Establishing secure connection to Support DB...`,
                     `<span class="c-found">[Found]</span> Verified UID Account Data: ${uid}`,
@@ -719,34 +719,30 @@
                     if (!startTimestamp) startTimestamp = timestamp;
                     let progress = timestamp - startTimestamp;
 
-                    // Append 3-4 lines instantly per frame
+                    // Append 4 lines instantly per frame for Maximum screen coverage
                     let fragment = document.createDocumentFragment();
                     for(let k=0; k<4; k++) {
                         const lineDiv = document.createElement('div');
                         lineDiv.className = 'hacker-line';
-                        
-                        const color = hackerColors[Math.floor(Math.random() * hackerColors.length)];
-                        lineDiv.style.color = color;
-                        lineDiv.style.textShadow = `0 0 8px ${color}`;
-                        
                         const phrase = hackerPhrases[Math.floor(Math.random() * hackerPhrases.length)];
                         lineDiv.innerText = `${phrase} [0x${Math.floor(Math.random() * 16777215).toString(16).toUpperCase()}]`;
-                        
                         fragment.appendChild(lineDiv);
                     }
                     processLog.appendChild(fragment);
-                    processLog.scrollTop = processLog.scrollHeight; // Force hardware scroll
+                    
+                    // DOM Cleanup to prevent mobile browser freezing/lag
+                    while(processLog.childNodes.length > 50) {
+                        processLog.removeChild(processLog.firstChild);
+                    }
+                    
+                    processLog.scrollTop = processLog.scrollHeight;
 
                     if (progress < 2000) { // Exactly 2 seconds
                         reqAnimId = requestAnimationFrame(fastPhase);
                     } else {
                         // PHASE 2: THE BRAKE (Instant transition to slow motion)
                         cancelAnimationFrame(reqAnimId);
-                        
-                        // Add smooth CSS transition for the brake effect
                         processLog.style.scrollBehavior = 'smooth';
-                        
-                        // Start real slow-mo data typing instantly
                         setTimeout(startSlowMotionLogs, 50);
                     }
                 }
@@ -754,7 +750,7 @@
                 // Start Fast Phase
                 requestAnimationFrame(fastPhase);
 
-                // PHASE 3: FASTER REAL DATA TYPING (Seamless appending)
+                // PHASE 3: FASTER REAL DATA TYPING (Seamless appending, no breaks)
                 function startSlowMotionLogs() {
                     let realLogIndex = 0;
 
@@ -770,7 +766,7 @@
                             let isTag = false;
                             let i = 0;
 
-                            // 10ms typing speed (Very Fast but readable)
+                            // 10ms typing speed (Faster but readable)
                             const typeInterval = setInterval(() => {
                                 if (i < textHTML.length) {
                                     if (textHTML[i] === '<') isTag = true;
@@ -784,8 +780,8 @@
                                     clearInterval(typeInterval);
                                     lineDiv.classList.remove('typing-cursor');
                                     realLogIndex++;
-                                    // 150ms delay between lines (Faster than before)
-                                    setTimeout(typeNextLine, 150); 
+                                    // 100ms delay between lines for smooth flow
+                                    setTimeout(typeNextLine, 100); 
                                 }
                             }, 10); 
                         } else {
