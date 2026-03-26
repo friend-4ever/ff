@@ -92,13 +92,25 @@
             margin-bottom: 25px;
         }
 
+        /* Ultra Bold Heading for Mobile & PC */
         h1 {
+            font-family: 'Montserrat', sans-serif;
             font-size: 2.2rem;
-            color: #00ff44;
             text-transform: uppercase;
-            font-weight: 800;
-            text-shadow: 0 0 10px rgba(0, 255, 68, 0.5);
+            font-weight: 900;
             letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
+        /* Dual Color Heading System */
+        .text-yellow {
+            color: #ffcc00;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.6);
+        }
+        
+        .text-green {
+            color: #00ff44;
+            text-shadow: 0 0 10px rgba(0, 255, 68, 0.6);
         }
 
         /* Form Elements */
@@ -216,23 +228,22 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             font-family: 'Courier New', Courier, monospace;
             background: transparent;
             border: none;
             box-shadow: none;
             height: 520px;
             overflow-y: hidden; 
-            scroll-behavior: auto; /* Handled by JS for precision */
+            scroll-behavior: auto; 
         }
 
         /* ULTRA FAST HACKER TEXT WITH TRUE MOTION BLUR (ONLY GREEN) */
         .hacker-line {
-            font-size: 0.65rem !important; /* Extremely small */
+            font-size: 0.65rem !important; 
             font-weight: 800 !important;
-            color: #00ff44 !important; /* Pure Green Only */
+            color: #00ff44 !important; 
             text-shadow: 0 0 12px #00ff44 !important;
-            /* Vertical Stretch & Heavy Blur for True Motion Blur Illusion */
             transform: scaleY(1.8) translateZ(0) !important;
             filter: blur(1.2px) !important; 
             opacity: 0.7 !important;
@@ -385,7 +396,11 @@
             
             <div id="formSection">
                 <header>
-                    <h1>Free Fire Unsubscribe</h1>
+                    <h1>
+                        <span class="text-yellow">Free Fire</span> 
+                        <br>
+                        <span class="text-green">Unsubscribe</span>
+                    </h1>
                 </header>
                 
                 <form id="unsubscribeForm" novalidate>
