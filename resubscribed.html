@@ -48,11 +48,11 @@
             animation: float 20s infinite ease-in-out alternate;
         }
         .orb-1 {
-            width: 450px; height: 450px; background: #00ff44; /* FF Green */
+            width: 450px; height: 450px; background: #00ff44; 
             top: -10%; left: -10%; animation-duration: 25s;
         }
         .orb-2 {
-            width: 550px; height: 550px; background: #ff3366; /* Contrast Pink/Red */
+            width: 550px; height: 550px; background: #ff3366; 
             bottom: -20%; right: -10%; animation-duration: 22s; animation-delay: -5s;
         }
 
@@ -162,7 +162,6 @@
             z-index: 2;
         }
 
-        /* Dual Color Heading System */
         .text-yellow {
             color: #ffcc00;
             text-shadow: 0 0 10px rgba(255, 204, 0, 0.6);
@@ -321,7 +320,11 @@
             box-shadow: none;
             height: 520px;
             overflow-y: hidden; 
-            scroll-behavior: auto; 
+            scroll-behavior: auto;
+            padding: 20px 0;
+            /* --- NEW SMOOTH FADE CROP EFFECT (GRADIENT MASK) --- */
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
         }
 
         /* ULTRA FAST HACKER TEXT WITH TRUE MOTION BLUR (ONLY GREEN) */
@@ -645,6 +648,12 @@
             const resubscribeCheck = document.getElementById('resubscribeCheck');
             const resubscribeError = document.getElementById('resubscribeError');
 
+            // --- FUNCTION TO CLEAR ALL VALIDATION ERRORS ---
+            function clearAllValidationErrors() {
+                document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+                document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
+            }
+
             // --- 1. INTRO MAGNETIC VANISHING ANIMATION ---
             function runIntroAnimation() {
                 const text = "FREE FIRE SUPPORT";
@@ -710,25 +719,17 @@
 
             runIntroAnimation();
 
-            // --- 2. AUTO CENTER ON CLICK / FOCUS ---
+            // --- 2. AUTO CENTER ON CLICK / FOCUS & CLEAR ERRORS ---
             document.querySelectorAll('input').forEach(input => {
                 input.addEventListener('focus', function() {
-                    this.classList.remove('input-error');
-                    const errorMsg = document.getElementById(this.id + 'Error');
-                    if (errorMsg) errorMsg.style.display = 'none';
-                    
+                    clearAllValidationErrors();
                     setTimeout(() => {
                         this.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }, 300);
                 });
             });
 
-            // Remove error when checkbox is checked
-            resubscribeCheck.addEventListener('change', function() {
-                if(this.checked) {
-                    resubscribeError.style.display = 'none';
-                }
-            });
+            resubscribeCheck.addEventListener('change', clearAllValidationErrors);
 
             document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
                 const trigger = wrapper.querySelector('.custom-select-trigger');
@@ -737,6 +738,7 @@
                 
                 trigger.addEventListener('click', function(e) {
                     e.stopPropagation();
+                    clearAllValidationErrors();
                     document.querySelectorAll('.custom-select-wrapper').forEach(w => {
                         if (w !== wrapper) w.classList.remove('open');
                     });
@@ -762,10 +764,6 @@
                         options.forEach(o => o.classList.remove('selected'));
                         this.classList.add('selected');
                         wrapper.classList.remove('open');
-                        
-                        wrapper.classList.remove('input-error');
-                        const errorMsg = document.getElementById(wrapper.id.replace('Wrapper', 'Error'));
-                        if (errorMsg) errorMsg.style.display = 'none';
                     });
                 });
             });
@@ -777,6 +775,9 @@
             // --- 3. FORM VALIDATION ---
             proceedBtn.addEventListener('click', () => {
                 let isValid = true;
+
+                // Reset all errors before checking again
+                clearAllValidationErrors();
 
                 const uid = document.getElementById('uid');
                 const deviceWrap = document.getElementById('deviceWrapper');
@@ -842,10 +843,8 @@
             function startSequence(uid, level, email) {
                 const maskedEmail = maskEmail(email);
 
-                // 1. Show the Free Fire loading PNG transition
                 transitionScreen.classList.add('active');
 
-                // After 1.5 seconds, hide transition, format glass panel and start coding sync
                 setTimeout(() => {
                     transitionScreen.classList.remove('active');
                     
