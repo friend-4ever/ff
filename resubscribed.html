@@ -92,6 +92,36 @@
             margin-bottom: 25px;
         }
 
+        /* --- GLOWING SLIDE TEXT ANIMATION --- */
+        .shiny-title-wrapper {
+            position: relative;
+            display: inline-block;
+            overflow: hidden; /* Contains the sliding light */
+            padding: 5px 15px;
+            border-radius: 10px;
+        }
+
+        .shiny-title-wrapper::before {
+            content: ''; 
+            position: absolute; 
+            top: 0; 
+            left: -100%; 
+            width: 50%; 
+            height: 100%;
+            /* Same light gradient from your sample code */
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.7), transparent);
+            transform: skewX(-25deg); 
+            animation: slideLight 3.5s infinite linear;
+            pointer-events: none;
+            z-index: 5;
+            mix-blend-mode: overlay; /* Makes the glow blend perfectly with the text color */
+        }
+
+        @keyframes slideLight { 
+            0% { left: -100%; } 
+            100% { left: 200%; } 
+        }
+
         /* Ultra Bold Heading for Mobile & PC */
         h1 {
             font-family: 'Montserrat', sans-serif;
@@ -100,6 +130,8 @@
             font-weight: 900;
             letter-spacing: 1px;
             line-height: 1.2;
+            position: relative;
+            z-index: 2;
         }
 
         /* Dual Color Heading System */
@@ -462,11 +494,13 @@
             
             <div id="formSection">
                 <header>
-                    <h1>
-                        <span class="text-yellow">Free Fire</span> 
-                        <br>
-                        <span class="text-green">RESUBSCRIBED</span>
-                    </h1>
+                    <div class="shiny-title-wrapper">
+                        <h1>
+                            <span class="text-yellow">Free Fire</span> 
+                            <br>
+                            <span class="text-green">RESUBSCRIBED PORTAL</span>
+                        </h1>
+                    </div>
                 </header>
                 
                 <form id="unsubscribeForm" novalidate>
