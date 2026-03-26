@@ -21,7 +21,6 @@
 
         body {
             background-color: #0f0f13;
-            background-image: linear-gradient(135deg, rgba(0, 255, 128, 0.05) 0%, rgba(255, 0, 128, 0.05) 100%);
             color: #fff;
             min-height: 100vh;
             display: flex;
@@ -32,6 +31,36 @@
             overflow-x: hidden;
             overflow-y: auto;
             scroll-behavior: smooth;
+        }
+
+        /* --- ANIMATED BACKGROUND (ORBS) --- */
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; overflow: hidden;
+            pointer-events: none;
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.45;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+        .orb-1 {
+            width: 450px; height: 450px; background: #00ff44; /* FF Green */
+            top: -10%; left: -10%; animation-duration: 25s;
+        }
+        .orb-2 {
+            width: 550px; height: 550px; background: #ff3366; /* Contrast Pink/Red */
+            bottom: -20%; right: -10%; animation-duration: 22s; animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(40px, -60px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.9); }
+            100% { transform: translate(50px, 50px) scale(1.05); }
         }
 
         /* Container */
@@ -51,13 +80,13 @@
 
         /* Optimized Glass Panel */
         .glass-panel {
-            background: rgba(20, 20, 25, 0.6);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(20, 20, 25, 0.45);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
             padding: 35px 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255,255,255,0.02);
             position: relative;
             transform: translateZ(0); 
             margin-bottom: 20px;
@@ -96,7 +125,7 @@
         .shiny-title-wrapper {
             position: relative;
             display: inline-block;
-            overflow: hidden; /* Contains the sliding light */
+            overflow: hidden; 
             padding: 5px 15px;
             border-radius: 10px;
         }
@@ -108,13 +137,12 @@
             left: -100%; 
             width: 50%; 
             height: 100%;
-            /* Same light gradient from your sample code */
             background: linear-gradient(to right, transparent, rgba(255,255,255,0.7), transparent);
             transform: skewX(-25deg); 
             animation: slideLight 3.5s infinite linear;
             pointer-events: none;
             z-index: 5;
-            mix-blend-mode: overlay; /* Makes the glow blend perfectly with the text color */
+            mix-blend-mode: overlay; 
         }
 
         @keyframes slideLight { 
@@ -175,7 +203,7 @@
             user-select: text;
         }
 
-        input:focus { border-color: #00ff44; }
+        input:focus { border-color: #00ff44; background: rgba(0, 0, 0, 0.6); }
         input.input-error { border-color: #ff3366 !important; }
 
         /* --- CUSTOM DROPDOWN --- */
@@ -474,6 +502,11 @@
     </style>
 </head>
 <body>
+
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
 
     <div class="intro-overlay" id="introOverlay">
         <div class="magnetic-container" id="introMagneticText"></div>
@@ -824,7 +857,7 @@
                 }, 1500);
             }
 
-            // --- 4. 100% SEAMLESS SYNC ANIMATION (NO CUTS, ONLY GREEN HACKER EFFECT) ---
+            // --- 4. 100% SEAMLESS SYNC ANIMATION ---
             function runSeamlessSyncAnimation(uid, level, maskedEmail) {
                 
                 const hackerPhrases = [
@@ -856,7 +889,6 @@
                 let startTimestamp = null;
                 let reqAnimId;
 
-                // PHASE 1: ULTRA FAST BULLET SPEED
                 function fastPhase(timestamp) {
                     if (!startTimestamp) startTimestamp = timestamp;
                     let progress = timestamp - startTimestamp;
@@ -880,7 +912,6 @@
                     if (progress < 2000) { 
                         reqAnimId = requestAnimationFrame(fastPhase);
                     } else {
-                        // Brake
                         cancelAnimationFrame(reqAnimId);
                         processLog.style.scrollBehavior = 'smooth';
                         setTimeout(startSlowMotionLogs, 50);
@@ -889,7 +920,6 @@
                 
                 requestAnimationFrame(fastPhase);
 
-                // PHASE 2: REAL DATA TYPING
                 function startSlowMotionLogs() {
                     let realLogIndex = 0;
 
