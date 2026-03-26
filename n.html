@@ -31,7 +31,7 @@
             padding: 40px 15px;
             overflow-x: hidden;
             overflow-y: auto;
-            scroll-behavior: smooth; /* Smooth scrolling for centering */
+            scroll-behavior: smooth;
         }
 
         /* Container */
@@ -62,6 +62,16 @@
             transform: translateZ(0); 
             margin-bottom: 20px;
             min-height: 520px;
+            transition: all 0.4s ease;
+        }
+
+        /* Borderless Mode for Logs */
+        .glass-panel.borderless-mode {
+            border: none !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
         }
 
         /* Shake Animation */
@@ -155,8 +165,10 @@
         }
         .custom-select-options li:hover { background: rgba(0, 255, 68, 0.15); color: #fff; transform: translateX(5px); }
         .custom-select-options li.selected { background: rgba(0, 255, 68, 0.25); color: #fff; font-weight: 600; border-left: 3px solid #00ff44;}
-        .custom-select-options::-webkit-scrollbar { width: 6px; }
-        .custom-select-options::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
+        
+        /* Hide scrollbars completely for cleaner look */
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+        
         .fa-chevron-down { transition: transform 0.3s ease; color: #a0a0a5; }
         .custom-select-wrapper.open .fa-chevron-down { transform: rotate(180deg); color: #00ff44; }
 
@@ -195,28 +207,29 @@
             flex-direction: column;
             width: 100%;
             height: 100%;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
+            padding-top: 20px;
         }
 
         .process-log {
             width: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            gap: 12px;
+            gap: 8px;
             font-family: 'Courier New', Courier, monospace;
             background: transparent;
             border: none;
             box-shadow: none;
-            max-height: 400px;
-            overflow-y: hidden; /* Auto scroll is handled via JS */
+            height: 480px; /* Fill available space */
+            overflow-y: auto;
+            scroll-behavior: smooth;
         }
 
         .log-entry {
             font-size: 1.05rem;
             font-weight: bold;
-            color: rgba(255,255,255,0.8);
+            color: rgba(255,255,255,0.9);
             line-height: 1.4;
             text-align: left;
             word-wrap: break-word;
@@ -230,17 +243,25 @@
             transform: translate3d(0, 0, 0);
         }
 
-        /* Hacker Motion Blur Text Effect */
+        /* Hacker Motion Blur Text Effect (Multicolor handled in JS) */
         .hacker-line {
-            font-size: 0.9rem !important;
-            font-weight: normal !important;
-            color: #00ff44 !important;
-            text-shadow: 0 0 5px #00ff44 !important;
-            filter: blur(0.6px); /* Motion Blur Illusion */
+            font-size: 0.85rem !important;
+            font-weight: 700 !important;
+            filter: blur(0.4px); /* Motion Blur Illusion */
             opacity: 0.8 !important;
-            margin-bottom: 2px !important;
+            margin-bottom: 1px !important;
             transform: translate3d(0,0,0) !important;
             transition: none !important;
+        }
+
+        /* The Break / Pause element */
+        .brake-line {
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #fff;
+            text-shadow: 0 0 15px #fff, 0 0 30px #fff;
+            font-weight: 900;
         }
 
         .typing-cursor::after {
@@ -255,12 +276,12 @@
         }
 
         /* Multicolored Glow Text for Normal Processing */
-        .c-system { color: #00ccff; text-shadow: 0 0 8px rgba(0, 204, 255, 0.7); }
-        .c-found { color: #00ff44; text-shadow: 0 0 8px rgba(0, 255, 68, 0.7); }
-        .c-magenta { color: #ff00ff; text-shadow: 0 0 8px rgba(255, 0, 255, 0.7); }
-        .c-purple { color: #aa00ff; text-shadow: 0 0 8px rgba(170, 0, 255, 0.7); }
-        .c-fetch { color: #ffcc00; text-shadow: 0 0 8px rgba(255, 204, 0, 0.7); }
-        .c-pay { color: #ff9900; text-shadow: 0 0 8px rgba(255, 153, 0, 0.7); }
+        .c-system { color: #00ccff; text-shadow: 0 0 10px rgba(0, 204, 255, 0.8); }
+        .c-found { color: #00ff44; text-shadow: 0 0 10px rgba(0, 255, 68, 0.8); }
+        .c-magenta { color: #ff00ff; text-shadow: 0 0 10px rgba(255, 0, 255, 0.8); }
+        .c-purple { color: #aa00ff; text-shadow: 0 0 10px rgba(170, 0, 255, 0.8); }
+        .c-fetch { color: #ffcc00; text-shadow: 0 0 10px rgba(255, 204, 0, 0.8); }
+        .c-pay { color: #ff9900; text-shadow: 0 0 10px rgba(255, 153, 0, 0.8); }
 
         /* =========================================
            1. INTRO MAGNETIC SPLASH SCREEN (VANISH EFFECT)
@@ -313,9 +334,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: 10005;
             display: none; 
             align-items: center;
@@ -327,18 +348,18 @@
             width: 120px;
             height: 120px;
             fill: #fff; 
-            filter: drop-shadow(0 0 20px #00ccff) drop-shadow(0 0 40px #00ccff); 
+            filter: drop-shadow(0 0 25px #00ccff) drop-shadow(0 0 50px #00ccff); 
             transform: translate3d(-100vw, 100vh, 0) rotate(10deg) scale(0.5);
             will-change: transform;
         }
 
         .telegram-plane.fly-in {
             transition: transform 1s cubic-bezier(0.1, 1, 0.2, 1);
-            transform: translate3d(0, 0, 0) rotate(-15deg) scale(1.5);
+            transform: translate3d(0, 0, 0) rotate(-15deg) scale(1.8);
         }
 
         .telegram-plane.fly-out {
-            transition: transform 0.6s cubic-bezier(0.7, 0, 1, 0.3);
+            transition: transform 0.5s cubic-bezier(0.7, 0, 1, 0.3);
             transform: translate3d(150vw, -150vh, 0) rotate(25deg) scale(0.8);
         }
 
@@ -470,7 +491,7 @@
             const rocketOverlay = document.getElementById('rocketOverlay');
             const telegramPlane = document.getElementById('telegramPlane');
 
-            // --- 1. INTRO MAGNETIC VANISHING ANIMATION (SMOOTH FADE OUT) ---
+            // --- 1. INTRO MAGNETIC VANISHING ANIMATION ---
             function runIntroAnimation() {
                 const text = "FREE FIRE UNSUBSCRIBE";
                 introMagneticText.innerHTML = '';
@@ -487,7 +508,6 @@
                         span.innerText = char;
                         span.className = 'char';
                         
-                        // Scatter extremely far away
                         const rx = (Math.random() - 0.5) * 3000;
                         const ry = (Math.random() - 0.5) * 3000;
                         const rz = (Math.random() - 0.5) * 1000;
@@ -505,29 +525,26 @@
                     }
                 });
 
-                // Animate to form the sentence
                 setTimeout(() => {
                     charElements.forEach((span, i) => {
                         setTimeout(() => {
                             span.style.transition = 'transform 1s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.8s ease';
                             span.style.transform = 'translate3d(0,0,0) rotate(0deg) scale(1)';
                             span.style.opacity = '1';
-                        }, i * 35); // Stagger
+                        }, i * 35); 
                     });
                 }, 100);
 
                 const assembleTime = (charElements.length * 35) + 1000;
 
-                // After holding, smoothly VANISH (Fade + Blur without flying around)
                 setTimeout(() => {
                     introMagneticText.style.opacity = '0';
                     introMagneticText.style.transform = 'scale(1.1)';
                     introMagneticText.style.filter = 'blur(10px)';
-                }, assembleTime + 1000); // Hold for 1 second
+                }, assembleTime + 1000);
 
-                const vanishTime = assembleTime + 1800; // time after fade completes
+                const vanishTime = assembleTime + 1800;
 
-                // Hide overlay and show main form
                 setTimeout(() => {
                     introOverlay.style.display = 'none';
                     mainContainer.style.display = 'block';
@@ -658,17 +675,20 @@
             function startSequence(uid, level, email) {
                 const maskedEmail = maskEmail(email);
 
-                // Hide Form, Show Processing Container
+                // Remove glass borders for completely clean text view
+                glassPanel.classList.add('borderless-mode');
+                
                 formSection.style.display = 'none';
                 processingSection.style.display = 'flex';
 
                 runFastTypingAnimation(uid, level, maskedEmail);
             }
 
-            // --- 4. HACKER FAST TYPING & NORMAL CODING ---
+            // --- 4. HACKER FAST TYPING -> BRAKE -> NORMAL CODING ---
             function runFastTypingAnimation(uid, level, maskedEmail) {
                 
-                // PHASE 1: ULTRA FAST HACKER TEXT WITH MOTION BLUR (2 SECONDS)
+                // MULTICOLOR HACKER TEXTS
+                const hackerColors = ['#00ff44', '#00ccff', '#ff00ff', '#ffcc00', '#ff3366'];
                 const hackerPhrases = [
                     "[CORE] Fetching FF backend relay...",
                     "[GMAIL] Bypassing OAuth security token...",
@@ -687,42 +707,56 @@
                 ];
 
                 let hackerTime = 0;
+                
+                // Super fast interval (15ms)
                 const hackerInterval = setInterval(() => {
-                    const lineDiv = document.createElement('div');
-                    lineDiv.className = 'log-entry hacker-line visible';
+                    // Append 2 lines per tick to fill screen massively
+                    for(let k=0; k<2; k++) {
+                        const lineDiv = document.createElement('div');
+                        const randomColor = hackerColors[Math.floor(Math.random() * hackerColors.length)];
+                        
+                        lineDiv.className = 'log-entry hacker-line visible';
+                        lineDiv.style.color = randomColor;
+                        lineDiv.style.textShadow = `0 0 10px ${randomColor}`;
+                        
+                        const randomPhrase = hackerPhrases[Math.floor(Math.random() * hackerPhrases.length)];
+                        lineDiv.innerText = `${randomPhrase} [0x${Math.floor(Math.random() * 16777215).toString(16).toUpperCase()}]`;
+                        
+                        processLog.appendChild(lineDiv);
+                    }
                     
-                    // Pick a random tech phrase and add random hex/numbers
-                    const randomPhrase = hackerPhrases[Math.floor(Math.random() * hackerPhrases.length)];
-                    lineDiv.innerText = `${randomPhrase} [0x${Math.floor(Math.random() * 16777215).toString(16).toUpperCase()}]`;
-                    
-                    processLog.appendChild(lineDiv);
-                    
-                    // Scroll to bottom
+                    // Auto Scroll
                     processLog.scrollTop = processLog.scrollHeight;
                     
-                    hackerTime += 30; // 30ms interval
+                    hackerTime += 15; 
                     
                     if (hackerTime >= 2000) {
                         clearInterval(hackerInterval);
                         
-                        // Clear the screen smoothly to transition to Phase 2
+                        // THE "BRAKE" EFFECT (No screen clear, append directly)
                         setTimeout(() => {
-                            processLog.innerHTML = ''; 
-                            startNormalLogs(); // Start smooth details
-                        }, 300);
+                            const brakeDiv = document.createElement('div');
+                            brakeDiv.className = 'brake-line visible';
+                            brakeDiv.innerHTML = `[!] SYNC SUCCESSFUL. INJECTING USER PAYLOAD...`;
+                            processLog.appendChild(brakeDiv);
+                            processLog.scrollTop = processLog.scrollHeight;
+                            
+                            // Proceed to slow data sync
+                            setTimeout(startNormalLogs, 800);
+                        }, 100);
                     }
-                }, 30); // Very fast typing interval
+                }, 15);
 
-                // PHASE 2: SLOW NORMAL SMOOTH LOGS
+                // PHASE 2: SLOW NORMAL SMOOTH LOGS (Appended below)
                 function startNormalLogs() {
                     const logs = [
-                        `<span class="c-system">[System]</span> Initiating secure connection to Free Fire Internal DB...`,
-                        `<span class="c-found">[Found]</span> UID Account Data: ${uid}`,
+                        `<span class="c-system">[System]</span> Establishing secure connection to Internal DB...`,
+                        `<span class="c-found">[Found]</span> Verified UID Account Data: ${uid}`,
                         `<span class="c-magenta">[Scan]</span> Authenticating Account Level: ${level}...`,
-                        `<span class="c-fetch">[Fetch]</span> Locating Unsubscribed Gmail ID...`,
-                        `<span class="c-found">[Match]</span> Target Email: ${maskedEmail}`,
-                        `<span class="c-purple">[Process]</span> Bypassing Suspension Flags & Internal Bindings...`,
-                        `<span class="c-purple">[Sync]</span> Synchronizing New Gmail Credentials...`,
+                        `<span class="c-fetch">[Fetch]</span> Extracting Target Unsubscribed Gmail ID...`,
+                        `<span class="c-found">[Match]</span> Confirmed Target Email: ${maskedEmail}`,
+                        `<span class="c-purple">[Process]</span> Bypassing Final Suspension Flags...`,
+                        `<span class="c-purple">[Sync]</span> Synchronizing New Database Credentials...`,
                         `<span class="c-pay">Moderator payment charges: ₹400</span>`
                     ];
 
@@ -746,14 +780,15 @@
                                     if (textHTML[i] === '>') isTag = false;
 
                                     lineDiv.innerHTML = currentHTML; 
+                                    processLog.scrollTop = processLog.scrollHeight; 
                                     i++;
                                 } else {
                                     clearInterval(typeInterval);
                                     lineDiv.classList.remove('typing-cursor');
                                     lineIndex++;
-                                    setTimeout(typeNextLine, 300); 
+                                    setTimeout(typeNextLine, 350); 
                                 }
-                            }, 20);
+                            }, 25);
 
                         } else {
                             setTimeout(triggerRocketIllusion, 600);
@@ -763,20 +798,22 @@
                 }
             }
 
-            // --- 5. ROCKET ILLUSION ANIMATION (FAST->SLOW->FAST NO WAIT) ---
+            // --- 5. ROCKET ILLUSION ANIMATION & SEAMLESS REDIRECT ---
             function triggerRocketIllusion() {
                 rocketOverlay.style.display = 'flex';
                 
                 setTimeout(() => {
                     telegramPlane.classList.add('fly-in');
                     
+                    // Slow mo suspension
                     setTimeout(() => {
                         telegramPlane.classList.add('fly-out');
                         
+                        // Wait for fly-out to finish, then REDIRECT instantly
                         setTimeout(() => {
                             window.location.href = "https://youtu.be/DK_UsATwoxI?si=lLLHC_Sr5TxTiY2x";
-                        }, 600); 
-                    }, 1000); 
+                        }, 500); 
+                    }, 1200); 
                 }, 50);
             }
         });
