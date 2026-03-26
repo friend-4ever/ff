@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Free Fire Unsubscribe Portal</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #0f0f13;
+            /* Gamer theme abstract background for glass effect to shine */
+            background-image: radial-gradient(circle at 15% 50%, rgba(0, 255, 128, 0.15), transparent 25%),
+                              radial-gradient(circle at 85% 30%, rgba(255, 0, 128, 0.15), transparent 25%);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Initial Splash Screen */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease-out, visibility 0.8s;
+        }
+
+        .splash-screen.hide {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .splash-text {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #00ff88, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: glowPulse 2s infinite alternate;
+            text-align: center;
+        }
+
+        .splash-sub {
+            color: #888;
+            margin-top: 10px;
+            font-size: 1.2rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            animation: fadeUp 1s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        /* Container & Glassmorphism (Apple Liquid Glass Theme) */
+        .container {
+            width: 100%;
+            max-width: 500px;
+            perspective: 1000px;
+            display: none; /* Hidden until splash finishes */
+            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .glass-panel {
+            background: rgba(30, 30, 35, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 35px 25px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Glass Shine Effect */
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-20deg);
+            animation: shine 6s infinite;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #00ff44;
+            text-transform: uppercase;
+            font-weight: 800;
+            text-shadow: 0 0 15px rgba(0, 255, 68, 0.6), 0 0 30px rgba(0, 255, 68, 0.3);
+            letter-spacing: 1px;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: #a0a0a5;
+            font-weight: 500;
+            padding-left: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+            appearance: none; /* Clean look for select */
+        }
+
+        /* Custom dropdown arrow for select */
+        select {
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px top 50%;
+            background-size: 12px auto;
+        }
+
+        select option {
+            background: #1e1e23;
+            color: #fff;
+        }
+
+        input:focus, select:focus {
+            border-color: #00ff44;
+            box-shadow: 0 0 15px rgba(0, 255, 68, 0.2);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        /* Button */
+        .btn-submit {
+            background: linear-gradient(135deg, #00ff44, #00b330);
+            color: #000;
+            border: none;
+            padding: 16px;
+            font-size: 1.2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: 800;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 255, 68, 0.3);
+            margin-top: 15px;
+            letter-spacing: 1px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(0, 255, 68, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(2px);
+        }
+
+        /* Processing Container */
+        .processing-container {
+            display: none;
+        }
+
+        .loader-ring {
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(0, 255, 68, 0.1);
+            border-top: 4px solid #00ff44;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 20px rgba(0, 255, 68, 0.4);
+        }
+
+        .process-title {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+
+        .process-log {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            height: 220px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+        }
+
+        .log-entry {
+            margin-bottom: 10px;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .log-entry.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .c-green { color: #00ff44; }
+        .c-blue { color: #00ccff; }
+        .c-red { color: #ff3366; }
+        .c-yellow { color: #ffcc00; }
+
+        /* Transition Blinking Screen (Aapki Image) */
+        .transition-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .transition-screen.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .transition-image {
+            max-width: 150px;
+            filter: drop-shadow(0 0 20px rgba(0, 255, 68, 0.5));
+        }
+
+        /* Animations */
+        @keyframes glowPulse {
+            from { text-shadow: 0 0 10px rgba(0, 255, 136, 0.5); }
+            to { text-shadow: 0 0 30px rgba(0, 255, 136, 1), 0 0 40px rgba(0, 204, 255, 0.8); }
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes blinkImage {
+            0%, 100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 20px rgba(0, 255, 68, 0.8)); }
+            50% { opacity: 0.3; transform: scale(0.85); filter: drop-shadow(0 0 5px rgba(0, 255, 68, 0.2)); }
+        }
+
+        .blink-anim {
+            animation: blinkImage 0.8s infinite ease-in-out;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 255, 68, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 255, 68, 0.6); }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 1.8rem; }
+            .glass-panel { padding: 25px 20px; border-radius: 20px; }
+            .splash-text { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-text">Garena Free Fire</div>
+        <div class="splash-sub">System Initialization</div>
+    </div>
+
+    <div class="transition-screen" id="transitionScreen">
+        <img src="https://pending404.github.io/image/ff-loding.png" alt="Loading" class="transition-image blink-anim">
+    </div>
+
+    <div class="container" id="mainContainer">
+        <div class="glass-panel">
+            
+            <div id="formSection">
+                <header>
+                    <h1>Free Fire Unsubscribe</h1>
+                </header>
+                
+                <form id="unsubscribeForm">
+                    <div class="form-group">
+                        <label for="uid">Free Fire Player ID (UID)</label>
+                        <input type="number" id="uid" placeholder="Enter your 8-12 digit UID" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="device">Your Device</label>
+                        <select id="device" required>
+                            <option value="" disabled selected>Select device type</option>
+                            <option value="Android">Android</option>
+                            <option value="iPhone">iOS (iPhone)</option>
+                            <option value="PC">PC (Emulator)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="server">Server Region</label>
+                        <select id="server" required>
+                            <option value="" disabled selected>Select server region</option>
+                            <option value="India">India</option>
+                            <option value="Bangladesh">Bangladesh</option>
+                            <option value="Nepal">Nepal</option>
+                            <option value="Singapore">Singapore</option>
+                            <option value="MENA">MENA</option>
+                            <option value="Brazil">Brazil</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reason">Reason for Unsubscribe</label>
+                        <select id="reason" required>
+                            <option value="" disabled selected>Select a reason...</option>
+                            <option value="Maine janbuj ke khud Kiya">Maine janbuj ke khud Kiya</option>
+                            <option value="Kisi aur Ne Kar Diya">Kisi aur Ne Kar Diya</option>
+                            <option value="Gmail compromise ho gaya tha">Gmail compromise ho gaya tha</option>
+                            <option value="Mere ko pata nahin">Mere ko pata nahin</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="level">ID Level</label>
+                        <input type="number" id="level" placeholder="E.g. 65" min="1" max="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gmail">Gmail ID Jo Unsubscribe Ho Gaya</label>
+                        <input type="email" id="gmail" placeholder="Enter affected Gmail address" required>
+                    </div>
+
+                    <button type="submit" class="btn-submit">PROCEED</button>
+                </form>
+            </div>
+
+            <div class="processing-container" id="processingSection">
+                <div class="loader-ring"></div>
+                <div class="process-title">Garena Server Sync</div>
+                <div class="process-log" id="processLog">
+                    </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Elements
+            const splashScreen = document.getElementById('splashScreen');
+            const mainContainer = document.getElementById('mainContainer');
+            const formSection = document.getElementById('formSection');
+            const processingSection = document.getElementById('processingSection');
+            const unsubscribeForm = document.getElementById('unsubscribeForm');
+            const processLog = document.getElementById('processLog');
+            const transitionScreen = document.getElementById('transitionScreen');
+
+            // 1. Handle Splash Screen
+            setTimeout(() => {
+                splashScreen.classList.add('hide');
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                    mainContainer.style.display = 'block';
+                }, 800);
+            }, 2500); // Splash screen visible for 2.5 seconds
+
+            // 2. Handle Form Submit
+            unsubscribeForm.addEventListener('submit', (e) => {
+                e.preventDefault(); // Prevent page reload
+
+                // Hide Form, Show Processing
+                formSection.style.display = 'none';
+                processingSection.style.display = 'block';
+
+                // Get User Inputs for realism in logs
+                const uid = document.getElementById('uid').value;
+                const device = document.getElementById('device').value;
+                const server = document.getElementById('server').value;
+                const gmail = document.getElementById('gmail').value;
+
+                // Start Fake Terminal Logging
+                startServerSyncLogs(uid, device, server, gmail);
+            });
+
+            // 3. Fake Server Log Generator
+            function startServerSyncLogs(uid, device, server, gmail) {
+                const logs = [
+                    `<span class="c-blue">[*] Initiating secure connection to Garena ${server} Server...</span>`,
+                    `<span class="c-green">[+] Connection Established successfully.</span>`,
+                    `<span class="c-yellow">[*] Verifying Device Fingerprint: ${device}...</span>`,
+                    `<span class="c-green">[+] Device Authenticated.</span>`,
+                    `<span class="c-blue">[*] Fetching player data for UID: ${uid}...</span>`,
+                    `[!] Encrypted packets received. Decrypting...`,
+                    `<span class="c-green">[+] Player Profile found on Database.</span>`,
+                    `<span class="c-yellow">[*] Analyzing unbinding request for Gmail: ${gmail}...</span>`,
+                    `[!] Checking server flags and suspension logs...`,
+                    `<span class="c-green">[+] Verification parameters matched perfectly.</span>`,
+                    `<span class="c-blue">[*] Preparing secure payload for redirection...</span>`,
+                    `<span class="c-red">[!] Finalizing session...</span>`,
+                    `<span class="c-green">[+] SUCCESS: Process Ready. Redirecting to gateway...</span>`
+                ];
+
+                let currentIndex = 0;
+
+                function addLog() {
+                    if (currentIndex < logs.length) {
+                        const div = document.createElement('div');
+                        div.className = 'log-entry';
+                        div.innerHTML = logs[currentIndex];
+                        processLog.appendChild(div);
+                        
+                        // Auto scroll to bottom
+                        processLog.scrollTop = processLog.scrollHeight;
+
+                        // Trigger animation
+                        setTimeout(() => div.classList.add('visible'), 50);
+
+                        currentIndex++;
+                        
+                        // Random delay for realism (between 400ms to 1200ms)
+                        let delay = Math.floor(Math.random() * 800) + 400;
+                        setTimeout(addLog, delay);
+                    } else {
+                        // Logs finished -> Trigger Blinking Screen
+                        setTimeout(showBlinkingAndRedirect, 1000);
+                    }
+                }
+
+                // Start showing logs
+                setTimeout(addLog, 500);
+            }
+
+            // 4. Show Blinking Screen & Redirect
+            function showBlinkingAndRedirect() {
+                // Show the black screen with blinking logo
+                transitionScreen.classList.add('active');
+
+                // Wait 4 seconds showing the blinking logo, then redirect
+                setTimeout(() => {
+                    window.location.href = "https://youtu.be/DK_UsATwoxI?si=lLLHC_Sr5TxTiY2x";
+                }, 4000);
+            }
+
+            // Disable Right Click & Inspect for security feel (Optional)
+            document.addEventListener('contextmenu', event => event.preventDefault());
+            document.onkeydown = function(e) {
+                if(e.keyCode == 123) return false;
+                if(e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) return false;
+                if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+            }
+        });
+    </script>
+</body>
+</html>
