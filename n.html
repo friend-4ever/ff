@@ -15,23 +15,35 @@
             user-select: none;
         }
 
+        /* Fixed Mobile Scrolling & Performance */
         body {
             background-color: #0f0f13;
-            /* Optimized background for mobile */
             background-image: linear-gradient(135deg, rgba(0, 255, 128, 0.05) 0%, rgba(255, 0, 128, 0.05) 100%);
             color: #fff;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 15px;
-            overflow: hidden;
+            justify-content: flex-start; /* Changed from center to allow natural scrolling */
+            padding: 40px 15px;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         /* Container */
         .container {
             width: 100%;
             max-width: 500px;
+            /* Initially hidden until intro finishes */
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            display: none; 
+        }
+
+        .container.show {
+            opacity: 1;
+            transform: scale(1);
         }
 
         /* Optimized Glass Panel */
@@ -44,13 +56,8 @@
             padding: 35px 25px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             position: relative;
-            transition: transform 0.3s ease;
-            min-height: 520px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            /* Force GPU acceleration */
-            transform: translateZ(0);
+            transform: translateZ(0); /* Hardware acceleration */
+            margin-bottom: 20px;
         }
 
         /* Shake Animation */
@@ -124,7 +131,6 @@
             border-color: #00ff44;
         }
 
-        /* Error States */
         input.input-error, select.input-error {
             border-color: #ff3366 !important;
         }
@@ -138,11 +144,11 @@
             display: none;
         }
 
-        /* Proceed Button Fixed Visibility */
+        /* Proceed Button */
         .btn-submit {
             background: linear-gradient(135deg, #00ff44, #00b330);
             color: #000;
-            border: none;
+            border: 2px solid rgba(0, 255, 102, 0.5);
             padding: 16px;
             font-size: 1.2rem;
             border-radius: 10px;
@@ -153,8 +159,6 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             margin-top: 10px;
             letter-spacing: 1.2px;
-            /* Peformance Fix & Visibility */
-            border: 2px solid rgba(0, 255, 102, 0.5);
             box-shadow: 0 0 15px rgba(0, 255, 68, 0.6);
         }
 
@@ -162,7 +166,7 @@
             transform: scale(0.97);
         }
 
-        /* Processing Text Area (Coding Type Effect - Multi-colored) */
+        /* Processing Logs Layout */
         .processing-container {
             display: none;
             flex-direction: column;
@@ -184,21 +188,20 @@
         .log-entry {
             font-size: 1.05rem;
             font-weight: bold;
-            color: rgba(255,255,255,0.8); /* Default off-white */
+            color: rgba(255,255,255,0.8);
             line-height: 1.4;
             text-align: left;
             word-wrap: break-word;
             opacity: 0;
-            transform: translateY(10px);
+            transform: translate3d(0, 10px, 0);
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
         
         .log-entry.visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: translate3d(0, 0, 0);
         }
 
-        /* Typing cursor */
         .typing-cursor::after {
             content: '█';
             animation: blinkCursor 0.5s infinite;
@@ -210,7 +213,6 @@
             50% { opacity: 0; }
         }
 
-        /* Log colors with corresponding glowing shadows */
         .c-system { color: #00ccff; text-shadow: 0 0 8px rgba(0, 204, 255, 0.7); }
         .c-found { color: #00ff44; text-shadow: 0 0 8px rgba(0, 255, 68, 0.7); }
         .c-magenta { color: #ff00ff; text-shadow: 0 0 8px rgba(255, 0, 255, 0.7); }
@@ -218,44 +220,91 @@
         .c-fetch { color: #ffcc00; text-shadow: 0 0 8px rgba(255, 204, 0, 0.7); }
         .c-pay { color: #ff9900; text-shadow: 0 0 8px rgba(255, 153, 0, 0.7); }
 
-        /* Magnetic Text Overlay (Smoother & Slow-Mo) */
-        .resubscribe-overlay {
+        /* =========================================
+           1. INTRO MAGNETIC SPLASH SCREEN
+           ========================================= */
+        .intro-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: #000;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 9999;
+            z-index: 99999;
+            transition: opacity 0.5s ease;
+        }
+
+        .intro-overlay.hide {
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.5s ease;
         }
 
         .magnetic-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            max-width: 90%;
+            max-width: 95%;
             text-align: center;
         }
 
         .char {
-            font-size: 2.8rem;
+            font-size: 3rem;
             font-weight: 900;
-            color: #fff;
+            color: #fff; /* Pure White */
             text-transform: uppercase;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5); /* White Glow */
             display: inline-block;
-            /* Animation applied via JS */
             opacity: 0;
             will-change: transform, opacity;
         }
 
-        /* Simple Blinking Image */
+        /* =========================================
+           2. TELEGRAM-STYLE ROCKET ANIMATION
+           ========================================= */
+        .rocket-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 10005;
+            display: none; /* Display flex when active */
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .telegram-plane {
+            width: 120px;
+            height: 120px;
+            fill: #fff; /* White plane */
+            filter: drop-shadow(0 0 20px #00ccff) drop-shadow(0 0 40px #00ccff); /* Cyan glowing trail */
+            /* Start position: Bottom Left off-screen */
+            transform: translate3d(-100vw, 100vh, 0) rotate(10deg) scale(0.5);
+            will-change: transform;
+        }
+
+        /* Flight Phase 1: Fly into Center */
+        .telegram-plane.fly-in {
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translate3d(0, 0, 0) rotate(-15deg) scale(1.5);
+        }
+
+        /* Flight Phase 2: Shoot out to Top Right */
+        .telegram-plane.fly-out {
+            transition: transform 0.8s cubic-bezier(0.5, 0, 1, 0.5);
+            transform: translate3d(150vw, -150vh, 0) rotate(25deg) scale(0.8);
+        }
+
+        /* =========================================
+           3. SIMPLE BLINKING IMAGE TRANSITION
+           ========================================= */
         .transition-screen {
             position: fixed;
             top: 0;
@@ -289,21 +338,29 @@
         }
 
         @media (max-width: 480px) {
-            .glass-panel { padding: 25px 20px; min-height: 480px; }
+            body { padding: 25px 15px; }
+            .glass-panel { padding: 30px 20px; min-height: 480px; }
             h1 { font-size: 1.7rem; }
             .transition-image { max-width: 25%; max-height: 25%; }
-            .char { font-size: 2rem; }
+            .char { font-size: 2.2rem; }
+            .telegram-plane { width: 90px; height: 90px; }
         }
     </style>
 </head>
 <body>
 
+    <div class="intro-overlay" id="introOverlay">
+        <div class="magnetic-container" id="introMagneticText"></div>
+    </div>
+
     <div class="transition-screen" id="transitionScreen">
         <img src="https://pending404.github.io/image/ff-loding.png" alt="Loading" class="transition-image">
     </div>
 
-    <div class="resubscribe-overlay" id="resubscribeOverlay">
-        <div class="magnetic-container" id="magneticText"></div>
+    <div class="rocket-overlay" id="rocketOverlay">
+        <svg class="telegram-plane" id="telegramPlane" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22 2L2 8.66l7.18 2.52 10.36-9.13-7.9 9.87.03 5.48 3.06-4.22L20.44 22 22 2z"/>
+        </svg>
     </div>
 
     <div class="container" id="mainContainer">
@@ -315,7 +372,6 @@
                 </header>
                 
                 <form id="unsubscribeForm" novalidate>
-                    
                     <div class="form-group">
                         <label>Free Fire Player ID</label>
                         <input type="text" id="uid" inputmode="numeric" placeholder="Please enter your UID" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
@@ -386,7 +442,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // Prevent inspect element
+            // Security constraints
             document.addEventListener('contextmenu', event => event.preventDefault());
             document.onkeydown = function(e) {
                 if(e.keyCode == 123) return false;
@@ -394,18 +450,85 @@
                 if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
             }
 
+            const introOverlay = document.getElementById('introOverlay');
+            const introMagneticText = document.getElementById('introMagneticText');
+            const mainContainer = document.getElementById('mainContainer');
+            
             const proceedBtn = document.getElementById('proceedBtn');
             const glassPanel = document.getElementById('glassPanel');
             const formSection = document.getElementById('formSection');
             const processingSection = document.getElementById('processingSection');
             const processLog = document.getElementById('processLog');
             
-            const resubscribeOverlay = document.getElementById('resubscribeOverlay');
-            const magneticTextContainer = document.getElementById('magneticText');
+            const rocketOverlay = document.getElementById('rocketOverlay');
+            const telegramPlane = document.getElementById('telegramPlane');
             
             const transitionScreen = document.getElementById('transitionScreen');
 
-            // --- REMOVE RED LINE ON TYPING ---
+            // --- 1. INTRO MAGNETIC ANIMATION ---
+            function runIntroAnimation() {
+                const text = "FREE FIRE UNSUBSCRIBE";
+                introMagneticText.innerHTML = '';
+                const charElements = [];
+                const words = text.split(' ');
+
+                words.forEach((word, wordIndex) => {
+                    const wordDiv = document.createElement('div');
+                    wordDiv.style.display = 'inline-block';
+                    wordDiv.style.margin = '0 10px';
+
+                    word.split('').forEach(char => {
+                        const span = document.createElement('span');
+                        span.innerText = char;
+                        span.className = 'char';
+                        
+                        // Scatter far away initially
+                        const rx = (Math.random() - 0.5) * 2000;
+                        const ry = (Math.random() - 0.5) * 2000;
+                        const rz = (Math.random() - 0.5) * 1000;
+                        const rotate = (Math.random() - 0.5) * 360;
+                        
+                        span.style.transform = `translate3d(${rx}px, ${ry}px, ${rz}px) rotate(${rotate}deg) scale(3)`;
+                        
+                        wordDiv.appendChild(span);
+                        charElements.push(span);
+                    });
+                    
+                    introMagneticText.appendChild(wordDiv);
+                    if (wordIndex === 1) { // Break line after "FIRE"
+                        introMagneticText.appendChild(document.createElement('br'));
+                    }
+                });
+
+                // Animate to form the sentence
+                setTimeout(() => {
+                    charElements.forEach((span, i) => {
+                        setTimeout(() => {
+                            span.style.transition = 'transform 1s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.8s ease';
+                            span.style.transform = 'translate3d(0,0,0) rotate(0deg) scale(1)';
+                            span.style.opacity = '1';
+                        }, i * 35); // Stagger
+                    });
+                }, 100);
+
+                // Wait for animation to hold, then hide overlay and show container
+                const totalAnimTime = (charElements.length * 35) + 1000;
+                setTimeout(() => {
+                    introOverlay.classList.add('hide');
+                    mainContainer.style.display = 'block';
+                    
+                    // Small delay to trigger CSS fade in
+                    setTimeout(() => {
+                        mainContainer.classList.add('show');
+                    }, 50);
+
+                }, totalAnimTime + 1500); // 1.5s holding time
+            }
+
+            // Run intro immediately
+            runIntroAnimation();
+
+            // --- 2. FORM VALIDATION & RED LINE REMOVAL ---
             const allInputs = document.querySelectorAll('input, select');
             allInputs.forEach(input => {
                 input.addEventListener('input', function() {
@@ -415,7 +538,6 @@
                 });
             });
 
-            // Form validation logic
             proceedBtn.addEventListener('click', () => {
                 let isValid = true;
 
@@ -469,13 +591,12 @@
             function startSequence(uid, level, email) {
                 const maskedEmail = maskEmail(email);
 
-                // 1. Show Blinking Logo First
+                // Show Blinking Logo
                 transitionScreen.classList.add('active');
 
                 setTimeout(() => {
                     transitionScreen.classList.remove('active');
                     
-                    // 2. Hide Form, Show Processing Container
                     formSection.style.display = 'none';
                     processingSection.style.display = 'flex';
 
@@ -484,7 +605,7 @@
                 }, 1500); 
             }
 
-            // --- FAST TYPING CODING EFFECT (MULTI-COLORED) ---
+            // --- 3. CODING TYPING ANIMATION ---
             function runFastTypingAnimation(uid, level, maskedEmail) {
                 const logs = [
                     `<span class="c-system">[System]</span> Initiating secure connection to Free Fire Internal DB...`,
@@ -505,104 +626,68 @@
                         lineDiv.className = 'log-entry typing-cursor visible';
                         processLog.appendChild(lineDiv);
 
-                        // Typing logic that handles HTML tags safely
                         let textHTML = logs[lineIndex];
                         let currentHTML = "";
                         let isTag = false;
                         let i = 0;
 
-                        // Speed: 20ms per character
                         const typeInterval = setInterval(() => {
                             if (i < textHTML.length) {
                                 if (textHTML[i] === '<') isTag = true;
                                 currentHTML += textHTML[i];
                                 if (textHTML[i] === '>') isTag = false;
 
-                                lineDiv.innerHTML = currentHTML; // Update innerHTML
-                                processLog.scrollTop = processLog.scrollHeight; // Auto scroll
+                                lineDiv.innerHTML = currentHTML; 
+                                processLog.scrollTop = processLog.scrollHeight; 
                                 i++;
                             } else {
                                 clearInterval(typeInterval);
                                 lineDiv.classList.remove('typing-cursor');
                                 lineIndex++;
-                                setTimeout(typeNextLine, 300); // Wait 0.3s before next line
+                                setTimeout(typeNextLine, 300); 
                             }
                         }, 20);
 
                     } else {
-                        // After all text finished, show magnetic text
-                        setTimeout(triggerMagneticAnimation, 800);
+                        // All text done, trigger Rocket Illusion
+                        setTimeout(triggerRocketIllusion, 600);
                     }
                 }
 
                 typeNextLine();
             }
 
-            // --- MAGNETIC LETTER ANIMATION (SMOOTHER & SLOW-MO) ---
-            function triggerMagneticAnimation() {
-                resubscribeOverlay.style.opacity = '1';
-                resubscribeOverlay.style.pointerEvents = 'all';
-
-                const text = "FREE FIRE GMAIL RESUBSCRIBING";
-                magneticTextContainer.innerHTML = '';
-
-                // Create elements with randomized far-away starting points
-                const charElements = [];
-                const words = text.split(' ');
-
-                words.forEach((word, wordIndex) => {
-                    const wordDiv = document.createElement('div');
-                    wordDiv.style.display = 'inline-block';
-                    wordDiv.style.margin = '0 10px';
-
-                    word.split('').forEach(char => {
-                        const span = document.createElement('span');
-                        span.innerText = char;
-                        span.className = 'char';
-                        
-                        // Random positions (far away)
-                        const rx = (Math.random() - 0.5) * 2000;
-                        const ry = (Math.random() - 0.5) * 2000;
-                        const rz = (Math.random() - 0.5) * 1000;
-                        const rotate = (Math.random() - 0.5) * 360;
-                        
-                        span.style.transform = `translate3d(${rx}px, ${ry}px, ${rz}px) rotate(${rotate}deg) scale(3)`;
-                        
-                        wordDiv.appendChild(span);
-                        charElements.push(span);
-                    });
-                    
-                    magneticTextContainer.appendChild(wordDiv);
-                    if (wordIndex === 1) { // Break line after "FIRE"
-                        magneticTextContainer.appendChild(document.createElement('br'));
-                    }
-                });
-
-                // Force reflow
-                void magneticTextContainer.offsetWidth;
-
-                // Animate letters snapping together (SMOOTHER easing & SLOWER duration)
-                charElements.forEach((span, i) => {
-                    setTimeout(() => {
-                        span.style.transition = 'transform 1.2s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.8s ease';
-                        span.style.transform = 'translate3d(0,0,0) rotate(0deg) scale(1)';
-                        span.style.opacity = '1';
-                    }, i * 40); // Staggering effect
-                });
-
-                // Wait for animation + 2 seconds holding time -> Show Loading Logo
+            // --- 4. ROCKET ILLUSION ANIMATION ---
+            function triggerRocketIllusion() {
+                // Show rocket overlay
+                rocketOverlay.style.display = 'flex';
+                
+                // Slight delay to allow display:flex to register before animation
                 setTimeout(() => {
-                    resubscribeOverlay.style.opacity = '0';
+                    // Fly into center
+                    telegramPlane.classList.add('fly-in');
+                    
+                    // Hold in center for 1.2s to build illusion
                     setTimeout(() => {
-                        transitionScreen.style.zIndex = "10001";
-                        transitionScreen.classList.add('active');
-
-                        // Final Redirect
+                        // Fly away rapidly
+                        telegramPlane.classList.add('fly-out');
+                        
+                        // Wait for fly-out to finish, then show final blink and redirect
                         setTimeout(() => {
-                            window.location.href = "https://youtu.be/DK_UsATwoxI?si=lLLHC_Sr5TxTiY2x";
-                        }, 2500);
-                    }, 500);
-                }, (charElements.length * 40) + 3000); // 3s hold time after anim finishes
+                            rocketOverlay.style.display = 'none';
+                            
+                            transitionScreen.style.zIndex = "10010"; // Ensure above all
+                            transitionScreen.classList.add('active');
+
+                            setTimeout(() => {
+                                window.location.href = "https://youtu.be/DK_UsATwoxI?si=lLLHC_Sr5TxTiY2x";
+                            }, 2500);
+
+                        }, 800); // Fly out duration
+
+                    }, 1200); // Holding duration
+
+                }, 50);
             }
         });
     </script>
