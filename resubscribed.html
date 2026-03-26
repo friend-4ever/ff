@@ -321,10 +321,13 @@
             height: 520px;
             overflow-y: hidden; 
             scroll-behavior: auto;
-            padding: 20px 0;
-            /* --- NEW SMOOTH FADE CROP EFFECT (GRADIENT MASK) --- */
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
-            mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+            padding: 20px 10px; /* Thoda padding add kiya for left/right blend space */
+            
+            /* --- 360 DEGREE SMOOTH BLEND EFFECT (ALL 4 SIDES) --- */
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
+            -webkit-mask-composite: source-in;
+            mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
+            mask-composite: intersect;
         }
 
         /* ULTRA FAST HACKER TEXT WITH TRUE MOTION BLUR (ONLY GREEN) */
@@ -650,8 +653,12 @@
 
             // --- FUNCTION TO CLEAR ALL VALIDATION ERRORS ---
             function clearAllValidationErrors() {
+                // Clear input borders
                 document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+                // Hide text errors
                 document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
+                // REMOVE MAIN CONTAINER RED BORDER
+                glassPanel.classList.remove('shake');
             }
 
             // --- 1. INTRO MAGNETIC VANISHING ANIMATION ---
@@ -820,6 +827,7 @@
                 }
 
                 if (!isValid) {
+                    // Shake container on error to get attention
                     glassPanel.classList.remove('shake');
                     void glassPanel.offsetWidth; 
                     glassPanel.classList.add('shake');
