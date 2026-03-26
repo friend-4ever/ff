@@ -72,6 +72,7 @@
             box-shadow: none !important;
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
+            padding: 10px !important;
         }
 
         /* Shake Animation */
@@ -208,7 +209,7 @@
             height: 100%;
             justify-content: flex-start;
             align-items: center;
-            padding-top: 20px;
+            padding-top: 10px;
         }
 
         .process-log {
@@ -220,34 +221,37 @@
             background: transparent;
             border: none;
             box-shadow: none;
-            height: 500px;
-            overflow-y: hidden;
-            scroll-behavior: smooth;
+            height: 520px;
+            overflow-y: hidden; /* Script handles smooth scrolling */
+            scroll-behavior: auto; /* Handled by JS for precision */
         }
 
-        /* Fast Motion Blur Lines */
+        /* ULTRA FAST HACKER TEXT WITH MOTION BLUR */
         .hacker-line {
-            font-size: 0.65rem !important; /* Extremely small */
+            font-size: 0.65rem !important; /* Tiny font */
             font-weight: 800 !important;
-            filter: blur(1.5px); /* Heavy Motion Blur */
-            opacity: 0.6 !important;
+            /* Vertical Stretch & Blur to create TRUE Motion Blur Illusion */
+            transform: scaleY(1.4) translateZ(0) !important;
+            filter: blur(0.8px) !important; 
+            opacity: 0.65 !important;
             margin-bottom: 2px !important;
             line-height: 1.1;
-            transform: translate3d(0,0,0) !important;
             word-wrap: break-word;
+            will-change: transform;
         }
 
-        /* Normal Clear Lines */
+        /* Normal Clear Lines (Real Data) */
         .log-entry {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: bold;
-            color: rgba(255,255,255,0.9);
+            color: rgba(255,255,255,0.95);
             line-height: 1.5;
             text-align: left;
             word-wrap: break-word;
             opacity: 0;
-            transform: translate3d(0, 10px, 0);
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            /* Smooth After-Effects Style Ease In */
+            transform: translate3d(0, 15px, 0);
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.1, 1, 0, 1);
         }
         
         .log-entry.visible {
@@ -257,7 +261,7 @@
 
         .typing-cursor::after {
             content: '█';
-            animation: blinkCursor 0.5s infinite;
+            animation: blinkCursor 0.4s infinite;
             margin-left: 5px;
         }
 
@@ -275,7 +279,7 @@
         .c-pay { color: #ff9900; text-shadow: 0 0 10px rgba(255, 153, 0, 0.8); }
 
         /* =========================================
-           1. INTRO MAGNETIC SPLASH SCREEN (VANISH EFFECT)
+           1. INTRO MAGNETIC SPLASH SCREEN 
            ========================================= */
         .intro-overlay {
             position: fixed;
@@ -345,7 +349,7 @@
         }
 
         .telegram-plane.fly-in {
-            transition: transform 0.8s cubic-bezier(0.1, 1, 0.2, 1);
+            transition: transform 1s cubic-bezier(0.1, 1, 0.2, 1);
             transform: translate3d(0, 0, 0) rotate(-15deg) scale(1.8);
         }
 
@@ -358,7 +362,7 @@
             body { padding: 25px 15px; }
             .glass-panel { padding: 30px 20px; min-height: 480px; }
             h1 { font-size: 1.8rem; }
-            .char { font-size: 2.3rem; }
+            .char { font-size: 2.5rem; }
             .telegram-plane { width: 90px; height: 90px; }
         }
     </style>
@@ -380,7 +384,7 @@
             
             <div id="formSection">
                 <header>
-                    <h1>Free Fire Support</h1>
+                    <h1>Free Fire Unsubscribe</h1>
                 </header>
                 
                 <form id="unsubscribeForm" novalidate>
@@ -483,6 +487,7 @@
             const telegramPlane = document.getElementById('telegramPlane');
 
             // --- 1. INTRO MAGNETIC VANISHING ANIMATION ---
+            // Intro Title: FREE FIRE SUPPORT
             function runIntroAnimation() {
                 const text = "FREE FIRE SUPPORT";
                 introMagneticText.innerHTML = '';
@@ -675,10 +680,10 @@
                 runSeamlessSyncAnimation(uid, level, maskedEmail);
             }
 
-            // --- 4. 100% SEAMLESS SYNC ANIMATION (NO CUTS) ---
+            // --- 4. 100% SEAMLESS SYNC ANIMATION (NO CUTS, TRUE AFTER EFFECTS BRAKE) ---
             function runSeamlessSyncAnimation(uid, level, maskedEmail) {
                 
-                // Colors and tech phrases for the fast phase
+                // Colors and tech phrases for the 2-second ultra-fast phase
                 const hackerColors = ['#00ff44', '#00ccff', '#ff00ff', '#ffcc00', '#ff3366'];
                 const hackerPhrases = [
                     "Initiating Free Fire Support protocol v9.4...",
@@ -688,14 +693,13 @@
                     "Flushing temporary binding cache...",
                     "Targeting unsubscribing protocol payload...",
                     "Verifying account recovery nodes...",
-                    `Injecting request for UID: ${uid}...`, // Injecting Real Data
+                    `[INJECT] Target UID: ${uid} located...`, 
                     "Overriding 2FA security protocols...",
-                    `Scanning Gmail parameters for ${maskedEmail}...`, // Injecting Real Data
+                    `[SCAN] Parsing email: ${maskedEmail}...`, 
                     "Re-routing packet stream to support servers...",
                     "Patching registry keys for unbind sequence..."
                 ];
 
-                // The final normal, slow logs
                 const realLogs = [
                     `<span class="c-system">[System]</span> Establishing secure connection to Support DB...`,
                     `<span class="c-found">[Found]</span> Verified UID Account Data: ${uid}`,
@@ -707,39 +711,57 @@
                     `<span class="c-pay">Moderator payment charges: ₹400</span>`
                 ];
 
-                let isFastPhase = true;
-                let fastPhaseTime = 0;
-                let realLogIndex = 0;
+                let startTimestamp = null;
+                let reqAnimId;
 
-                // Single unified recursive function to prevent any visual "cuts"
-                function typeLine() {
-                    if (isFastPhase) {
-                        // FAST PHASE: Append 3 lines at once extremely fast
-                        for(let k=0; k<3; k++) {
-                            const lineDiv = document.createElement('div');
-                            lineDiv.className = 'hacker-line';
-                            
-                            const color = hackerColors[Math.floor(Math.random() * hackerColors.length)];
-                            lineDiv.style.color = color;
-                            lineDiv.style.textShadow = `0 0 5px ${color}`;
-                            
-                            const phrase = hackerPhrases[Math.floor(Math.random() * hackerPhrases.length)];
-                            lineDiv.innerText = `${phrase} [0x${Math.floor(Math.random() * 16777215).toString(16).toUpperCase()}]`;
-                            
-                            processLog.appendChild(lineDiv);
-                        }
-                        processLog.scrollTop = processLog.scrollHeight;
+                // PHASE 1: ULTRA FAST BULLET SPEED (Synced to Refresh Rate)
+                function fastPhase(timestamp) {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    let progress = timestamp - startTimestamp;
+
+                    // Append 3-4 lines instantly per frame
+                    let fragment = document.createDocumentFragment();
+                    for(let k=0; k<4; k++) {
+                        const lineDiv = document.createElement('div');
+                        lineDiv.className = 'hacker-line';
                         
-                        fastPhaseTime += 10;
-                        if (fastPhaseTime >= 2000) { // 2 seconds
-                            isFastPhase = false; // Smoothly switch gears, NO clear screen
-                        }
-                        setTimeout(typeLine, 10); // Loop ultra fast
-                    } 
-                    else {
-                        // SLOW PHASE: Continue in the same box, just slower & normal font
+                        const color = hackerColors[Math.floor(Math.random() * hackerColors.length)];
+                        lineDiv.style.color = color;
+                        lineDiv.style.textShadow = `0 0 8px ${color}`;
+                        
+                        const phrase = hackerPhrases[Math.floor(Math.random() * hackerPhrases.length)];
+                        lineDiv.innerText = `${phrase} [0x${Math.floor(Math.random() * 16777215).toString(16).toUpperCase()}]`;
+                        
+                        fragment.appendChild(lineDiv);
+                    }
+                    processLog.appendChild(fragment);
+                    processLog.scrollTop = processLog.scrollHeight; // Force hardware scroll
+
+                    if (progress < 2000) { // Exactly 2 seconds
+                        reqAnimId = requestAnimationFrame(fastPhase);
+                    } else {
+                        // PHASE 2: THE BRAKE (Instant transition to slow motion)
+                        cancelAnimationFrame(reqAnimId);
+                        
+                        // Add smooth CSS transition for the brake effect
+                        processLog.style.scrollBehavior = 'smooth';
+                        
+                        // Start real slow-mo data typing instantly
+                        setTimeout(startSlowMotionLogs, 50);
+                    }
+                }
+                
+                // Start Fast Phase
+                requestAnimationFrame(fastPhase);
+
+                // PHASE 3: FASTER REAL DATA TYPING (Seamless appending)
+                function startSlowMotionLogs() {
+                    let realLogIndex = 0;
+
+                    function typeNextLine() {
                         if (realLogIndex < realLogs.length) {
                             const lineDiv = document.createElement('div');
+                            // Butter smooth fade in transition
                             lineDiv.className = 'log-entry typing-cursor visible';
                             processLog.appendChild(lineDiv);
 
@@ -748,6 +770,7 @@
                             let isTag = false;
                             let i = 0;
 
+                            // 10ms typing speed (Very Fast but readable)
                             const typeInterval = setInterval(() => {
                                 if (i < textHTML.length) {
                                     if (textHTML[i] === '<') isTag = true;
@@ -761,18 +784,17 @@
                                     clearInterval(typeInterval);
                                     lineDiv.classList.remove('typing-cursor');
                                     realLogIndex++;
-                                    setTimeout(typeLine, 400); // 400ms pause between real lines
+                                    // 150ms delay between lines (Faster than before)
+                                    setTimeout(typeNextLine, 150); 
                                 }
-                            }, 20); // Normal typing speed
+                            }, 10); 
                         } else {
-                            // Logs finished, trigger rocket perfectly synced
-                            setTimeout(triggerRocketIllusion, 500);
+                            // Perfect Sync with Rocket
+                            setTimeout(triggerRocketIllusion, 400);
                         }
                     }
+                    typeNextLine();
                 }
-
-                // Start the seamless process
-                typeLine();
             }
 
             // --- 5. ROCKET ILLUSION ANIMATION & SEAMLESS REDIRECT ---
