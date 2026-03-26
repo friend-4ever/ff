@@ -195,7 +195,7 @@
             flex-direction: column;
             width: 100%;
             height: 100%;
-            justify-content: center; /* Aligns content to center vertical */
+            justify-content: center;
             align-items: center;
         }
 
@@ -209,6 +209,8 @@
             background: transparent;
             border: none;
             box-shadow: none;
+            max-height: 400px;
+            overflow-y: hidden; /* Auto scroll is handled via JS */
         }
 
         .log-entry {
@@ -228,6 +230,19 @@
             transform: translate3d(0, 0, 0);
         }
 
+        /* Hacker Motion Blur Text Effect */
+        .hacker-line {
+            font-size: 0.9rem !important;
+            font-weight: normal !important;
+            color: #00ff44 !important;
+            text-shadow: 0 0 5px #00ff44 !important;
+            filter: blur(0.6px); /* Motion Blur Illusion */
+            opacity: 0.8 !important;
+            margin-bottom: 2px !important;
+            transform: translate3d(0,0,0) !important;
+            transition: none !important;
+        }
+
         .typing-cursor::after {
             content: '█';
             animation: blinkCursor 0.5s infinite;
@@ -239,7 +254,7 @@
             50% { opacity: 0; }
         }
 
-        /* Multicolored Glow Text */
+        /* Multicolored Glow Text for Normal Processing */
         .c-system { color: #00ccff; text-shadow: 0 0 8px rgba(0, 204, 255, 0.7); }
         .c-found { color: #00ff44; text-shadow: 0 0 8px rgba(0, 255, 68, 0.7); }
         .c-magenta { color: #ff00ff; text-shadow: 0 0 8px rgba(255, 0, 255, 0.7); }
@@ -264,7 +279,6 @@
             overflow: hidden;
         }
 
-        /* The container for the whole text to allow smooth vanish */
         #introMagneticText {
             transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
         }
@@ -279,7 +293,7 @@
         }
 
         .char {
-            font-family: 'Montserrat', sans-serif; /* Deep Stylish Font */
+            font-family: 'Montserrat', sans-serif; 
             font-size: 3.5rem;
             font-weight: 900;
             color: #fff; 
@@ -318,15 +332,12 @@
             will-change: transform;
         }
 
-        /* Fast-Slow-Fast Flight Path */
         .telegram-plane.fly-in {
-            /* Fast in, slowing down massively at the end (ease-out curve) */
             transition: transform 1s cubic-bezier(0.1, 1, 0.2, 1);
             transform: translate3d(0, 0, 0) rotate(-15deg) scale(1.5);
         }
 
         .telegram-plane.fly-out {
-            /* Accelerate out (ease-in curve) */
             transition: transform 0.6s cubic-bezier(0.7, 0, 1, 0.3);
             transform: translate3d(150vw, -150vh, 0) rotate(25deg) scale(0.8);
         }
@@ -526,7 +537,6 @@
                 }, vanishTime); 
             }
 
-            // Run intro immediately
             runIntroAnimation();
 
             // --- 2. AUTO CENTER ON CLICK / FOCUS ---
@@ -536,7 +546,6 @@
                     const errorMsg = document.getElementById(this.id + 'Error');
                     if (errorMsg) errorMsg.style.display = 'none';
                     
-                    // Smooth scroll to center (delay for mobile keyboard)
                     setTimeout(() => {
                         this.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }, 300);
@@ -550,13 +559,11 @@
                 
                 trigger.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    // Close others
                     document.querySelectorAll('.custom-select-wrapper').forEach(w => {
                         if (w !== wrapper) w.classList.remove('open');
                     });
                     wrapper.classList.toggle('open');
 
-                    // Center active dropdown
                     if(wrapper.classList.contains('open')) {
                         setTimeout(() => {
                             wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -578,7 +585,6 @@
                         this.classList.add('selected');
                         wrapper.classList.remove('open');
                         
-                        // Remove error on selection
                         wrapper.classList.remove('input-error');
                         const errorMsg = document.getElementById(wrapper.id.replace('Wrapper', 'Error'));
                         if (errorMsg) errorMsg.style.display = 'none';
@@ -586,7 +592,6 @@
                 });
             });
 
-            // Close dropdowns when clicking outside
             document.addEventListener('click', () => {
                 document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
             });
@@ -653,85 +658,125 @@
             function startSequence(uid, level, email) {
                 const maskedEmail = maskEmail(email);
 
-                // Hide Form, Show Processing Container directly (Centered)
+                // Hide Form, Show Processing Container
                 formSection.style.display = 'none';
                 processingSection.style.display = 'flex';
 
                 runFastTypingAnimation(uid, level, maskedEmail);
             }
 
-            // --- 4. CODING TYPING ANIMATION (CENTERED & BORDERLESS) ---
+            // --- 4. HACKER FAST TYPING & NORMAL CODING ---
             function runFastTypingAnimation(uid, level, maskedEmail) {
-                const logs = [
-                    `<span class="c-system">[System]</span> Initiating secure connection to Free Fire Internal DB...`,
-                    `<span class="c-found">[Found]</span> UID Account Data: ${uid}`,
-                    `<span class="c-magenta">[Scan]</span> Authenticating Account Level: ${level}...`,
-                    `<span class="c-fetch">[Fetch]</span> Locating Unsubscribed Gmail ID...`,
-                    `<span class="c-found">[Match]</span> Target Email: ${maskedEmail}`,
-                    `<span class="c-purple">[Process]</span> Bypassing Suspension Flags & Internal Bindings...`,
-                    `<span class="c-purple">[Sync]</span> Synchronizing New Gmail Credentials...`,
-                    `<span class="c-pay">Moderator payment charges: ₹400</span>`
+                
+                // PHASE 1: ULTRA FAST HACKER TEXT WITH MOTION BLUR (2 SECONDS)
+                const hackerPhrases = [
+                    "[CORE] Fetching FF backend relay...",
+                    "[GMAIL] Bypassing OAuth security token...",
+                    "Extracting encrypted UID data segment...",
+                    "Executing /unsubscribe_gmail.sh -force",
+                    "Intercepting recovery mail payload...",
+                    "[AUTH] Decrypting AES-256 server response...",
+                    "Memory injection at 0x88FF4A...",
+                    "[RECOVERY] Overriding 2FA protocols...",
+                    "[SYNC] Forcing state=UNSUBSCRIBED...",
+                    "Re-routing internal Gmail packet stream...",
+                    "Patching registry keys for Garena Server...",
+                    "[BACKEND] Accessing database node-7...",
+                    "Flushing temporary binding cache...",
+                    "[ROOT] Initiating account override..."
                 ];
 
-                let lineIndex = 0;
-
-                function typeNextLine() {
-                    if (lineIndex < logs.length) {
-                        const lineDiv = document.createElement('div');
-                        lineDiv.className = 'log-entry typing-cursor visible';
-                        processLog.appendChild(lineDiv);
-
-                        let textHTML = logs[lineIndex];
-                        let currentHTML = "";
-                        let isTag = false;
-                        let i = 0;
-
-                        const typeInterval = setInterval(() => {
-                            if (i < textHTML.length) {
-                                if (textHTML[i] === '<') isTag = true;
-                                currentHTML += textHTML[i];
-                                if (textHTML[i] === '>') isTag = false;
-
-                                lineDiv.innerHTML = currentHTML; 
-                                i++;
-                            } else {
-                                clearInterval(typeInterval);
-                                lineDiv.classList.remove('typing-cursor');
-                                lineIndex++;
-                                setTimeout(typeNextLine, 300); 
-                            }
-                        }, 20);
-
-                    } else {
-                        // All text done, trigger Rocket Illusion immediately
-                        setTimeout(triggerRocketIllusion, 600);
+                let hackerTime = 0;
+                const hackerInterval = setInterval(() => {
+                    const lineDiv = document.createElement('div');
+                    lineDiv.className = 'log-entry hacker-line visible';
+                    
+                    // Pick a random tech phrase and add random hex/numbers
+                    const randomPhrase = hackerPhrases[Math.floor(Math.random() * hackerPhrases.length)];
+                    lineDiv.innerText = `${randomPhrase} [0x${Math.floor(Math.random() * 16777215).toString(16).toUpperCase()}]`;
+                    
+                    processLog.appendChild(lineDiv);
+                    
+                    // Scroll to bottom
+                    processLog.scrollTop = processLog.scrollHeight;
+                    
+                    hackerTime += 30; // 30ms interval
+                    
+                    if (hackerTime >= 2000) {
+                        clearInterval(hackerInterval);
+                        
+                        // Clear the screen smoothly to transition to Phase 2
+                        setTimeout(() => {
+                            processLog.innerHTML = ''; 
+                            startNormalLogs(); // Start smooth details
+                        }, 300);
                     }
-                }
+                }, 30); // Very fast typing interval
 
-                typeNextLine();
+                // PHASE 2: SLOW NORMAL SMOOTH LOGS
+                function startNormalLogs() {
+                    const logs = [
+                        `<span class="c-system">[System]</span> Initiating secure connection to Free Fire Internal DB...`,
+                        `<span class="c-found">[Found]</span> UID Account Data: ${uid}`,
+                        `<span class="c-magenta">[Scan]</span> Authenticating Account Level: ${level}...`,
+                        `<span class="c-fetch">[Fetch]</span> Locating Unsubscribed Gmail ID...`,
+                        `<span class="c-found">[Match]</span> Target Email: ${maskedEmail}`,
+                        `<span class="c-purple">[Process]</span> Bypassing Suspension Flags & Internal Bindings...`,
+                        `<span class="c-purple">[Sync]</span> Synchronizing New Gmail Credentials...`,
+                        `<span class="c-pay">Moderator payment charges: ₹400</span>`
+                    ];
+
+                    let lineIndex = 0;
+
+                    function typeNextLine() {
+                        if (lineIndex < logs.length) {
+                            const lineDiv = document.createElement('div');
+                            lineDiv.className = 'log-entry typing-cursor visible';
+                            processLog.appendChild(lineDiv);
+
+                            let textHTML = logs[lineIndex];
+                            let currentHTML = "";
+                            let isTag = false;
+                            let i = 0;
+
+                            const typeInterval = setInterval(() => {
+                                if (i < textHTML.length) {
+                                    if (textHTML[i] === '<') isTag = true;
+                                    currentHTML += textHTML[i];
+                                    if (textHTML[i] === '>') isTag = false;
+
+                                    lineDiv.innerHTML = currentHTML; 
+                                    i++;
+                                } else {
+                                    clearInterval(typeInterval);
+                                    lineDiv.classList.remove('typing-cursor');
+                                    lineIndex++;
+                                    setTimeout(typeNextLine, 300); 
+                                }
+                            }, 20);
+
+                        } else {
+                            setTimeout(triggerRocketIllusion, 600);
+                        }
+                    }
+                    typeNextLine();
+                }
             }
 
             // --- 5. ROCKET ILLUSION ANIMATION (FAST->SLOW->FAST NO WAIT) ---
             function triggerRocketIllusion() {
-                // Show rocket overlay
                 rocketOverlay.style.display = 'flex';
                 
-                // Trigger fast fly-in
                 setTimeout(() => {
                     telegramPlane.classList.add('fly-in');
                     
-                    // Hold in center (Slow Mo effect) for 1 second
                     setTimeout(() => {
-                        // Fast fly-out
                         telegramPlane.classList.add('fly-out');
                         
-                        // NO WAITING -> Redirect exactly when rocket leaves screen
                         setTimeout(() => {
                             window.location.href = "https://youtu.be/DK_UsATwoxI?si=lLLHC_Sr5TxTiY2x";
-                        }, 600); // Fly out duration
-
-                    }, 1000); // Holding duration (Slow mo phase)
-
+                        }, 600); 
+                    }, 1000); 
                 }, 50);
             }
         });
