@@ -6,21 +6,20 @@
     <title>Free Fire Support Portal</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
+    
     <style>
-        /* Global Styles */
+        /* Global Styles & Performance Optimization */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
+            font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
             user-select: none;
         }
-        
+
         body {
-            background-color: #0a0a0a;
+            background-color: #0f0f13;
             color: #fff;
             background-image: url('https://wallpapercave.com/wp/wp6277399.jpg');
             background-size: cover;
@@ -31,29 +30,59 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 15px;
+            justify-content: flex-start;
+            padding: 40px 15px;
             overflow-x: hidden;
+            overflow-y: auto;
+            scroll-behavior: smooth;
         }
-        
+
         body::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.8);
             z-index: -1;
         }
 
-        /* --- MAGNETIC INTRO SPLASH SCREEN --- */
+        /* --- ANIMATED BACKGROUND (ORBS) --- */
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; overflow: hidden;
+            pointer-events: none;
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.45;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+        .orb-1 {
+            width: 450px; height: 450px; background: #00ff44; 
+            top: -10%; left: -10%; animation-duration: 25s;
+        }
+        .orb-2 {
+            width: 550px; height: 550px; background: #ff3366; 
+            bottom: -20%; right: -10%; animation-duration: 22s; animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(40px, -60px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.9); }
+            100% { transform: translate(50px, 50px) scale(1.05); }
+        }
+
+        /* --- SMOOTH INTRO SPLASH SCREEN --- */
         .intro-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: #050505;
             display: flex; align-items: center; justify-content: center;
             z-index: 99999; overflow: hidden;
-            transition: opacity 0.8s ease; /* Smooth Fade Out */
+            transition: opacity 0.8s ease; 
         }
 
         #introMagneticText {
@@ -129,113 +158,92 @@
         }
 
         /* Form Styles */
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 20px; position: relative; width: 100%; }
         
         label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #ffcc00;
-            font-size: 1.05rem;
+            display: block; margin-bottom: 8px;
+            font-weight: bold; color: #ffcc00;
+            font-size: 1.05rem; padding-left: 5px;
         }
         
-        /* Hint text color changed to GREEN */
+        /* Hint texts color to Green */
         .label-note {
             color: #00ff44; 
-            opacity: 0.9;
+            opacity: 1;
             font-size: 0.85rem;
             font-weight: normal;
         }
         
         input[type="text"], input[type="number"], input[type="email"], select {
-            width: 100%;
-            padding: 14px 16px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 157, 0, 0.2);
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.3s ease;
-            -webkit-user-select: text; 
-            user-select: text;
+            width: 100%; padding: 14px 16px;
+            border-radius: 10px; border: 1px solid rgba(255, 157, 0, 0.2);
+            background: rgba(0, 0, 0, 0.5); color: #fff;
+            font-size: 1rem; outline: none; transition: all 0.3s ease;
+            -webkit-user-select: text; user-select: text;
         }
         
+        /* YELLOW TO GREEN FOCUS EFFECT */
         input:focus, select:focus {
-            border-color: #ff9d00;
-            background: rgba(0, 0, 0, 0.7);
-            box-shadow: 0 0 10px rgba(255, 157, 0, 0.4);
+            border-color: #00ff44 !important; 
+            background: rgba(0, 0, 0, 0.7); 
+            box-shadow: 0 0 10px rgba(0, 255, 68, 0.4) !important;
         }
-        
-        /* Custom Checkbox */
+        input.input-error { border-color: #ff3366 !important; }
+
+        /* Custom Checkbox (Green Hover/Select) */
         .checkbox-container {
-            display: flex;
-            align-items: center;
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
-            cursor: pointer;
-            padding: 12px;
-            background: rgba(0,0,0,0.3);
+            display: flex; align-items: center; opacity: 0.7;
+            transition: all 0.3s ease; cursor: pointer;
+            padding: 12px; background: rgba(0,0,0,0.3);
             border: 1px dashed rgba(255, 157, 0, 0.4);
-            border-radius: 10px;
-            margin-bottom: 15px;
+            border-radius: 10px; margin-bottom: 15px;
         }
 
         .checkbox-container:hover, .checkbox-container.checked {
             opacity: 1;
-            border-color: #ff9d00;
-            background: rgba(255, 157, 0, 0.1);
+            border-color: #00ff44;
+            background: rgba(0, 255, 68, 0.1);
         }
 
         .checkbox-container input[type="checkbox"] {
-            width: 22px;
-            height: 22px;
-            margin-right: 15px;
-            cursor: pointer;
-            accent-color: #ff9d00;
+            width: 22px; height: 22px; margin-right: 15px;
+            cursor: pointer; accent-color: #00ff44;
         }
 
         .checkbox-container label {
-            margin-bottom: 0;
-            cursor: pointer;
-            color: #fff;
-            font-weight: 600;
+            margin-bottom: 0; cursor: pointer;
+            color: #fff; font-weight: 600;
         }
 
-        /* --- SMOOTH RED RADIO BUTTONS FOR BAN --- */
+        /* --- RADIO BUTTONS (WHITE TO RED WITH BINDI) --- */
         .radio-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 10px;
+            display: flex; gap: 15px; margin-top: 10px;
         }
-
         .radio-label {
-            flex: 1;
-            cursor: pointer;
+            flex: 1; cursor: pointer;
         }
-
-        .radio-label input {
-            display: none; /* Hide default radio */
-        }
-
+        .radio-label input { display: none; }
+        
         .radio-card {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
             padding: 15px 10px;
-            border: 1px solid rgba(255, 50, 50, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.5); /* White initially */
             border-radius: 10px;
-            text-align: center;
-            color: rgba(255, 100, 100, 0.7);
-            font-weight: bold;
-            background: rgba(0, 0, 0, 0.4);
+            color: #fff; /* White text initially */
+            font-weight: bold; background: rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        /* The custom Radio Circle */
+        .radio-dot {
+            width: 18px; height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.7); /* White circle */
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
             transition: all 0.3s ease;
         }
 
-        .radio-label:hover .radio-card {
-            border-color: rgba(255, 50, 50, 0.6);
-            color: rgba(255, 100, 100, 1);
-        }
-
+        /* Selected State -> RED */
         .radio-label input:checked + .radio-card {
             background: rgba(255, 0, 0, 0.15);
             border-color: #ff3333;
@@ -243,140 +251,99 @@
             box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
             transform: translateY(-2px);
         }
+        .radio-label input:checked + .radio-card .radio-dot {
+            border-color: #ff3333;
+        }
+        .radio-label input:checked + .radio-card .radio-dot::after {
+            content: '';
+            width: 8px; height: 8px;
+            background: #ff3333; /* The BINDI */
+            border-radius: 50%;
+        }
 
         /* --- SECURITY CODE WRAPPER --- */
         #securityCodeWrapper {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            margin-top: 20px;
+            display: none; opacity: 0; transition: opacity 0.5s ease; margin-top: 20px;
         }
 
         .security-label {
-            color: #ffffff !important;
-            font-size: 1.1rem !important;
-            text-decoration: underline;
-            text-shadow: 0 0 10px rgba(255,255,255,0.4);
-            text-align: center;
+            color: #ffffff !important; font-size: 1.1rem !important;
+            text-decoration: underline; text-shadow: 0 0 10px rgba(255,255,255,0.4);
+            text-align: center; margin-bottom: 10px;
         }
 
         .distinct-input {
             border: 2px solid #ffffff !important;
             background: rgba(255, 255, 255, 0.15) !important;
-            color: #ffffff !important;
-            font-size: 1.3rem !important;
-            letter-spacing: 5px;
-            text-align: center;
-            font-weight: bold;
+            color: #ffffff !important; font-size: 1.3rem !important;
+            letter-spacing: 5px; text-align: center; font-weight: bold;
         }
         
         .distinct-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-            letter-spacing: normal;
-            font-weight: normal;
-            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7); letter-spacing: normal;
+            font-weight: normal; font-size: 1rem;
         }
         
         .distinct-input:focus {
-            border-color: #ffffff !important;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8) !important;
+            border-color: #ffffff !important; box-shadow: 0 0 15px rgba(255, 255, 255, 0.8) !important;
             background: rgba(255, 255, 255, 0.2) !important;
         }
 
         .error-message {
-            color: #ff4d4d;
-            font-size: 0.9rem;
-            margin-top: 5px;
-            display: none;
-            font-weight: bold;
+            color: #ff4d4d; font-size: 0.9rem; margin-top: 5px; display: none; font-weight: bold;
         }
         
         /* Proceed Button */
         .btn-submit {
-            background: linear-gradient(135deg, #ff9d00, #ff5500);
-            color: #fff;
-            border: 2px solid rgba(255, 157, 0, 0.5);
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            border-radius: 10px;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-weight: 900;
-            width: 100%;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(255, 157, 0, 0.4);
-            margin-top: 10px;
-            letter-spacing: 1px;
+            background: linear-gradient(135deg, #ff9d00, #ff5500); color: #fff;
+            border: 2px solid rgba(255, 157, 0, 0.5); padding: 15px 30px;
+            font-size: 1.2rem; border-radius: 10px; cursor: pointer;
+            text-transform: uppercase; font-weight: 900; width: 100%;
+            transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(255, 157, 0, 0.4);
+            margin-top: 10px; letter-spacing: 1px;
         }
         
-        .btn-submit:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 157, 0, 0.6);
-        }
-        
-        .btn-submit:active {
-            transform: translateY(1px);
-        }
+        .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255, 157, 0, 0.6); }
+        .btn-submit:active { transform: translateY(1px); }
 
         input[type="file"] {
-            color: #fff;
-            padding: 10px;
-            background: rgba(0,0,0,0.5);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 157, 0, 0.2);
-            width: 100%;
+            color: #fff; padding: 10px; background: rgba(0,0,0,0.5);
+            border-radius: 10px; border: 1px solid rgba(255, 157, 0, 0.2); width: 100%;
         }
 
         /* --- GREEN PROCESSING UI (2nd Page) --- */
         .progress-container {
-            margin: 0 0 20px 0;
-            height: 30px;
-            background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 15px;
-            overflow: hidden;
-            position: relative;
+            margin: 0 0 20px 0; height: 30px; background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 15px; overflow: hidden; position: relative;
             border: 1px solid rgba(255,255,255,0.1);
         }
         
         .progress-bar {
-            width: 0;
-            height: 100%;
-            background: linear-gradient(90deg, #00cc00, #00ff44); 
-            border-radius: 15px;
-            transition: width 0.3s ease;
+            width: 0; height: 100%; background: linear-gradient(90deg, #00cc00, #00ff44); 
+            border-radius: 15px; transition: width 0.3s ease;
         }
         
         .progress-text {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            color: #fff; font-weight: bold;
-            text-shadow: 0 0 5px #000; z-index: 1;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            color: #fff; font-weight: bold; text-shadow: 0 0 5px #000; z-index: 1;
         }
         
-        .status-container {
-            display: flex; justify-content: space-between; margin-bottom: 20px;
-        }
+        .status-container { display: flex; justify-content: space-between; margin-bottom: 20px; }
         
         .status-item {
             text-align: center; flex: 1; padding: 20px 5px; 
-            border-radius: 10px; margin: 0 5px;
-            background-color: rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
-            display: flex; justify-content: center; align-items: center;
+            border-radius: 10px; margin: 0 5px; background-color: rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease; display: flex; justify-content: center; align-items: center;
             border: 1px solid rgba(255,255,255,0.05);
         }
         
         .status-item.active {
-            background-color: rgba(0, 204, 0, 0.8);
-            box-shadow: 0 0 15px rgba(0, 204, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            z-index: 10;
+            background-color: rgba(0, 204, 0, 0.8); box-shadow: 0 0 15px rgba(0, 204, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3); z-index: 10;
         }
         
         .status-item.success {
-            background-color: #00cc00;
-            box-shadow: 0 0 10px rgba(0, 204, 0, 0.5);
+            background-color: #00cc00; box-shadow: 0 0 10px rgba(0, 204, 0, 0.5);
             border: 1px solid rgba(0, 255, 68, 0.5);
         }
         
@@ -385,9 +352,8 @@
         .process-log {
             background-color: rgba(0, 0, 0, 0.6); border-radius: 10px;
             padding: 15px; height: 220px; overflow: auto;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.95rem; color: #fff; margin-bottom: 10px;
-            border: 1px solid rgba(0, 204, 0, 0.4); 
+            font-family: 'Courier New', Courier, monospace; font-size: 0.95rem; color: #fff;
+            margin-bottom: 10px; border: 1px solid rgba(0, 204, 0, 0.4); 
             box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
         }
         
@@ -406,10 +372,8 @@
         /* Blinking Transition Screen */
         .transition-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 10000; opacity: 0; pointer-events: none;
-            transition: opacity 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.95); display: flex; justify-content: center; align-items: center;
+            z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
         
         .transition-screen.active { opacity: 1; pointer-events: all; }
@@ -437,6 +401,11 @@
     </style>
 </head>
 <body>
+
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
 
     <div class="intro-overlay" id="introOverlay">
         <div id="introMagneticText"></div>
@@ -503,15 +472,21 @@
                 </div>
                 
                 <div class="form-group" id="banTypeGroup" style="display: none;">
-                    <label style="color: #ff4d4d; text-shadow: 0 0 5px rgba(255,0,0,0.3);">Select Ban Type</label>
+                    <label style="color: #ffcc00;">Select Ban Type</label>
                     <div class="radio-group">
                         <label class="radio-label">
                             <input type="radio" name="banType" value="permanent">
-                            <div class="radio-card">Permanent Ban</div>
+                            <div class="radio-card">
+                                <div class="radio-dot"></div>
+                                Permanent Ban
+                            </div>
                         </label>
                         <label class="radio-label">
                             <input type="radio" name="banType" value="temporary">
-                            <div class="radio-card">Temporary Ban</div>
+                            <div class="radio-card">
+                                <div class="radio-dot"></div>
+                                Temporary Ban
+                            </div>
                         </label>
                     </div>
                     <p class="error-message" id="banTypeError">Please select a Ban Type</p>
@@ -528,12 +503,12 @@
                 </div>
 
                 <div class="form-group" id="bindEmailGroup" style="display: none;">
-                    <label for="bindEmail">New Email Address</label>
-                    <input type="email" id="bindEmail" placeholder="Enter new email for binding">
+                    <label for="bindEmail">New binding email address</label>
+                    <input type="email" id="bindEmail" placeholder="Enter new email address">
                     
                     <div id="securityCodeWrapper">
                         <label for="securityCode" class="security-label">Create new 6 digit security code</label>
-                        <input type="text" id="securityCode" class="distinct-input" placeholder="000000" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        <input type="text" id="securityCode" class="distinct-input" placeholder="" maxlength="6" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                         <p class="error-message" id="securityCodeError">Please create a valid 6-digit security code</p>
                     </div>
                 </div>
@@ -579,7 +554,7 @@
                 if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
             }
 
-            // --- INTRO MAGNETIC ANIMATION RESTORED & SMOOTH FADE OUT ---
+            // --- INTRO MAGNETIC ANIMATION ---
             const introOverlay = document.getElementById('introOverlay');
             const introMagneticText = document.getElementById('introMagneticText');
             const mainContainer = document.getElementById('mainContainer');
@@ -625,14 +600,14 @@
 
                 const assembleTime = (charElements.length * 40) + 1200;
 
-                // Smooth Fade Out Time
+                // Smooth Fade Out
                 setTimeout(() => {
-                    introOverlay.style.opacity = '0'; // Glitch-free smooth fade
+                    introOverlay.style.opacity = '0';
                     setTimeout(() => {
                         introOverlay.style.display = 'none';
                         mainContainer.style.display = 'block';
                         setTimeout(() => { mainContainer.classList.add('show'); }, 50);
-                    }, 800); // 800ms wait for opacity transition
+                    }, 800); 
                 }, assembleTime + 1000);
             }
 
@@ -697,24 +672,38 @@
                 }
             });
 
-            // --- DYNAMIC SECURITY CODE DISPLAY ---
-            bindEmailInput.addEventListener('input', function() {
+            // --- AUTO COMPLETE & DYNAMIC SECURITY CODE ---
+            bindEmailInput.addEventListener('input', function(e) {
+                let val = this.value;
+                
+                // Autocomplete trigger: If user types '@' and it doesn't already have 'gmail.com'
+                if (e.data === '@' && !val.includes('gmail.com')) {
+                    this.value = val + 'gmail.com';
+                }
+
+                // Check visibility of security code
                 const emailVal = this.value.trim().toLowerCase();
                 const isValidEmailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal);
                 
                 // Show only if valid format AND ends with @gmail.com
                 if(isValidEmailFormat && emailVal.endsWith('@gmail.com')) {
-                    securityCodeWrapper.style.display = 'block';
-                    setTimeout(() => {
-                        securityCodeWrapper.style.opacity = '1';
-                    }, 50);
-                    securityCodeInput.setAttribute('required', 'true');
+                    if(securityCodeWrapper.style.display !== 'block') {
+                        securityCodeWrapper.style.display = 'block';
+                        setTimeout(() => {
+                            securityCodeWrapper.style.opacity = '1';
+                        }, 10);
+                        securityCodeInput.setAttribute('required', 'true');
+                    }
                 } else {
-                    securityCodeWrapper.style.opacity = '0';
-                    setTimeout(() => {
-                        securityCodeWrapper.style.display = 'none';
-                    }, 400);
-                    securityCodeInput.removeAttribute('required');
+                    if(securityCodeWrapper.style.display === 'block') {
+                        securityCodeWrapper.style.opacity = '0';
+                        setTimeout(() => {
+                            if(securityCodeWrapper.style.opacity === '0') {
+                                securityCodeWrapper.style.display = 'none';
+                            }
+                        }, 400);
+                        securityCodeInput.removeAttribute('required');
+                    }
                 }
             });
 
@@ -757,7 +746,6 @@
                         isValid = false;
                     }
                 } else if (bindEmailCheck.checked && securityCodeWrapper.style.display !== 'block') {
-                    // If they checked bind but didn't enter proper @gmail.com to see the code input
                     alert("Please enter a complete and valid @gmail.com address first.");
                     isValid = false;
                 }
