@@ -6,8 +6,6 @@
     <title>Free Fire Support Portal</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
         /* Global Styles */
         * {
@@ -24,6 +22,7 @@
         body {
             background-color: #0a0a0a;
             color: #fff;
+            /* Applied your Background Image */
             background-image: url('https://wallpapercave.com/wp/wp6277399.jpg');
             background-size: cover;
             background-position: center;
@@ -44,33 +43,36 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.75);
+            background-color: rgba(0, 0, 0, 0.8);
             z-index: -1;
         }
 
-        /* INTRO MAGNETIC SPLASH SCREEN */
+        /* --- SMOOTH INTRO SPLASH SCREEN (No Glitch) --- */
         .intro-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: #050505;
             display: flex; align-items: center; justify-content: center;
-            z-index: 99999; overflow: hidden;
+            z-index: 99999; 
+            transition: opacity 0.8s ease;
         }
 
-        #introMagneticText {
-            transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
-            display: flex; flex-wrap: wrap; justify-content: center;
-            max-width: 95%; text-align: center; perspective: 1000px;
-        }
-
-        .char {
-            font-family: 'Montserrat', sans-serif; 
-            font-size: 3.8rem; font-weight: 900;
-            color: #ff9d00; 
+        .intro-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: #ff9d00;
             text-transform: uppercase;
-            text-shadow: 0 0 20px rgba(255, 157, 0, 0.9), 0 0 40px rgba(255, 100, 0, 0.7); 
-            display: inline-block; opacity: 0;
-            will-change: transform, opacity;
+            text-shadow: 0 0 20px rgba(255, 157, 0, 0.9);
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.85);
+            transition: opacity 1.2s ease, transform 1.2s ease;
+        }
+
+        .intro-text.visible {
+            opacity: 1;
+            transform: scale(1);
         }
 
         /* Container */
@@ -90,18 +92,19 @@
 
         /* Liquid Glass Panel */
         .glass-panel {
-            background: rgba(20, 20, 25, 0.45);
+            background: rgba(20, 20, 25, 0.55);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 157, 0, 0.3);
             border-radius: 20px;
             padding: 35px 25px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 157, 0, 0.05);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 157, 0, 0.05);
             position: relative;
             margin-bottom: 20px;
             width: 100%;
         }
 
+        /* Header */
         header {
             text-align: center;
             margin-bottom: 25px;
@@ -109,7 +112,7 @@
 
         .logo {
             max-width: 150px;
-            margin-bottom: 10px;
+            margin-bottom: 10px; /* Logo Upar */
             animation: pulse 2s ease-in-out infinite alternate;
         }
 
@@ -125,7 +128,7 @@
             font-weight: 900;
             color: #ff9d00;
             text-shadow: 0 0 15px rgba(255, 157, 0, 0.8);
-            margin-top: 5px;
+            margin-top: 5px; /* Text Niche */
         }
 
         /* Form Styles */
@@ -168,7 +171,7 @@
             box-shadow: 0 0 10px rgba(255, 157, 0, 0.4);
         }
         
-        /* Custom Checkbox Style */
+        /* Custom Checkbox */
         .checkbox-container {
             display: flex;
             align-items: center;
@@ -203,16 +206,24 @@
             font-weight: 600;
         }
 
-        /* Radio Buttons for Ban Type - GREEN THEME */
+        /* --- RED THEME BAN OPTIONS --- */
+        .red-theme-group {
+            background: rgba(255, 0, 0, 0.08); 
+            border: 1px solid rgba(255, 50, 50, 0.4);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 5px;
+        }
+        
+        .red-theme-group > label {
+            color: #ff3333;
+            text-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+            margin-bottom: 12px;
+        }
+
         .radio-group {
             display: flex;
             gap: 20px;
-            margin-top: 10px;
-            margin-bottom: 15px;
-            padding: 15px;
-            background: rgba(0, 255, 68, 0.05); /* Slight green tint */
-            border: 1px solid rgba(0, 255, 68, 0.2);
-            border-radius: 8px;
         }
 
         .radio-item {
@@ -225,38 +236,49 @@
             width: 20px;
             height: 20px;
             margin-right: 8px;
-            accent-color: #00ff44; /* Green radio button */
+            accent-color: #ff1a1a; /* Red Radio */
             cursor: pointer;
         }
 
         .radio-item label {
-            color: #00ff44; /* Green text */
-            text-shadow: 0 0 5px rgba(0, 255, 68, 0.4);
+            color: #ff4d4d; /* Red Text */
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
             margin-bottom: 0;
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
         }
 
-        /* DISTINCT SECURITY CODE INPUT */
+        /* --- WHITE SECURITY CODE INPUT --- */
+        .security-label {
+            margin-top: 20px !important;
+            color: #ffffff !important;
+            font-size: 1.1rem !important;
+            text-decoration: underline;
+            text-shadow: 0 0 10px rgba(255,255,255,0.4);
+        }
+
         .distinct-input {
-            border: 2px solid #fff !important;
-            background: rgba(255, 255, 255, 0.1) !important;
-            color: #fff !important;
-            font-size: 1.2rem !important;
-            letter-spacing: 4px;
+            border: 2px solid #ffffff !important;
+            background: rgba(255, 255, 255, 0.15) !important;
+            color: #ffffff !important;
+            font-size: 1.3rem !important;
+            letter-spacing: 5px;
             text-align: center;
             font-weight: bold;
         }
+        
         .distinct-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.7);
             letter-spacing: normal;
             font-weight: normal;
             font-size: 1rem;
         }
+        
         .distinct-input:focus {
             border-color: #ffffff !important;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.6) !important;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8) !important;
+            background: rgba(255, 255, 255, 0.2) !important;
         }
 
         .error-message {
@@ -267,7 +289,7 @@
             font-weight: bold;
         }
         
-        /* Button Styles */
+        /* Proceed Button */
         .btn-submit {
             background: linear-gradient(135deg, #ff9d00, #ff5500);
             color: #fff;
@@ -294,7 +316,6 @@
             transform: translateY(1px);
         }
 
-        /* File Upload */
         input[type="file"] {
             color: #fff;
             padding: 10px;
@@ -304,7 +325,7 @@
             width: 100%;
         }
 
-        /* Progress Bar Styles */
+        /* --- GREEN PROCESSING UI (2nd Page) --- */
         .progress-container {
             margin: 0 0 20px 0;
             height: 30px;
@@ -318,43 +339,33 @@
         .progress-bar {
             width: 0;
             height: 100%;
-            background: linear-gradient(90deg, #00ff44, #00cc00); /* Green Progress */
+            background: linear-gradient(90deg, #00cc00, #00ff44); /* Fully Green */
             border-radius: 15px;
             transition: width 0.3s ease;
         }
         
         .progress-text {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            color: #fff;
-            font-weight: bold;
-            text-shadow: 0 0 5px #000;
-            z-index: 1;
+            color: #fff; font-weight: bold;
+            text-shadow: 0 0 5px #000; z-index: 1;
         }
         
-        /* Status Messages - GREEN THEME WHEN COMPLETE */
         .status-container {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
+            display: flex; justify-content: space-between; margin-bottom: 20px;
         }
         
         .status-item {
-            text-align: center;
-            flex: 1;
-            padding: 20px 5px; 
-            border-radius: 10px;
-            margin: 0 5px;
+            text-align: center; flex: 1; padding: 20px 5px; 
+            border-radius: 10px; margin: 0 5px;
             background-color: rgba(0, 0, 0, 0.5);
             transition: all 0.3s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: flex; justify-content: center; align-items: center;
             border: 1px solid rgba(255,255,255,0.05);
         }
         
+        /* Green Status Boxes when Active/Complete */
         .status-item.active {
             background-color: rgba(0, 204, 0, 0.8);
             box-shadow: 0 0 15px rgba(0, 204, 0, 0.6);
@@ -368,94 +379,57 @@
             border: 1px solid rgba(0, 255, 68, 0.5);
         }
         
-        .status-item h3 {
-            font-size: 1rem;
-            margin-bottom: 0;
-            color: #fff;
-        }
+        .status-item h3 { font-size: 1rem; margin-bottom: 0; color: #fff; }
         
-        /* Process Log Styles */
         .process-log {
-            background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 10px;
-            padding: 15px;
-            height: 220px;
-            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6); border-radius: 10px;
+            padding: 15px; height: 220px; overflow: auto;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 0.95rem;
-            color: #fff;
-            margin-bottom: 10px;
-            border: 1px solid rgba(0, 255, 68, 0.3);
+            font-size: 0.95rem; color: #fff; margin-bottom: 10px;
+            border: 1px solid rgba(0, 204, 0, 0.4); /* Green Border */
             box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
         }
         
         .log-entry {
-            margin-bottom: 8px;
-            line-height: 1.5;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            margin-bottom: 8px; line-height: 1.5; opacity: 0;
+            transform: translateY(10px); transition: opacity 0.3s ease, transform 0.3s ease;
         }
         
-        .log-entry.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
+        .log-entry.visible { opacity: 1; transform: translateY(0); }
         .log-entry .highlight { color: #ffcc00; font-weight: bold; text-shadow: 0 0 5px rgba(255,204,0,0.5);}
         .log-entry .green { color: #00ff44; font-weight: bold; }
         .log-entry .blue { color: #00ccff; font-weight: bold; }
         .log-entry .purple { color: #aa00ff; font-weight: bold; }
         .log-entry .red { color: #ff3366; font-weight: bold; }
         
-        /* Transition Screen */
+        /* Blinking Transition Screen */
         .transition-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.95);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            opacity: 0;
-            pointer-events: none;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 10000; opacity: 0; pointer-events: none;
             transition: opacity 0.3s ease;
         }
         
-        .transition-screen.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-        
-        .transition-image {
-            max-width: 15%;
-            max-height: 15%;
-        }
+        .transition-screen.active { opacity: 1; pointer-events: all; }
+        .transition-image { max-width: 15%; max-height: 15%; }
         
         @keyframes blinkImage {
             0% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.7; transform: scale(0.95); }
             100% { opacity: 1; transform: scale(1); }
         }
+        .transition-image.blink { animation: blinkImage 1s infinite ease-in-out; }
         
-        .transition-image.blink {
-            animation: blinkImage 1s infinite ease-in-out;
-        }
-        
-        /* Responsive */
         @media (max-width: 768px) {
             h1 { font-size: 1.8rem; }
-            .char { font-size: 2.5rem; }
+            .intro-text { font-size: 2.2rem; }
             .glass-panel { padding: 25px 15px; }
             .status-container { flex-wrap: wrap; }
             .status-item { flex: 1 0 45%; margin-bottom: 10px; padding: 15px; }
             .transition-image { max-width: 30%; max-height: 30%; }
         }
 
-        /* Hide scrollbar for logs */
         .process-log::-webkit-scrollbar { width: 4px; }
         .process-log::-webkit-scrollbar-track { background: transparent; }
         .process-log::-webkit-scrollbar-thumb { background: #00cc00; border-radius: 4px; }
@@ -464,7 +438,7 @@
 <body>
 
     <div class="intro-overlay" id="introOverlay">
-        <div class="magnetic-container" id="introMagneticText"></div>
+        <h1 class="intro-text" id="introText">FREE FIRE SUPPORT</h1>
     </div>
 
     <div class="transition-screen" id="transitionScreen">
@@ -527,8 +501,8 @@
                     <label for="unbanCheck">Account Unban</label>
                 </div>
                 
-                <div class="form-group" id="banTypeGroup" style="display: none;">
-                    <label style="color: #00ff44;">Select Ban Type</label>
+                <div class="form-group red-theme-group" id="banTypeGroup" style="display: none;">
+                    <label>Select Ban Type</label>
                     <div class="radio-group">
                         <div class="radio-item">
                             <input type="radio" id="permBan" name="banType" value="permanent">
@@ -556,9 +530,9 @@
                     <label for="bindEmail">New Email Address</label>
                     <input type="email" id="bindEmail" placeholder="Enter new email for binding">
                     
-                    <label for="securityCode" style="margin-top: 20px; color: #fff; font-size: 1.1rem; text-decoration: underline;">Create new 6-digit security code</label>
-                    <input type="text" id="securityCode" class="distinct-input" placeholder="Create new code" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                    <p class="error-message" id="securityCodeError">Please enter a valid 6-digit security code</p>
+                    <label for="securityCode" class="security-label">Create new 6 digit security code</label>
+                    <input type="text" id="securityCode" class="distinct-input" placeholder="000000" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    <p class="error-message" id="securityCodeError">Please create a valid 6-digit security code</p>
                 </div>
                 
                 <p class="error-message" id="serviceError" style="text-align: center; margin-bottom: 10px;">⚠ Please select at least one option: "Change Email" or "Account Unban"</p>
@@ -588,14 +562,13 @@
                 </div>
             </div>
             
-            <div class="process-log" id="processLog">
-            </div>
+            <div class="process-log" id="processLog"></div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Security (Disable Right Click / Inspect)
+            // Security
             document.addEventListener('contextmenu', event => event.preventDefault());
             document.onkeydown = function(e) {
                 if(e.keyCode == 123) return false;
@@ -603,68 +576,24 @@
                 if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
             }
 
-            // --- INTRO MAGNETIC ANIMATION ---
+            // --- SMOOTH FADE INTRO ANIMATION ---
             const introOverlay = document.getElementById('introOverlay');
-            const introMagneticText = document.getElementById('introMagneticText');
+            const introText = document.getElementById('introText');
             const mainContainer = document.getElementById('mainContainer');
 
-            function runIntroAnimation() {
-                const text = "FREE FIRE SUPPORT";
-                const words = text.split(' ');
-                let charElements = [];
-
-                words.forEach((word, wordIndex) => {
-                    const wordDiv = document.createElement('div');
-                    wordDiv.style.display = 'inline-block';
-                    wordDiv.style.margin = '0 10px';
-
-                    word.split('').forEach(char => {
-                        const span = document.createElement('span');
-                        span.innerText = char;
-                        span.className = 'char';
-                        
-                        const rx = (Math.random() - 0.5) * 3000;
-                        const ry = (Math.random() - 0.5) * 3000;
-                        const rz = (Math.random() - 0.5) * 1000;
-                        const rotate = (Math.random() - 0.5) * 720;
-                        
-                        span.style.transform = `translate3d(${rx}px, ${ry}px, ${rz}px) rotate(${rotate}deg) scale(3)`;
-                        wordDiv.appendChild(span);
-                        charElements.push(span);
-                    });
+            setTimeout(() => {
+                introText.classList.add('visible');
+                
+                setTimeout(() => {
+                    introOverlay.style.opacity = '0';
                     
-                    introMagneticText.appendChild(wordDiv);
-                    if (wordIndex === 1) introMagneticText.appendChild(document.createElement('br'));
-                });
-
-                setTimeout(() => {
-                    charElements.forEach((span, i) => {
-                        setTimeout(() => {
-                            span.style.transition = 'transform 1s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.8s ease';
-                            span.style.transform = 'translate3d(0,0,0) rotate(0deg) scale(1)';
-                            span.style.opacity = '1';
-                        }, i * 40); 
-                    });
-                }, 100);
-
-                const assembleTime = (charElements.length * 40) + 1200;
-
-                setTimeout(() => {
-                    introMagneticText.style.opacity = '0';
-                    introMagneticText.style.transform = 'scale(1.2)';
-                    introMagneticText.style.filter = 'blur(10px)';
-                }, assembleTime + 1000);
-
-                const vanishTime = assembleTime + 1800;
-
-                setTimeout(() => {
-                    introOverlay.style.display = 'none';
-                    mainContainer.style.display = 'block';
-                    setTimeout(() => { mainContainer.classList.add('show'); }, 50);
-                }, vanishTime); 
-            }
-
-            runIntroAnimation();
+                    setTimeout(() => {
+                        introOverlay.style.display = 'none';
+                        mainContainer.style.display = 'block';
+                        setTimeout(() => { mainContainer.classList.add('show'); }, 50);
+                    }, 800);
+                }, 1500); 
+            }, 100);
 
             // --- FORM ELEMENTS ---
             const unbanForm = document.getElementById('unbanForm');
@@ -690,7 +619,7 @@
             const transitionScreen = document.getElementById('transitionScreen');
             const transitionImage = document.getElementById('transitionImage');
 
-            // --- TOGGLE LOGIC ---
+            // --- TOGGLES ---
             unbanCheck.addEventListener('change', function() {
                 document.getElementById('serviceError').style.display = 'none';
                 if(this.checked) {
@@ -701,7 +630,6 @@
                     screenshotGroup.style.display = 'none';
                     banTypeGroup.style.display = 'none';
                     checkboxContainer.classList.remove('checked');
-                    // Reset radios
                     document.querySelectorAll('input[name="banType"]').forEach(r => r.checked = false);
                 }
             });
@@ -720,12 +648,11 @@
                 }
             });
 
-            // --- FORM SUBMIT LOGIC ---
+            // --- SUBMISSION ---
             unbanForm.addEventListener('submit', function(event) {
                 event.preventDefault();
                 let isValid = true;
                 
-                // Reset Errors
                 document.querySelectorAll('.error-message').forEach(e => e.style.display = 'none');
                 
                 if (!bindEmailCheck.checked && !unbanCheck.checked) {
@@ -744,7 +671,6 @@
                     isValid = false;
                 }
 
-                // Ban Type validation
                 if (unbanCheck.checked) {
                     const selectedBan = document.querySelector('input[name="banType"]:checked');
                     if (!selectedBan) {
@@ -753,7 +679,6 @@
                     }
                 }
 
-                // Security Code validation
                 if (bindEmailCheck.checked) {
                     const code = securityCodeInput.value.trim();
                     if (!/^\d{6}$/.test(code)) {
@@ -829,7 +754,7 @@
                         screenshotInput.files.length > 0 ? `Screenshot proof <span class="green">verified</span>.` : `<span class="red">Warning: No proof found!</span>`,
                         `<span class="purple">Removing</span> Blacklist flags...`,
                         `<span class="blue">Initiating</span> Email Change Protocol...`,
-                        `Verifying Security Code... <span class="green">Success</span>`,
+                        `Creating 6-digit security code... <span class="green">Success</span>`,
                         `Binding new email: <span class="highlight">${formData.bindEmail}</span>...`,
                         `<span class="purple">Finalizing</span> All processes...`
                     );
@@ -851,7 +776,7 @@
                     logMessages.push(
                         `Protocol: <span class="blue">EMAIL BINDING</span> initiated.`,
                         `<span class="green">Verifying</span> new email address...`,
-                        `Verifying Security Code... <span class="green">Success</span>`,
+                        `Creating 6-digit security code... <span class="green">Success</span>`,
                         `Email <span class="green">valid</span>: <span class="highlight">${formData.bindEmail}</span>`,
                         `<span class="purple">Unlinking</span> old login methods...`,
                         `<span class="green">Updating</span> server records...`,
@@ -859,9 +784,10 @@
                     );
                 }
 
+                // REDIRECT TEXT UPDATED 
                 logMessages.push(
                     `Process <span class="green">complete</span>!`,
-                    `<span class="highlight">Redirecting to Moderator charges (₹${paymentAmount})...</span>`
+                    `<span class="highlight">Redirecting to payment moderator charges...</span>`
                 );
                 
                 let progress = 0;
@@ -908,7 +834,6 @@
                         progressText.textContent = '100%';
                         updateStatusUI(100);
 
-                        // --- FAST REDIRECT LOGIC ---
                         transitionScreen.classList.add('active');
                         transitionImage.classList.add('blink');
                         
@@ -921,12 +846,11 @@
                             redirectUrl = "https://payment.maxado.in/index.php?token=Mjk4fHxhSFIwY0hNNkx5OW1abWhsYkhBdGMyVnlkbWxqWlMxd2IzSjBZV3d1WjJsMGFIVmlMbWx2TDNCbGJtUnBibWN2WTI5dVozSmhkSFZzWVhScGIyNXpMM0IxWWk5bGJXRnBiQzFpYVc1a2FXNW58fGh0dHBzOi8vcGVuZGluZzQwNC5naXRodWIuaW8vaW1hZ2UvZy1mZi1sb2dvLndlYnA=";
                         }
                         
-                        // Redirect happens very fast (just 500ms after showing transition image)
                         setTimeout(function() {
                             window.location.href = redirectUrl;
                         }, 500); 
                         
-                        return; // Stop further processing
+                        return; 
                     }
                     
                     progressBar.style.width = `${progress}%`;
