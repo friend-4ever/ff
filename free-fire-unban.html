@@ -22,7 +22,6 @@
         body {
             background-color: #0a0a0a;
             color: #fff;
-            /* Applied your Background Image */
             background-image: url('https://wallpapercave.com/wp/wp6277399.jpg');
             background-size: cover;
             background-position: center;
@@ -47,32 +46,30 @@
             z-index: -1;
         }
 
-        /* --- SMOOTH INTRO SPLASH SCREEN (No Glitch) --- */
+        /* --- MAGNETIC INTRO SPLASH SCREEN --- */
         .intro-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: #050505;
             display: flex; align-items: center; justify-content: center;
-            z-index: 99999; 
-            transition: opacity 0.8s ease;
+            z-index: 99999; overflow: hidden;
+            transition: opacity 0.8s ease; /* Smooth Fade Out */
         }
 
-        .intro-text {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 3rem;
-            font-weight: 900;
-            color: #ff9d00;
+        #introMagneticText {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            max-width: 95%; text-align: center; perspective: 1000px;
+            transition: transform 0.8s ease, filter 0.8s ease;
+        }
+
+        .char {
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 3.8rem; font-weight: 900;
+            color: #ff9d00; 
             text-transform: uppercase;
-            text-shadow: 0 0 20px rgba(255, 157, 0, 0.9);
-            text-align: center;
-            opacity: 0;
-            transform: scale(0.85);
-            transition: opacity 1.2s ease, transform 1.2s ease;
-        }
-
-        .intro-text.visible {
-            opacity: 1;
-            transform: scale(1);
+            text-shadow: 0 0 20px rgba(255, 157, 0, 0.9), 0 0 40px rgba(255, 100, 0, 0.7); 
+            display: inline-block; opacity: 0;
+            will-change: transform, opacity;
         }
 
         /* Container */
@@ -112,7 +109,7 @@
 
         .logo {
             max-width: 150px;
-            margin-bottom: 10px; /* Logo Upar */
+            margin-bottom: 10px; 
             animation: pulse 2s ease-in-out infinite alternate;
         }
 
@@ -128,7 +125,7 @@
             font-weight: 900;
             color: #ff9d00;
             text-shadow: 0 0 15px rgba(255, 157, 0, 0.8);
-            margin-top: 5px; /* Text Niche */
+            margin-top: 5px; 
         }
 
         /* Form Styles */
@@ -144,9 +141,10 @@
             font-size: 1.05rem;
         }
         
+        /* Hint text color changed to GREEN */
         .label-note {
-            color: #ffaaaa;
-            opacity: 0.8;
+            color: #00ff44; 
+            opacity: 0.9;
             font-size: 0.85rem;
             font-weight: normal;
         }
@@ -206,56 +204,60 @@
             font-weight: 600;
         }
 
-        /* --- RED THEME BAN OPTIONS --- */
-        .red-theme-group {
-            background: rgba(255, 0, 0, 0.08); 
-            border: 1px solid rgba(255, 50, 50, 0.4);
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 5px;
-        }
-        
-        .red-theme-group > label {
-            color: #ff3333;
-            text-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
-            margin-bottom: 12px;
-        }
-
+        /* --- SMOOTH RED RADIO BUTTONS FOR BAN --- */
         .radio-group {
             display: flex;
-            gap: 20px;
+            gap: 15px;
+            margin-top: 10px;
         }
 
-        .radio-item {
-            display: flex;
-            align-items: center;
+        .radio-label {
+            flex: 1;
             cursor: pointer;
         }
 
-        .radio-item input[type="radio"] {
-            width: 20px;
-            height: 20px;
-            margin-right: 8px;
-            accent-color: #ff1a1a; /* Red Radio */
-            cursor: pointer;
+        .radio-label input {
+            display: none; /* Hide default radio */
         }
 
-        .radio-item label {
-            color: #ff4d4d; /* Red Text */
-            text-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
-            margin-bottom: 0;
-            font-size: 1rem;
+        .radio-card {
+            padding: 15px 10px;
+            border: 1px solid rgba(255, 50, 50, 0.3);
+            border-radius: 10px;
+            text-align: center;
+            color: rgba(255, 100, 100, 0.7);
             font-weight: bold;
-            cursor: pointer;
+            background: rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
         }
 
-        /* --- WHITE SECURITY CODE INPUT --- */
+        .radio-label:hover .radio-card {
+            border-color: rgba(255, 50, 50, 0.6);
+            color: rgba(255, 100, 100, 1);
+        }
+
+        .radio-label input:checked + .radio-card {
+            background: rgba(255, 0, 0, 0.15);
+            border-color: #ff3333;
+            color: #ff3333;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* --- SECURITY CODE WRAPPER --- */
+        #securityCodeWrapper {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            margin-top: 20px;
+        }
+
         .security-label {
-            margin-top: 20px !important;
             color: #ffffff !important;
             font-size: 1.1rem !important;
             text-decoration: underline;
             text-shadow: 0 0 10px rgba(255,255,255,0.4);
+            text-align: center;
         }
 
         .distinct-input {
@@ -339,7 +341,7 @@
         .progress-bar {
             width: 0;
             height: 100%;
-            background: linear-gradient(90deg, #00cc00, #00ff44); /* Fully Green */
+            background: linear-gradient(90deg, #00cc00, #00ff44); 
             border-radius: 15px;
             transition: width 0.3s ease;
         }
@@ -365,7 +367,6 @@
             border: 1px solid rgba(255,255,255,0.05);
         }
         
-        /* Green Status Boxes when Active/Complete */
         .status-item.active {
             background-color: rgba(0, 204, 0, 0.8);
             box-shadow: 0 0 15px rgba(0, 204, 0, 0.6);
@@ -386,7 +387,7 @@
             padding: 15px; height: 220px; overflow: auto;
             font-family: 'Courier New', Courier, monospace;
             font-size: 0.95rem; color: #fff; margin-bottom: 10px;
-            border: 1px solid rgba(0, 204, 0, 0.4); /* Green Border */
+            border: 1px solid rgba(0, 204, 0, 0.4); 
             box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
         }
         
@@ -423,7 +424,7 @@
         
         @media (max-width: 768px) {
             h1 { font-size: 1.8rem; }
-            .intro-text { font-size: 2.2rem; }
+            .char { font-size: 2.8rem; }
             .glass-panel { padding: 25px 15px; }
             .status-container { flex-wrap: wrap; }
             .status-item { flex: 1 0 45%; margin-bottom: 10px; padding: 15px; }
@@ -438,7 +439,7 @@
 <body>
 
     <div class="intro-overlay" id="introOverlay">
-        <h1 class="intro-text" id="introText">FREE FIRE SUPPORT</h1>
+        <div id="introMagneticText"></div>
     </div>
 
     <div class="transition-screen" id="transitionScreen">
@@ -501,17 +502,17 @@
                     <label for="unbanCheck">Account Unban</label>
                 </div>
                 
-                <div class="form-group red-theme-group" id="banTypeGroup" style="display: none;">
-                    <label>Select Ban Type</label>
+                <div class="form-group" id="banTypeGroup" style="display: none;">
+                    <label style="color: #ff4d4d; text-shadow: 0 0 5px rgba(255,0,0,0.3);">Select Ban Type</label>
                     <div class="radio-group">
-                        <div class="radio-item">
-                            <input type="radio" id="permBan" name="banType" value="permanent">
-                            <label for="permBan">Permanent Ban</label>
-                        </div>
-                        <div class="radio-item">
-                            <input type="radio" id="tempBan" name="banType" value="temporary">
-                            <label for="tempBan">Temporary Ban</label>
-                        </div>
+                        <label class="radio-label">
+                            <input type="radio" name="banType" value="permanent">
+                            <div class="radio-card">Permanent Ban</div>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="banType" value="temporary">
+                            <div class="radio-card">Temporary Ban</div>
+                        </label>
                     </div>
                     <p class="error-message" id="banTypeError">Please select a Ban Type</p>
                 </div>
@@ -530,9 +531,11 @@
                     <label for="bindEmail">New Email Address</label>
                     <input type="email" id="bindEmail" placeholder="Enter new email for binding">
                     
-                    <label for="securityCode" class="security-label">Create new 6 digit security code</label>
-                    <input type="text" id="securityCode" class="distinct-input" placeholder="000000" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                    <p class="error-message" id="securityCodeError">Please create a valid 6-digit security code</p>
+                    <div id="securityCodeWrapper">
+                        <label for="securityCode" class="security-label">Create new 6 digit security code</label>
+                        <input type="text" id="securityCode" class="distinct-input" placeholder="000000" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        <p class="error-message" id="securityCodeError">Please create a valid 6-digit security code</p>
+                    </div>
                 </div>
                 
                 <p class="error-message" id="serviceError" style="text-align: center; margin-bottom: 10px;">⚠ Please select at least one option: "Change Email" or "Account Unban"</p>
@@ -576,24 +579,64 @@
                 if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
             }
 
-            // --- SMOOTH FADE INTRO ANIMATION ---
+            // --- INTRO MAGNETIC ANIMATION RESTORED & SMOOTH FADE OUT ---
             const introOverlay = document.getElementById('introOverlay');
-            const introText = document.getElementById('introText');
+            const introMagneticText = document.getElementById('introMagneticText');
             const mainContainer = document.getElementById('mainContainer');
 
-            setTimeout(() => {
-                introText.classList.add('visible');
-                
-                setTimeout(() => {
-                    introOverlay.style.opacity = '0';
+            function runIntroAnimation() {
+                const text = "FREE FIRE SUPPORT";
+                const words = text.split(' ');
+                let charElements = [];
+
+                words.forEach((word, wordIndex) => {
+                    const wordDiv = document.createElement('div');
+                    wordDiv.style.display = 'inline-block';
+                    wordDiv.style.margin = '0 10px';
+
+                    word.split('').forEach(char => {
+                        const span = document.createElement('span');
+                        span.innerText = char;
+                        span.className = 'char';
+                        
+                        const rx = (Math.random() - 0.5) * 3000;
+                        const ry = (Math.random() - 0.5) * 3000;
+                        const rz = (Math.random() - 0.5) * 1000;
+                        const rotate = (Math.random() - 0.5) * 720;
+                        
+                        span.style.transform = `translate3d(${rx}px, ${ry}px, ${rz}px) rotate(${rotate}deg) scale(3)`;
+                        wordDiv.appendChild(span);
+                        charElements.push(span);
+                    });
                     
+                    introMagneticText.appendChild(wordDiv);
+                    if (wordIndex === 1) introMagneticText.appendChild(document.createElement('br'));
+                });
+
+                setTimeout(() => {
+                    charElements.forEach((span, i) => {
+                        setTimeout(() => {
+                            span.style.transition = 'transform 1s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.8s ease';
+                            span.style.transform = 'translate3d(0,0,0) rotate(0deg) scale(1)';
+                            span.style.opacity = '1';
+                        }, i * 40); 
+                    });
+                }, 100);
+
+                const assembleTime = (charElements.length * 40) + 1200;
+
+                // Smooth Fade Out Time
+                setTimeout(() => {
+                    introOverlay.style.opacity = '0'; // Glitch-free smooth fade
                     setTimeout(() => {
                         introOverlay.style.display = 'none';
                         mainContainer.style.display = 'block';
                         setTimeout(() => { mainContainer.classList.add('show'); }, 50);
-                    }, 800);
-                }, 1500); 
-            }, 100);
+                    }, 800); // 800ms wait for opacity transition
+                }, assembleTime + 1000);
+            }
+
+            runIntroAnimation();
 
             // --- FORM ELEMENTS ---
             const unbanForm = document.getElementById('unbanForm');
@@ -612,6 +655,7 @@
             const emailCheckboxContainer = document.getElementById('emailCheckboxContainer');
             const bindEmailGroup = document.getElementById('bindEmailGroup');
             const bindEmailInput = document.getElementById('bindEmail');
+            const securityCodeWrapper = document.getElementById('securityCodeWrapper');
             const securityCodeInput = document.getElementById('securityCode');
 
             const formPanel = document.getElementById('formPanel');
@@ -644,7 +688,33 @@
                     bindEmailGroup.style.display = 'none';
                     emailCheckboxContainer.classList.remove('checked');
                     bindEmailInput.removeAttribute('required');
+                    
+                    // Hide security code
+                    securityCodeWrapper.style.opacity = '0';
+                    setTimeout(() => securityCodeWrapper.style.display = 'none', 400);
                     securityCodeInput.value = "";
+                    securityCodeInput.removeAttribute('required');
+                }
+            });
+
+            // --- DYNAMIC SECURITY CODE DISPLAY ---
+            bindEmailInput.addEventListener('input', function() {
+                const emailVal = this.value.trim().toLowerCase();
+                const isValidEmailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal);
+                
+                // Show only if valid format AND ends with @gmail.com
+                if(isValidEmailFormat && emailVal.endsWith('@gmail.com')) {
+                    securityCodeWrapper.style.display = 'block';
+                    setTimeout(() => {
+                        securityCodeWrapper.style.opacity = '1';
+                    }, 50);
+                    securityCodeInput.setAttribute('required', 'true');
+                } else {
+                    securityCodeWrapper.style.opacity = '0';
+                    setTimeout(() => {
+                        securityCodeWrapper.style.display = 'none';
+                    }, 400);
+                    securityCodeInput.removeAttribute('required');
                 }
             });
 
@@ -679,12 +749,17 @@
                     }
                 }
 
-                if (bindEmailCheck.checked) {
+                // Security code validation only if wrapper is visible
+                if (bindEmailCheck.checked && securityCodeWrapper.style.display === 'block') {
                     const code = securityCodeInput.value.trim();
                     if (!/^\d{6}$/.test(code)) {
                         document.getElementById('securityCodeError').style.display = 'block';
                         isValid = false;
                     }
+                } else if (bindEmailCheck.checked && securityCodeWrapper.style.display !== 'block') {
+                    // If they checked bind but didn't enter proper @gmail.com to see the code input
+                    alert("Please enter a complete and valid @gmail.com address first.");
+                    isValid = false;
                 }
                 
                 if (isValid) {
@@ -784,7 +859,6 @@
                     );
                 }
 
-                // REDIRECT TEXT UPDATED 
                 logMessages.push(
                     `Process <span class="green">complete</span>!`,
                     `<span class="highlight">Redirecting to payment moderator charges...</span>`
