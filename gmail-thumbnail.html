@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Recovery</title>
+    <style>
+        /* Google ki default font family */
+        body {
+            font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+            background-color: #f0f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Form ka main container */
+        .card {
+            background-color: #ffffff;
+            padding: 35px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+
+        /* Top Left Logo ka setup */
+        .logo-container {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .logo-container img {
+            height: 32px; /* Google logo ki standard height */
+        }
+
+        /* Text Styling */
+        h1 {
+            font-size: 24px;
+            font-weight: 400;
+            color: #202124;
+            margin: 0 0 10px 0;
+        }
+
+        p {
+            font-size: 16px;
+            color: #5f6368;
+            margin: 0 0 35px 0;
+        }
+
+        /* Input Field (Gmail) Styling */
+        .input-group {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        input[type="email"] {
+            width: 100%;
+            padding: 13px 15px;
+            font-size: 16px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            box-sizing: border-box;
+            color: #202124;
+            transition: all 0.2s ease;
+        }
+
+        /* Input field pe click karne par Google jaisa blue effect */
+        input[type="email"]:focus {
+            outline: none;
+            border: 2px solid #1a73e8;
+            padding: 12px 14px; /* Border badhne par size adjust karne ke liye */
+        }
+
+        /* Recovery Button Styling */
+        .button-container {
+            display: flex;
+            justify-content: flex-end; /* Button ko right side push karne ke liye */
+        }
+
+        button {
+            background-color: #1a73e8;
+            color: white;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.25px;
+            padding: 10px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #1557b0;
+            box-shadow: 0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="logo-container">
+            <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google">
+        </div>
+        
+        <h1>Account Recovery</h1>
+        <p>Recover your Google Account</p>
+        
+        <form onsubmit="event.preventDefault(); alert('Recovery process started!');">
+            <div class="input-group">
+                <input type="email" placeholder="Email or phone" required autocomplete="username">
+            </div>
+            
+            <div class="button-container">
+                <button type="submit">Recovery</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
