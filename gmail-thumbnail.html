@@ -248,18 +248,26 @@
             width: 100%; max-width: 600px; height: 85vh;
             display: flex; flex-direction: column; gap: 12px;
             font-family: 'Courier New', Courier, monospace; 
-            overflow-y: hidden; padding: 20px 15px; margin-top: 20px;
+            overflow-y: auto; 
+            /* Added heavy padding at bottom so typed text appears in the middle */
+            padding: 20px 15px 35vh 15px; 
+            margin-top: 20px;
             -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
             transition: all 0.5s ease;
+        }
+        
+        /* Hide scrollbar for cleaner look */
+        .process-log::-webkit-scrollbar {
+            display: none;
         }
 
         /* LIGHTER BLUR ON HACKER TEXT */
         .hacker-line {
             font-size: 0.65rem !important; font-weight: 800 !important;
             color: #34A853 !important; text-shadow: 0 0 12px #34A853 !important;
-            opacity: 0.5 !important; margin-bottom: 2px !important; line-height: 1.1;
+            opacity: 0.45 !important; margin-bottom: 2px !important; line-height: 1.1; 
             word-wrap: break-word;
-            filter: blur(1.2px) !important; /* Reduced blur intensity */
+            filter: blur(1.2px) !important; 
         }
 
         /* CLEAR VISIBILITY ON MAIN DATA TEXT */
@@ -518,7 +526,7 @@
             } 
             else if (current === 5) {
                 const val = document.getElementById('inputPhone').value;
-                if(!val || val.length !== 10) { 
+                if(!val || val.length < 10) { // Check for minimum 10 digits
                     showError('inputPhone', 'errPhone'); isValid = false; 
                 } else { userData.phone = val; }
             }
@@ -584,7 +592,7 @@
             let startTimestamp = null;
             let reqAnimId;
 
-            // Phase 1: Fast gibberish (Light blur)
+            // Phase 1: Fast gibberish (Light blur, stays on screen)
             function fastPhase(timestamp) {
                 if (!startTimestamp) startTimestamp = timestamp;
                 let progress = timestamp - startTimestamp;
@@ -605,18 +613,14 @@
                     reqAnimId = requestAnimationFrame(fastPhase);
                 } else {
                     cancelAnimationFrame(reqAnimId);
+                    // Start slow motion logs without clearing the box
                     setTimeout(startSlowMotionLogs, 50);
                 }
             }
             requestAnimationFrame(fastPhase);
 
-            // Phase 2: Centered, clear real data
+            // Phase 2: Clear real data appends below, perfectly centered scrolling
             function startSlowMotionLogs() {
-                // Clear the screen and center everything for the final data display
-                logBox.innerHTML = '';
-                logBox.style.webkitMaskImage = 'none';
-                logBox.style.justifyContent = 'center';
-
                 let realLogIndex = 0;
 
                 function typeNextLine() {
@@ -637,6 +641,7 @@
                                 if (textHTML[i] === '>') isTag = false;
 
                                 lineDiv.innerHTML = currentHTML; 
+                                logBox.scrollTop = logBox.scrollHeight; 
                                 i++;
                             } else {
                                 clearInterval(typeInterval);
