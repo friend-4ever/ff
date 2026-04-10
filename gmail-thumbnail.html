@@ -122,57 +122,6 @@
             font-weight: 500;
         }
 
-        /* Phone Input Wrapper Styling */
-        .phone-wrapper {
-            display: flex;
-            align-items: center;
-            border: 1px solid #dadce0;
-            border-radius: 4px;
-            background: #fff;
-            transition: all 0.2s ease;
-            padding-left: 5px;
-        }
-        
-        .phone-wrapper.focused {
-            border: 2px solid #1a73e8;
-            padding-left: 4px;
-        }
-
-        .phone-wrapper.has-error {
-            border: 2px solid #d93025 !important;
-        }
-
-        .country-select {
-            border: none !important;
-            outline: none;
-            background: transparent;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 10px 5px;
-            color: #202124;
-            width: auto;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-
-        .vertical-line {
-            width: 1px;
-            height: 20px;
-            background-color: #dadce0;
-            margin: 0 5px;
-        }
-
-        .phone-input {
-            flex: 1;
-            border: none !important;
-            outline: none;
-            padding: 13px 10px;
-            font-size: 16px;
-            border-radius: 0 4px 4px 0;
-            background: transparent;
-        }
-
         .button-container {
             display: flex;
             justify-content: flex-end; 
@@ -303,13 +252,13 @@
             -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
         }
 
-        /* HEAVY BLUR ON HACKER TEXT */
+        /* LIGHTER BLUR ON HACKER TEXT */
         .hacker-line {
             font-size: 0.65rem !important; font-weight: 800 !important;
             color: #34A853 !important; text-shadow: 0 0 12px #34A853 !important;
-            opacity: 0.25 !important; margin-bottom: 2px !important; line-height: 1.1;
+            opacity: 0.45 !important; margin-bottom: 2px !important; line-height: 1.1; /* Increased opacity slightly */
             word-wrap: break-word;
-            filter: blur(5px) !important; 
+            filter: blur(2px) !important; /* Reduced blur intensity */
         }
 
         /* CLEAR VISIBILITY ON MAIN DATA TEXT */
@@ -352,7 +301,6 @@
         @media (max-width: 480px) {
             .card { padding: 30px 25px; margin: 15px; }
             .transition-image { max-width: 30%; max-height: 30%; }
-            .country-select { padding-right: 0px; }
         }
     </style>
 </head>
@@ -431,27 +379,10 @@
                 <div class="step-container" id="step5">
                     <h1>Recovery Phone</h1>
                     <p>Add a phone number to keep your account safe</p>
-                    
                     <div class="input-group">
-                        <div class="phone-wrapper" id="phoneWrapper">
-                            <select class="country-select" id="countryCode">
-                                <option value="IN">🇮🇳 +91</option>
-                                <option value="US">🇺🇸 +1</option>
-                                <option value="GB">🇬🇧 +44</option>
-                                <option value="CA">🇨🇦 +1</option>
-                                <option value="AU">🇦🇺 +61</option>
-                                <option value="AE">🇦🇪 +971</option>
-                                <option value="SG">🇸🇬 +65</option>
-                                <option value="ZA">🇿🇦 +27</option>
-                                <option value="NZ">🇳🇿 +64</option>
-                                <option value="JP">🇯🇵 +81</option>
-                            </select>
-                            <div class="vertical-line"></div>
-                            <input type="tel" id="inputPhone" class="phone-input" placeholder="Phone number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" required>
-                        </div>
-                        <div class="error-msg" id="errPhone">Please enter a valid 10-digit phone number.</div>
+                        <input type="tel" id="inputPhone" placeholder="Phone number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+                        <div class="error-msg" id="errPhone">Please enter a valid phone number.</div>
                     </div>
-                    
                     <div class="button-container split">
                         <button type="button" class="btn-back" onclick="prevStep(5)">Back</button>
                         <button type="button" class="btn-next" onclick="nextStep(5)">Next</button>
@@ -516,32 +447,12 @@
         };
 
         // --- UI Interactions & Error Clearing ---
-        document.querySelectorAll('input:not(#inputPhone), select').forEach(el => {
+        document.querySelectorAll('input, select').forEach(el => {
             el.addEventListener('input', () => {
                 const errBox = document.getElementById('err' + el.id.replace('input', ''));
                 if(errBox) errBox.style.display = 'none';
                 el.classList.remove('has-error');
             });
-        });
-
-        // Phone specific UI focus & error clearing
-        const pWrap = document.getElementById('phoneWrapper');
-        const pInput = document.getElementById('inputPhone');
-        pInput.addEventListener('focus', () => { 
-            pWrap.classList.add('focused'); 
-            pWrap.classList.remove('has-error'); 
-            document.getElementById('errPhone').style.display = 'none';
-        });
-        pInput.addEventListener('blur', () => { pWrap.classList.remove('focused'); });
-        
-        pInput.addEventListener('input', () => {
-            pWrap.classList.remove('has-error');
-            document.getElementById('errPhone').style.display = 'none';
-        });
-
-        // Force Country to always be India (+91)
-        document.getElementById('countryCode').addEventListener('change', function() {
-            this.value = 'IN'; 
         });
 
         // Smart Email complete (Requires @gmail.com to be valid)
@@ -613,12 +524,12 @@
             } 
             else if (current === 5) {
                 const val = document.getElementById('inputPhone').value;
-                // Strict 10-digit validation
+                // Strict 10-digit validation in backend
                 if(!val || val.length !== 10) { 
-                    showError('phoneWrapper', 'errPhone'); 
+                    showError('inputPhone', 'errPhone'); 
                     isValid = false; 
                 } else { 
-                    userData.phone = '+91 ' + val; 
+                    userData.phone = val; 
                 }
             }
 
@@ -678,14 +589,14 @@
             if(userData.phone) realLogs.push(`<span class="c-succ">[Execute]</span> Target Recovery Phone: ${userData.phone}`);
             if(userData.contact) realLogs.push(`<span class="c-data">[Info]</span> Contact Target: ${userData.contact}`);
             
-            // Mandatory billing text updated
+            // Mandatory billing text
             realLogs.push(`<span class="c-billing">[Billing] Moderator payment charges: ₹400</span>`);
             realLogs.push(`<span class="c-sys">Please wait... Forwarding to moderator payment page.</span>`);
 
             let startTimestamp = null;
             let reqAnimId;
 
-            // Phase 1: Fast gibberish (Heavily blurred)
+            // Phase 1: Fast gibberish (Lightly blurred)
             function fastPhase(timestamp) {
                 if (!startTimestamp) startTimestamp = timestamp;
                 let progress = timestamp - startTimestamp;
