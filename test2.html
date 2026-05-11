@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZEXON PC - Smart ID Card Printer</title>
+    <style>
+        :root {
+            --primary: #00ff88;
+            --bg-color: #121212;
+            --panel-bg: rgba(25, 25, 25, 0.8);
+            --text: #ffffff;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+            font-size: 32px;
+        }
+        .header p {
+            color: #aaaaaa;
+            margin-top: 5px;
+        }
+        .workspace {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+        .controls {
+            background: var(--panel-bg);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid #333;
+            width: 350px;
+            backdrop-filter: blur(10px);
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        input[type="file"] {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            background: #222;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--primary);
+        }
+        .btn-print {
+            background-color: var(--primary);
+            color: #000;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .btn-print:hover {
+            background-color: #00cc6a;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+        }
+        
+        /* A4 Preview Area */
+        .preview-area {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            width: 210mm; /* A4 Width */
+            min-height: 297mm; /* A4 Height */
+            position: relative;
+        }
+        
+        /* Standard PVC Card Size: 85.6mm x 54mm */
+        .id-card-container {
+            width: 85.6mm;
+            height: 54mm;
+            border: 1px dashed #ccc;
+            margin-bottom: 15px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .id-card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Auto crop to fill */
+            transform-origin: center;
+            transition: transform 0.1s, filter 0.1s;
+        }
+
+        /* Print Specific Styles */
+        @media print {
+            body {
+                background: #fff;
+                padding: 0;
+                margin: 0;
+            }
+            .header, .controls {
+                display: none; /* Hide UI during print */
+            }
+            .preview-area {
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+                width: 100%;
+                height: 100%;
+            }
+            .id-card-container {
+                border: none; /* Remove dashed border for actual print */
+                margin-bottom: 2mm; /* Slight gap between front and back */
+            }
+            @page {
+                size: A4;
+                margin: 10mm;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>ZEXON PC</h1>
+        <p>Advanced Document Print Assistant</p>
+    </div>
+
+    <div class="workspace">
+        <!-- Controls Panel -->
+        <div class="controls">
+            <div class="control-group">
+                <label>1. Upload Front Side</label>
+                <input type="file" id="uploadFront" accept="image/*">
+            </div>
+            
+            <div class="control-group">
+                <label>2. Upload Back Side</label>
+                <input type="file" id="uploadBack" accept="image/*">
+            </div>
+
+            <hr style="border-color: #333; margin: 20px 0;">
+
+            <div class="control-group">
+                <label>Target Side to Edit:</label>
+                <select id="targetSide" style="width: 100%; padding: 8px; background: #222; color: white; border: 1px solid #444;">
+                    <option value="front">Front Side</option>
+                    <option value="back">Back Side</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label>Brightness: <span id="valBright">100%</span></label>
+                <input type="range" id="brightness" min="50" max="200" value="100">
+            </div>
+
+            <div class="control-group">
+                <label>Contrast: <span id="valContrast">100%</span></label>
+                <input type="range" id="contrast" min="50" max="200" value="100">
+            </div>
+
+            <div class="control-group">
+                <label>Rotate (Teda theek karein): <span id="valRotate">0°</span></label>
+                <input type="range" id="rotate" min="-45" max="45" value="0">
+            </div>
+            
+            <div class="control-group">
+                <label>Scale (Zoom In/Out): <span id="valScale">100%</span></label>
+                <input type="range" id="scale" min="50" max="150" value="100">
+            </div>
+
+            <button class="btn-print" onclick="window.print()">Print Now</button>
+        </div>
+
+        <!-- Print Preview Area -->
+        <div class="preview-area" id="printArea">
+            <!-- Front Card -->
+            <div class="id-card-container">
+                <img id="imgFront" class="id-card-image" src="" alt="Front Side Preview (Please Upload)">
+            </div>
+            <!-- Back Card -->
+            <div class="id-card-container">
+                <img id="imgBack" class="id-card-image" src="" alt="Back Side Preview (Please Upload)">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State variables to store adjustments
+        const state = {
+            front: { brightness: 100, contrast: 100, rotate: 0, scale: 100 },
+            back: { brightness: 100, contrast: 100, rotate: 0, scale: 100 }
+        };
+
+        // File Upload Handlers
+        document.getElementById('uploadFront').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('imgFront').src = URL.createObjectURL(file);
+                resetSliders('front');
+            }
+        });
+
+        document.getElementById('uploadBack').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('imgBack').src = URL.createObjectURL(file);
+                resetSliders('back');
+            }
+        });
+
+        // Event listeners for sliders
+        const sliders = ['brightness', 'contrast', 'rotate', 'scale'];
+        sliders.forEach(slider => {
+            document.getElementById(slider).addEventListener('input', updateImage);
+        });
+
+        // Switch side dropdown handler
+        document.getElementById('targetSide').addEventListener('change', function(e) {
+            const side = e.target.value;
+            document.getElementById('brightness').value = state[side].brightness;
+            document.getElementById('contrast').value = state[side].contrast;
+            document.getElementById('rotate').value = state[side].rotate;
+            document.getElementById('scale').value = state[side].scale;
+            updateSliderLabels();
+        });
+
+        function updateImage() {
+            const side = document.getElementById('targetSide').value;
+            const imgId = side === 'front' ? 'imgFront' : 'imgBack';
+            const img = document.getElementById(imgId);
+
+            // Get current slider values
+            const b = document.getElementById('brightness').value;
+            const c = document.getElementById('contrast').value;
+            const r = document.getElementById('rotate').value;
+            const s = document.getElementById('scale').value;
+
+            // Save to state
+            state[side].brightness = b;
+            state[side].contrast = c;
+            state[side].rotate = r;
+            state[side].scale = s;
+
+            updateSliderLabels();
+
+            // Apply CSS Transforms and Filters
+            img.style.filter = `brightness(${b}%) contrast(${c}%)`;
+            img.style.transform = `rotate(${r}deg) scale(${s / 100})`;
+        }
+
+        function updateSliderLabels() {
+            document.getElementById('valBright').innerText = document.getElementById('brightness').value + '%';
+            document.getElementById('valContrast').innerText = document.getElementById('contrast').value + '%';
+            document.getElementById('valRotate').innerText = document.getElementById('rotate').value + '°';
+            document.getElementById('valScale').innerText = document.getElementById('scale').value + '%';
+        }
+
+        function resetSliders(side) {
+            state[side] = { brightness: 100, contrast: 100, rotate: 0, scale: 100 };
+            if(document.getElementById('targetSide').value === side) {
+                document.getElementById('brightness').value = 100;
+                document.getElementById('contrast').value = 100;
+                document.getElementById('rotate').value = 0;
+                document.getElementById('scale').value = 100;
+                updateSliderLabels();
+            }
+            updateImage();
+        }
+    </script>
+</body>
+</html>
