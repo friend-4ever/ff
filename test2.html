@@ -1,346 +1,353 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZEXON PC - Pro ID Printer</title>
+    <title>ZEXON PC - AI Smart Scanner</title>
+    <!-- OpenCV.js for AI Processing -->
+    <script async src="https://docs.opencv.org/4.8.0/opencv.js" onload="onOpenCvReady()" type="text/javascript"></script>
     <style>
-        :root {
-            --primary: #00ff88;
-            --bg: #121212;
-            --panel: #1e1e1e;
-            --text: #ffffff;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .header {
-            background: #000;
-            width: 100%;
-            padding: 15px 0;
-            text-align: center;
-            border-bottom: 2px solid var(--primary);
-            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
-        }
-        .header h1 {
-            color: var(--primary);
-            margin: 0;
-            font-size: 28px;
-            letter-spacing: 2px;
-        }
+        :root { --primary: #00e5ff; --bg: #111; --panel: #1e1e1e; --text: #fff; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; flex-direction: column; align-items: center; }
         
-        .main-workspace {
-            display: flex;
-            gap: 30px;
-            margin-top: 30px;
-            width: 95%;
-            max-width: 1300px;
-            justify-content: center;
-            align-items: flex-start;
-        }
+        /* Loading Screen */
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .spinner { border: 5px solid #333; border-top: 5px solid var(--primary); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Controls Panel */
-        .controls {
-            background: var(--panel);
-            padding: 25px;
-            border-radius: 12px;
-            width: 350px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            border: 1px solid #333;
-        }
-        .control-group {
-            margin-bottom: 18px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #ccc;
-        }
-        input[type="file"] {
-            width: 90%;
-            background: #2b2b2b;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #444;
-            color: white;
-            cursor: pointer;
-        }
-        .side-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .side-btn {
-            flex: 1;
-            padding: 10px;
-            background: #333;
-            color: white;
-            border: 1px solid #555;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-        .side-btn.active {
-            background: var(--primary);
-            color: black;
-            border-color: var(--primary);
-        }
-        input[type="range"] {
-            width: 100%;
-            accent-color: var(--primary);
-        }
-        .val-display { float: right; color: var(--primary); }
+        .header { background: #000; width: 100%; padding: 15px; text-align: center; border-bottom: 2px solid var(--primary); }
+        .header h1 { color: var(--primary); margin: 0; font-size: 26px; letter-spacing: 2px; }
 
-        .btn-print {
-            width: 100%;
-            background: var(--primary);
-            color: black;
-            padding: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 10px;
-            text-transform: uppercase;
-        }
-        .btn-print:hover { background: #00cc6a; }
-
-        /* A4 Preview Area - Centered */
-        .preview-wrapper {
-            background: #fff;
-            padding: 0;
-            border-radius: 8px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.8);
-            width: 210mm;
-            min-height: 297mm;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 25mm; /* Top margin */
-            position: relative;
-        }
-        .instruction {
-            color: #ff0055;
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        /* PVC Card Setup */
-        .card-container {
-            width: 85.6mm;
-            height: 54mm;
-            border: 2px dashed #00a2ff;
-            margin-bottom: 5mm;
-            position: relative;
-            overflow: hidden; /* Cuts off unwanted parts */
-            background: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+        .workspace { display: flex; gap: 20px; width: 95%; max-width: 1400px; margin-top: 20px; flex-wrap: wrap; justify-content: center; }
         
-        .card-container img {
-            position: absolute;
-            cursor: grab;
-            max-width: none; /* Allows zoom without limit */
-            transition: filter 0.1s;
-        }
-        .card-container img:active {
-            cursor: grabbing;
-        }
+        .panel { background: var(--panel); padding: 20px; border-radius: 10px; border: 1px solid #333; }
+        
+        /* Left: Editor */
+        .editor-panel { flex: 1; min-width: 400px; display: flex; flex-direction: column; align-items: center; }
+        .controls { width: 100%; margin-bottom: 15px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn { background: #333; color: white; border: 1px solid #555; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; }
+        .btn.active { background: var(--primary); color: black; border-color: var(--primary); }
+        .btn-action { background: #ff0055; color: white; font-size: 16px; border: none; padding: 12px; width: 100%; margin-top: 10px; cursor: pointer; border-radius: 5px; font-weight: bold; }
+        .btn-action:hover { background: #ff3377; }
+        .btn-print { background: #00e5ff; color: black; }
+
+        .canvas-container { position: relative; max-width: 100%; border: 2px dashed #444; background: #000; overflow: hidden; cursor: crosshair; }
+        canvas { display: block; }
+        input[type="file"] { display: none; }
+        
+        /* Right: A4 Preview */
+        .preview-panel { display: flex; flex-direction: column; align-items: center; }
+        .a4-page { width: 210mm; height: 297mm; background: white; box-shadow: 0 0 20px rgba(0,0,0,0.5); display: flex; flex-direction: column; align-items: center; padding-top: 20mm; }
+        .pvc-card { width: 85.6mm; height: 54mm; margin-bottom: 10mm; background: #f0f0f0; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .pvc-card img { width: 100%; height: 100%; object-fit: fill; }
+        .instruction { font-size: 13px; color: #aaa; text-align: center; margin-bottom: 10px; }
 
         @media print {
-            body { background: white; margin: 0; }
-            .header, .controls, .instruction { display: none !important; }
-            .main-workspace { margin: 0; width: 100%; }
-            .preview-wrapper { box-shadow: none; padding-top: 10mm; }
-            .card-container { border: none; margin-bottom: 2mm; background: none; }
+            body { background: white; }
+            .header, .editor-panel, #loader { display: none !important; }
+            .a4-page { box-shadow: none; padding-top: 5mm; }
+            .pvc-card { margin-bottom: 2mm; }
             @page { size: A4; margin: 0; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>ZEXON PC - PRO ID STUDIO</h1>
+    <!-- Loading Screen -->
+    <div id="loader">
+        <div class="spinner"></div>
+        <h2 style="color: #00e5ff;">ZEXON AI Engine Loading...</h2>
+        <p>Please wait while the AI scanner is initializing (Internet required).</p>
     </div>
 
-    <div class="main-workspace">
-        <!-- Tools Panel -->
-        <div class="controls">
-            <div class="control-group">
-                <label>1. Upload Front Side</label>
+    <div class="header">
+        <h1>ZEXON PC - AI AUTO SCAN & CROP</h1>
+    </div>
+
+    <div class="workspace">
+        <!-- AI Editor Area -->
+        <div class="panel editor-panel">
+            <div class="controls">
+                <button class="btn active" id="btnFront" onclick="document.getElementById('uploadFront').click()">1. UPLOAD FRONT</button>
                 <input type="file" id="uploadFront" accept="image/*">
-            </div>
-            <div class="control-group">
-                <label>2. Upload Back Side</label>
+                
+                <button class="btn" id="btnBack" onclick="document.getElementById('uploadBack').click()">2. UPLOAD BACK</button>
                 <input type="file" id="uploadBack" accept="image/*">
             </div>
-
-            <hr style="border-color: #444; margin: 20px 0;">
-
-            <label>Select Side to Edit / Adjust:</label>
-            <div class="side-selector">
-                <button class="side-btn active" id="btnFront" onclick="selectSide('front')">FRONT</button>
-                <button class="side-btn" id="btnBack" onclick="selectSide('back')">BACK</button>
-            </div>
-
-            <div class="control-group">
-                <label>Rotate (Teda Theek Kare) <span class="val-display" id="valRotate">0°</span></label>
-                <input type="range" id="rotate" min="-45" max="45" value="0">
-            </div>
             
-            <div class="control-group">
-                <label>Zoom (Scale) <span class="val-display" id="valZoom">100%</span></label>
-                <input type="range" id="zoom" min="50" max="250" value="100">
+            <p class="instruction">💡 Step: Upload karne ke baad, 4 Blue Dots ko exact card ke corners par set karein (100% perfection ke liye).</p>
+
+            <div class="canvas-container" id="canvasWrapper">
+                <canvas id="editCanvas"></canvas>
             </div>
 
-            <div class="control-group">
-                <label>Brightness <span class="val-display" id="valBright">100%</span></label>
-                <input type="range" id="brightness" min="50" max="200" value="100">
-            </div>
-
-            <div class="control-group">
-                <label>Contrast <span class="val-display" id="valContrast">100%</span></label>
-                <input type="range" id="contrast" min="50" max="200" value="100">
-            </div>
-
-            <button class="btn-print" onclick="window.print()">FINAL PRINT</button>
+            <button class="btn-action" onclick="cropAndWarp()">✂️ CROP & STRAIGHTEN CARD</button>
+            <button class="btn-action btn-print" onclick="window.print()">🖨️ FINAL PRINT PREVIEW</button>
         </div>
 
-        <!-- Preview Panel -->
-        <div>
-            <p class="instruction">💡 Tip: Photo par mouse click karke drag (kheecho) alignment theek karne ke liye.</p>
-            <div class="preview-wrapper">
-                <!-- Front Side -->
-                <div class="card-container">
-                    <img id="imgFront" src="" style="display:none;" alt="Front Side">
+        <!-- A4 Preview Area -->
+        <div class="panel preview-panel">
+            <div class="a4-page">
+                <div class="pvc-card">
+                    <img id="finalFront" src="" alt="Front Auto-Cropped">
                 </div>
-                <!-- Back Side -->
-                <div class="card-container">
-                    <img id="imgBack" src="" style="display:none;" alt="Back Side">
+                <div class="pvc-card">
+                    <img id="finalBack" src="" alt="Back Auto-Cropped">
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // State management for both images
-        const state = {
-            front: { x: 0, y: 0, rotate: 0, zoom: 100, bright: 100, contrast: 100 },
-            back: { x: 0, y: 0, rotate: 0, zoom: 100, bright: 100, contrast: 100 }
-        };
+        let cvReady = false;
+        function onOpenCvReady() {
+            cvReady = true;
+            document.getElementById('loader').style.display = 'none';
+        }
 
-        let currentSide = 'front';
-        let isDragging = false;
-        let startX, startY;
+        // State
+        let currentMode = 'front'; // 'front' or 'back'
+        let imgMats = { front: null, back: null };
+        let imagePoints = { front: [], back: [] }; // Points in original image scale
+        let displayScale = 1;
+        let draggingPoint = -1;
 
-        // Elements
-        const imgFront = document.getElementById('imgFront');
-        const imgBack = document.getElementById('imgBack');
-        
-        // File Upload Handlers
-        document.getElementById('uploadFront').addEventListener('change', (e) => loadFile(e, 'front', imgFront));
-        document.getElementById('uploadBack').addEventListener('change', (e) => loadFile(e, 'back', imgBack));
+        const canvas = document.getElementById('editCanvas');
+        const ctx = canvas.getContext('2d');
+        const finalFront = document.getElementById('finalFront');
+        const finalBack = document.getElementById('finalBack');
 
-        function loadFile(event, side, imgElement) {
+        // Handlers
+        document.getElementById('uploadFront').addEventListener('change', (e) => handleUpload(e, 'front'));
+        document.getElementById('uploadBack').addEventListener('change', (e) => handleUpload(e, 'back'));
+
+        function handleUpload(event, mode) {
+            if(!cvReady) return alert("AI Engine is still loading!");
             const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    imgElement.src = e.target.result;
-                    imgElement.style.display = 'block';
-                    // Reset position when new image is uploaded
-                    state[side] = { x: 0, y: 0, rotate: 0, zoom: 100, bright: 100, contrast: 100 };
-                    selectSide(side);
-                    applyTransforms(side);
+            if (!file) return;
+
+            currentMode = mode;
+            document.getElementById('btnFront').classList.remove('active');
+            document.getElementById('btnBack').classList.remove('active');
+            document.getElementById(mode === 'front' ? 'btnFront' : 'btnBack').classList.add('active');
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    // Convert original image to OpenCV Mat
+                    if(imgMats[mode]) imgMats[mode].delete();
+                    imgMats[mode] = cv.imread(img);
+                    
+                    // Run AI Auto-Detect
+                    imagePoints[mode] = detectDocumentCorners(imgMats[mode]);
+                    
+                    renderEditor();
                 }
-                reader.readAsDataURL(file);
+                img.src = e.target.result;
             }
+            reader.readAsDataURL(file);
         }
 
-        // Switch Tabs
-        function selectSide(side) {
-            currentSide = side;
-            document.getElementById('btnFront').className = side === 'front' ? 'side-btn active' : 'side-btn';
-            document.getElementById('btnBack').className = side === 'back' ? 'side-btn active' : 'side-btn';
+        function detectDocumentCorners(src) {
+            let gray = new cv.Mat();
+            let blur = new cv.Mat();
+            let edges = new cv.Mat();
             
-            // Update sliders to match selected side's current state
-            document.getElementById('rotate').value = state[side].rotate;
-            document.getElementById('zoom').value = state[side].zoom;
-            document.getElementById('brightness').value = state[side].bright;
-            document.getElementById('contrast').value = state[side].contrast;
-            updateLabels();
+            // AI Processing: Grayscale -> Blur -> Edge Detection
+            cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY, 0);
+            cv.GaussianBlur(gray, blur, new cv.Size(5, 5), 0, 0, cv.BORDER_DEFAULT);
+            cv.Canny(blur, edges, 75, 200);
+
+            let contours = new cv.MatVector();
+            let hierarchy = new cv.Mat();
+            cv.findContours(edges, contours, hierarchy, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE);
+
+            let maxArea = 0;
+            let bestApprox = null;
+
+            // Dhundo sabse bada dabba (Card)
+            for (let i = 0; i < contours.size(); ++i) {
+                let cnt = contours.item(i);
+                let area = cv.contourArea(cnt);
+                if (area > maxArea && area > 10000) {
+                    let peri = cv.arcLength(cnt, true);
+                    let approx = new cv.Mat();
+                    cv.approxPolyDP(cnt, approx, 0.02 * peri, true);
+                    if (approx.rows === 4) {
+                        maxArea = area;
+                        if(bestApprox) bestApprox.delete();
+                        bestApprox = approx;
+                    } else {
+                        approx.delete();
+                    }
+                }
+            }
+
+            let pts = [];
+            let w = src.cols;
+            let h = src.rows;
+
+            if (bestApprox) {
+                // AI ne 4 corners dhund liye
+                for (let i = 0; i < 4; i++) {
+                    pts.push({ x: bestApprox.data32S[i*2], y: bestApprox.data32S[i*2+1] });
+                }
+                bestApprox.delete();
+            } else {
+                // Agar AI miss kar de, toh default rectangle de do (Card size ka)
+                pts = [
+                    {x: w*0.1, y: h*0.1}, {x: w*0.9, y: h*0.1},
+                    {x: w*0.9, y: h*0.9}, {x: w*0.1, y: h*0.9}
+                ];
+            }
+
+            // Cleanup
+            gray.delete(); blur.delete(); edges.delete(); contours.delete(); hierarchy.delete();
+            
+            // Sort points properly: TL, TR, BR, BL
+            return sortPoints(pts);
         }
 
-        // Sliders Event Listeners
-        const sliders = ['rotate', 'zoom', 'brightness', 'contrast'];
-        sliders.forEach(slider => {
-            document.getElementById(slider).addEventListener('input', (e) => {
-                let val = parseInt(e.target.value);
-                if(slider === 'brightness') state[currentSide].bright = val;
-                if(slider === 'contrast') state[currentSide].contrast = val;
-                if(slider === 'rotate') state[currentSide].rotate = val;
-                if(slider === 'zoom') state[currentSide].zoom = val;
-                updateLabels();
-                applyTransforms(currentSide);
+        function sortPoints(pts) {
+            // Sort by Y first
+            pts.sort((a, b) => a.y - b.y);
+            // Top two points
+            let top = pts.slice(0, 2).sort((a, b) => a.x - b.x);
+            // Bottom two points (sort reverse X so it goes clockwise)
+            let bottom = pts.slice(2, 4).sort((a, b) => b.x - a.x);
+            return [top[0], top[1], bottom[0], bottom[1]];
+        }
+
+        function renderEditor() {
+            let src = imgMats[currentMode];
+            if(!src) return;
+
+            // Scale down for displaying in browser
+            const maxWidth = document.getElementById('canvasWrapper').clientWidth;
+            displayScale = maxWidth / src.cols;
+            if(displayScale > 1) displayScale = 1;
+
+            canvas.width = src.cols * displayScale;
+            canvas.height = src.rows * displayScale;
+
+            // Draw image
+            let dst = new cv.Mat();
+            cv.resize(src, dst, new cv.Size(canvas.width, canvas.height), 0, 0, cv.INTER_AREA);
+            cv.imshow('editCanvas', dst);
+            dst.delete();
+
+            // Draw polygon and 4 corner dots
+            let pts = imagePoints[currentMode];
+            ctx.beginPath();
+            ctx.moveTo(pts[0].x * displayScale, pts[0].y * displayScale);
+            for(let i=1; i<4; i++) {
+                ctx.lineTo(pts[i].x * displayScale, pts[i].y * displayScale);
+            }
+            ctx.closePath();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#00e5ff';
+            ctx.stroke();
+            ctx.fillStyle = 'rgba(0, 229, 255, 0.2)';
+            ctx.fill();
+
+            // Draw Draggable Dots
+            pts.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x * displayScale, p.y * displayScale, 8, 0, Math.PI * 2);
+                ctx.fillStyle = '#ff0055';
+                ctx.fill();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#fff';
+                ctx.stroke();
             });
+        }
+
+        // --- Mouse Events for Dragging Corners ---
+        function getMousePos(evt) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: (evt.clientX - rect.left),
+                y: (evt.clientY - rect.top)
+            };
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            const pos = getMousePos(e);
+            let pts = imagePoints[currentMode];
+            for (let i = 0; i < 4; i++) {
+                let px = pts[i].x * displayScale;
+                let py = pts[i].y * displayScale;
+                // If clicked within 15px of a dot
+                if (Math.abs(pos.x - px) < 15 && Math.abs(pos.y - py) < 15) {
+                    draggingPoint = i;
+                    break;
+                }
+            }
         });
 
-        function updateLabels() {
-            document.getElementById('valRotate').innerText = state[currentSide].rotate + '°';
-            document.getElementById('valZoom').innerText = state[currentSide].zoom + '%';
-            document.getElementById('valBright').innerText = state[currentSide].bright + '%';
-            document.getElementById('valContrast').innerText = state[currentSide].contrast + '%';
-        }
+        canvas.addEventListener('mousemove', (e) => {
+            if (draggingPoint !== -1) {
+                const pos = getMousePos(e);
+                let pts = imagePoints[currentMode];
+                pts[draggingPoint].x = pos.x / displayScale;
+                pts[draggingPoint].y = pos.y / displayScale;
+                renderEditor();
+            }
+        });
 
-        // Apply Transform & Filter Engine
-        function applyTransforms(side) {
-            const img = side === 'front' ? imgFront : imgBack;
-            const s = state[side];
+        canvas.addEventListener('mouseup', () => { draggingPoint = -1; });
+        canvas.addEventListener('mouseleave', () => { draggingPoint = -1; });
+
+        // --- Core Auto-Crop & Perspective Warp ---
+        function cropAndWarp() {
+            let src = imgMats[currentMode];
+            if(!src) return alert("Please upload an image first!");
+
+            let pts = imagePoints[currentMode];
             
-            // Translate (X, Y) must be applied first, then Rotate, then Scale
-            img.style.transform = `translate(${s.x}px, ${s.y}px) rotate(${s.rotate}deg) scale(${s.zoom / 100})`;
-            img.style.filter = `brightness(${s.bright}%) contrast(${s.contrast}%)`;
+            // Source points (The 4 dots)
+            let srcTri = cv.matFromArray(4, 1, cv.CV_32FC2, [
+                pts[0].x, pts[0].y, // Top-Left
+                pts[1].x, pts[1].y, // Top-Right
+                pts[2].x, pts[2].y, // Bottom-Right
+                pts[3].x, pts[3].y  // Bottom-Left
+            ]);
+
+            // Destination points (Perfect PVC Card Size - 856x540)
+            const finalW = 856;
+            const finalH = 540;
+            let dstTri = cv.matFromArray(4, 1, cv.CV_32FC2, [
+                0, 0,
+                finalW, 0,
+                finalW, finalH,
+                0, finalH
+            ]);
+
+            // Calculate perspective matrix
+            let M = cv.getPerspectiveTransform(srcTri, dstTri);
+            
+            // Create final Mat
+            let warped = new cv.Mat();
+            cv.warpPerspective(src, warped, M, new cv.Size(finalW, finalH));
+
+            // Convert to base64 for A4 display
+            let tempCanvas = document.createElement('canvas');
+            cv.imshow(tempCanvas, warped);
+            let dataUrl = tempCanvas.toDataURL('image/jpeg', 1.0);
+
+            if(currentMode === 'front') {
+                finalFront.src = dataUrl;
+                document.getElementById('btnFront').innerHTML = "✅ FRONT DONE";
+            } else {
+                finalBack.src = dataUrl;
+                document.getElementById('btnBack').innerHTML = "✅ BACK DONE";
+            }
+
+            // Cleanup
+            srcTri.delete(); dstTri.delete(); M.delete(); warped.delete();
+            alert(`${currentMode.toUpperCase()} side crop successful! It's now perfectly sized and aligned in the preview.`);
         }
-
-        // Drag & Drop Functionality (Photoshop Pan Style)
-        function setupDrag(imgElement, side) {
-            imgElement.addEventListener('mousedown', (e) => {
-                e.preventDefault();
-                isDragging = true;
-                // Calculate difference between mouse click and current image position
-                startX = e.clientX - state[side].x;
-                startY = e.clientY - state[side].y;
-            });
-
-            window.addEventListener('mousemove', (e) => {
-                if (!isDragging || currentSide !== side) return;
-                // Only move the active image being dragged
-                state[side].x = e.clientX - startX;
-                state[side].y = e.clientY - startY;
-                applyTransforms(side);
-            });
-
-            window.addEventListener('mouseup', () => {
-                isDragging = false;
-            });
-        }
-
-        setupDrag(imgFront, 'front');
-        setupDrag(imgBack, 'back');
-
     </script>
 </body>
 </html>
