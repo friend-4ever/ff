@@ -3,345 +3,344 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZEXON PC - Auto AI Print (Robust)</title>
-    <!-- AI Engine (OpenCV) Loaded directly -->
-    <script async src="https://docs.opencv.org/4.8.0/opencv.js" onload="aiReady()" type="text/javascript"></script>
+    <title>ZEXON PC - Smart ID Card Studio (Fail-Proof)</title>
     <style>
         :root {
             --primary: #00ff88;
-            --bg: #121212;
-            --panel: #1e1e1e;
-            --error: #ff4444;
-            --warning: #ffaa00;
+            --bg-color: #121212;
+            --panel-bg: rgba(25, 25, 25, 0.9);
+            --text: #ffffff;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: white;
+            background-color: var(--bg-color);
+            color: var(--text);
             margin: 0;
+            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
+        }
+        .header {
+            background: #000;
+            width: 100%;
+            padding: 15px 0;
+            text-align: center;
+            border-bottom: 2px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
+        }
+        .header h1 {
+            color: var(--primary);
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 2px;
         }
         
-        /* Loading Overlay */
-        #loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 1000; display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
+        .main-workspace {
+            display: flex;
+            gap: 25px;
+            margin-top: 25px;
+            width: 95%;
+            max-width: 1350px;
+            justify-content: center;
+            align-items: flex-start;
         }
-        .spinner {
-            border: 5px solid #333; border-top: 5px solid var(--primary);
-            border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite;
+
+        /* Controls Panel */
+        .controls {
+            background: var(--panel-bg);
+            padding: 20px;
+            border-radius: 12px;
+            width: 330px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            border: 1px solid #333;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .control-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #ccc;
+        }
+        input[type="file"] {
+            width: 90%;
+            background: #2b2b2b;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            color: white;
+            cursor: pointer;
+        }
+        .side-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .side-btn {
+            flex: 1;
+            padding: 10px;
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .side-btn.active {
+            background: var(--primary);
+            color: black;
+            border-color: var(--primary);
+        }
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--primary);
+        }
+        .val-display { float: right; color: var(--primary); }
 
-        .header { background: #000; width: 100%; padding: 15px; text-align: center; border-bottom: 2px solid var(--primary); box-shadow: 0 2px 10px rgba(0,255,136,0.3); }
-        .header h1 { color: var(--primary); margin: 0; font-size: 28px; letter-spacing: 2px; text-transform: uppercase; }
-
-        .workspace { display: flex; gap: 30px; margin-top: 30px; width: 95%; max-width: 1200px; justify-content: center; flex-wrap: wrap; padding-bottom: 50px;}
-        
-        .controls { background: var(--panel); padding: 25px; border-radius: 10px; width: 350px; border: 1px solid #333; box-shadow: 0 0 20px rgba(0,0,0,0.5); align-self: flex-start; }
-        
-        .upload-box { background: #2b2b2b; padding: 15px; border-radius: 8px; margin-bottom: 15px; text-align: center; border: 1px dashed #555; transition: border-color 0.3s; }
-        .upload-box:hover { border-color: var(--primary); }
-        .upload-box label { display: block; margin-bottom: 10px; font-weight: bold; color: var(--primary); font-size: 16px; cursor: pointer; }
-        input[type="file"] { width: 100%; background: #111; color: white; padding: 8px; border-radius: 5px; cursor: pointer; box-sizing: border-box;}
-        
-        .status-msg { font-size: 13px; color: #aaa; margin-top: 8px; font-weight: 500; min-height: 1.2em;}
-
-        .btn-print { background: var(--primary); color: #000; width: 100%; padding: 15px; font-size: 18px; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px; text-transform: uppercase; transition: background 0.3s, transform 0.1s; }
+        .btn-print {
+            width: 100%;
+            background: var(--primary);
+            color: black;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
         .btn-print:hover { background: #00cc6a; }
-        .btn-print:active { transform: scale(0.98); }
 
-        /* A4 Preview Area */
-        .preview-area { background: #fff; padding: 0; border-radius: 5px; width: 210mm; min-height: 297mm; display: flex; flex-direction: column; align-items: center; padding-top: 25mm; box-shadow: 0 0 30px rgba(0,0,0,0.8); position: relative;}
+        /* A4 Preview Area - Centered */
+        .preview-wrapper {
+            background: #fff;
+            padding: 0;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            width: 210mm;
+            min-height: 297mm;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 25mm; /* Top margin */
+            position: relative;
+        }
+        .tip { font-size: 12px; color: #ff0055; font-weight: bold; margin-bottom: 5px; }
+
+        /* PVC Card Container (The Cropping Box) */
+        .card-container {
+            width: 85.6mm;
+            height: 54mm;
+            border: 2px dashed rgba(0, 255, 136, 0.4);
+            margin-bottom: 8mm;
+            position: relative;
+            overflow: hidden; /* This automatically crops unwanted area */
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
         
-        /* 85.6mm x 54mm PVC Card Size */
-        .pvc-card { width: 85.6mm; height: 54mm; margin-bottom: 10mm; background: #f0f0f0; border: 1px solid #ddd; overflow: hidden; display: flex; justify-content: center; align-items: center; box-sizing: content-box; }
-        .pvc-card canvas { max-width: 100%; max-height: 100%; display: none;} /* Hidden until drawn */
-
-        .hidden { display: none; }
+        .card-container img {
+            position: absolute;
+            cursor: grab;
+            max-width: none; /* Allows zoom without limit */
+            transition: filter 0.1s;
+        }
+        .card-container img:active {
+            cursor: grabbing;
+        }
 
         @media print {
-            body { background: white; min-height: 0; }
-            .header, .controls, #loader { display: none !important; }
-            .workspace { margin: 0; padding: 0; width: 100%; }
-            .preview-area { box-shadow: none; width: 100%; padding-top: 10mm; border: none; }
-            .pvc-card { border: none; margin-bottom: 2mm; background: none; }
-            .pvc-card canvas { display: block !important; }
+            body { background: white; margin: 0; }
+            .header, .controls, .tip { display: none !important; }
+            .main-workspace { margin: 0; width: 100%; }
+            .preview-wrapper { box-shadow: none; padding-top: 10mm; }
+            .card-container { border: none; margin-bottom: 2mm; background: none; }
             @page { size: A4; margin: 0; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Loading Screen -->
-    <div id="loader">
-        <div class="spinner"></div>
-        <h2 style="color: var(--primary); margin-top: 20px;">ZEXON AI Engine Loading...</h2>
-        <p>Pehli baar mein thoda samay lag sakta hai (Internet ON rakhein).</p>
-    </div>
-
     <div class="header">
-        <h1>ZEXON PC - 100% AUTO ID SCANNER</h1>
+        <h1>ZEXON PC - Smart ID Card Studio</h1>
     </div>
 
-    <div class="workspace">
-        <!-- Control Panel -->
+    <div class="main-workspace">
+        <!-- Controls Panel -->
         <div class="controls">
-            <h3 style="text-align: center; margin-top: 0; color: #ccc; text-transform: uppercase; font-size: 16px;">Upload Images</h3>
-            
-            <div class="upload-box">
-                <label for="uploadFront">1. Front Side</label>
+            <div class="control-group">
+                <label>1. Front Side Upload</label>
                 <input type="file" id="uploadFront" accept="image/*">
-                <p id="statusFront" class="status-msg">Waiting for image...</p>
             </div>
-
-            <div class="upload-box">
-                <label for="uploadBack">2. Back Side</label>
+            <div class="control-group">
+                <label>2. Back Side Upload</label>
                 <input type="file" id="uploadBack" accept="image/*">
-                <p id="statusBack" class="status-msg">Waiting for image...</p>
             </div>
 
-            <button class="btn-print" onclick="window.print()">🖨️ Print Document</button>
-            <p style="font-size: 11px; color: #666; text-align: center; margin-top: 10px;">Tip: Best results ke liye card plain background pe rakhein.</p>
+            <hr style="border-color: #444; margin: 20px 0;">
+
+            <label>Select Side to Adjust:</label>
+            <div class="side-selector">
+                <button class="side-btn active" id="btnFront" onclick="selectSide('front')">FRONT</button>
+                <button class="side-btn" id="btnBack" onclick="selectSide('back')">BACK</button>
+            </div>
+
+            <div class="control-group">
+                <label>Rotate (Teda Theek Kare) <span class="val-display" id="valRotate">0°</span></label>
+                <input type="range" id="rotate" min="-45" max="45" value="0">
+            </div>
+            
+            <div class="control-group">
+                <label>Zoom (Scale) <span class="val-display" id="valZoom">100%</span></label>
+                <input type="range" id="zoom" min="50" max="250" value="100">
+            </div>
+
+            <div class="control-group">
+                <label>Brightness <span class="val-display" id="valBright">100%</span></label>
+                <input type="range" id="brightness" min="50" max="200" value="100">
+            </div>
+
+            <div class="control-group">
+                <label>Contrast <span class="val-display" id="valContrast">100%</span></label>
+                <input type="range" id="contrast" min="50" max="200" value="100">
+            </div>
+
+            <button class="btn-print" onclick="window.print()">🖨️ FINAL PRINT PREVIEW</button>
         </div>
 
-        <!-- A4 Page View -->
-        <div class="preview-area">
-            <div class="pvc-card"><canvas id="canvasFront"></canvas></div>
-            <div class="pvc-card"><canvas id="canvasBack"></canvas></div>
-            <p style="position: absolute; bottom: 10px; right: 10px; color: #ccc; font-size: 10px; margin: 0;">Processed by ZEXON AI</p>
+        <!-- Preview Area (Centered A4) -->
+        <div>
+            <div class="preview-wrapper">
+                <p class="tip">Note: Mouse click karke ghiskake set karein.</p>
+                <!-- Front Card Slots -->
+                <div class="card-container">
+                    <img id="imgFront" src="" style="display:none;" alt="Front Side">
+                </div>
+                <!-- Back Card Slots -->
+                <div class="card-container">
+                    <img id="imgBack" src="" style="display:none;" alt="Back Side">
+                </div>
+            </div>
         </div>
     </div>
-
-    <!-- Hidden Images for Processing -->
-    <img id="hiddenFront" class="hidden" crossorigin="anonymous" alt="">
-    <img id="hiddenBack" class="hidden" crossorigin="anonymous" alt="">
 
     <script>
-        let aiIsReady = false;
+        // State for both images
+        const state = {
+            front: { x: 0, y: 0, rotate: 0, zoom: 100, bright: 100, contrast: 100 },
+            back: { x: 0, y: 0, rotate: 0, zoom: 100, bright: 100, contrast: 100 }
+        };
 
-        // Triggered when OpenCV loads successfully
-        function aiReady() {
-            console.log("OpenCV.js is ready.");
-            aiIsReady = true;
-            document.getElementById('loader').style.display = 'none';
-        }
+        let currentSide = 'front';
+        let isDragging = false;
+        let startX, startY;
 
-        // Check if OpenCV is loaded in case onload didn't fire correctly
-        setTimeout(() => {
-            if (typeof cv !== 'undefined' && cv.Mat && !aiIsReady) {
-                aiReady();
-            }
-        }, 1000);
+        const imgFront = document.getElementById('imgFront');
+        const imgBack = document.getElementById('imgBack');
+        
+        // File Upload Handlers
+        document.getElementById('uploadFront').addEventListener('change', (e) => loadFile(e, 'front', imgFront));
+        document.getElementById('uploadBack').addEventListener('change', (e) => loadFile(e, 'back', imgBack));
 
-        // File Input Handlers
-        document.getElementById('uploadFront').addEventListener('change', (e) => handleImageUpload(e, 'hiddenFront', 'canvasFront', 'statusFront'));
-        document.getElementById('uploadBack').addEventListener('change', (e) => handleImageUpload(e, 'hiddenBack', 'canvasBack', 'statusBack'));
-
-        function updateStatus(id, msg, color) {
-            const el = document.getElementById(id);
-            el.innerText = msg;
-            el.style.color = color || "#aaa";
-        }
-
-        function handleImageUpload(event, imgId, canvasId, statusId) {
-            if (!aiIsReady) {
-                alert("AI Engine load ho raha hai. Kripya kuch second intezaar karein.");
-                event.target.value = ''; // Reset input
-                return;
-            }
-            
+        function loadFile(event, side, imgElement) {
             const file = event.target.files[0];
-            if (!file) return;
-
-            updateStatus(statusId, "⏳ Reading file...", "white");
-
-            const reader = new FileReader();
-            reader.onerror = () => {
-                updateStatus(statusId, "❌ Error reading file.", var(--error));
-            };
-
-            reader.onload = function(e) {
-                const imgElement = document.getElementById(imgId);
-                
-                // Reset canvas before processing
-                const canvas = document.getElementById(canvasId);
-                canvas.style.display = 'none';
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                imgElement.onload = function() {
-                    updateStatus(statusId, "⏳ Processing automatically...", var(--warning));
-                    // Ensure image is fully decoded by browser before OpenCV touches it
-                    if ('decode' in imgElement) {
-                        imgElement.decode().then(() => {
-                            // Small delay to let UI update status text
-                            setTimeout(() => processImageCore(imgElement, canvasId, statusId), 50);
-                        }).catch(() => {
-                            // Fallback if decode fails
-                            setTimeout(() => processImageCore(imgElement, canvasId, statusId), 100);
-                        });
-                    } else {
-                        // Older browsers fallback
-                        setTimeout(() => processImageCore(imgElement, canvasId, statusId), 100);
-                    }
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imgElement.src = e.target.result;
+                    imgElement.style.display = 'block';
+                    // Reset position when new image is uploaded
+                    state[side] = { x: 0, y: 0, rotate: 0, zoom: 100, bright: 100, contrast: 100 };
+                    selectSide(side);
+                    applyTransforms(side);
                 }
-                imgElement.onerror = () => {
-                    updateStatus(statusId, "❌ Error loading image element.", var(--error));
-                }
-                imgElement.src = e.target.result;
+                reader.readAsDataURL(file);
             }
-            reader.readAsDataURL(file);
         }
 
-        // Core Image Processing Function with Try-Catch Block
-        function processImageCore(imgElement, canvasId, statusId) {
-            console.log(`Starting processing for ${canvasId}`);
-            const canvas = document.getElementById(canvasId);
+        // Switch Tabs (Front/Back)
+        function selectSide(side) {
+            currentSide = side;
+            document.getElementById('btnFront').className = side === 'front' ? 'side-btn active' : 'side-btn';
+            document.getElementById('btnBack').className = side === 'back' ? 'side-btn active' : 'side-btn';
             
-            // Standard PVC Width and Height in pixels (approx 300 DPI for good print)
-            const finalW = 1012; // ~85.6mm at 300DPI
-            const finalH = 638;  // ~54mm at 300DPI
-            
-            // Set canvas internal resolution
-            canvas.width = finalW;
-            canvas.height = finalH;
-
-            let src = null;
-            let finalDest = null;
-            let processingSuccess = false;
-
-            try {
-                // Read image from <img> element
-                src = cv.imread(imgElement);
-                if (src.empty()) throw new Error("Failed to read image data.");
-
-                let gray = new cv.Mat();
-                let blur = new cv.Mat();
-                let edges = new cv.Mat();
-
-                // 1. Pre-processing: Grayscale & Blur to reduce noise
-                cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY, 0);
-                cv.GaussianBlur(gray, blur, new cv.Size(5, 5), 0, 0, cv.BORDER_DEFAULT);
-
-                // 2. Edge Detection
-                cv.Canny(blur, edges, 75, 200, 3, false);
-                
-                // 3. Find Contours
-                let contours = new cv.MatVector();
-                let hierarchy = new cv.Mat();
-                cv.findContours(edges, contours, hierarchy, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE);
-
-                let maxArea = 0;
-                let bestApprox = null;
-
-                // 4. Find the largest rectangle (Potential ID Card)
-                const minValidArea = (src.cols * src.rows) * 0.05; // At least 5% of image
-
-                for (let i = 0; i < contours.size(); ++i) {
-                    let cnt = contours.item(i);
-                    let area = cv.contourArea(cnt);
-                    
-                    if (area > minValidArea) {
-                        let peri = cv.arcLength(cnt, true);
-                        let approx = new cv.Mat();
-                        cv.approxPolyDP(cnt, approx, 0.02 * peri, true);
-                        
-                        // Check if shape is convex and has 4 corners
-                        if (approx.rows === 4 && cv.isContourConvex(approx) && area > maxArea) {
-                            maxArea = area;
-                            if (bestApprox) bestApprox.delete();
-                            bestApprox = approx;
-                        } else {
-                            approx.delete();
-                        }
-                    }
-                }
-
-                finalDest = new cv.Mat();
-
-                if (bestApprox) {
-                    console.log("Card detected. Applying Perspective Warp.");
-                    // SUCCESS: AI Found the card, extract corners
-                    let pts = [];
-                    for (let i = 0; i < 4; i++) {
-                        pts.push({ x: bestApprox.data32S[i * 2], y: bestApprox.data32S[i * 2 + 1] });
-                    }
-
-                    // Sort Corners: Top-Left, Top-Right, Bottom-Right, Bottom-Left
-                    pts.sort((a, b) => a.y - b.y);
-                    let top = pts.slice(0, 2).sort((a, b) => a.x - b.x);
-                    let bottom = pts.slice(2, 4).sort((a, b) => a.x - b.x);
-                    
-                    // Coordinate order required by OpenCV: TL, TR, BR, BL
-                    let orderedPts = [top[0], top[1], bottom[1], bottom[0]];
-
-                    let srcCoords = cv.matFromArray(4, 1, cv.CV_32FC2, [
-                        orderedPts[0].x, orderedPts[0].y, orderedPts[1].x, orderedPts[1].y,
-                        orderedPts[2].x, orderedPts[2].y, orderedPts[3].x, orderedPts[3].y
-                    ]);
-
-                    let dstCoords = cv.matFromArray(4, 1, cv.CV_32FC2, [
-                        0, 0, finalW, 0, finalW, finalH, 0, finalH
-                    ]);
-
-                    // Magic Perspective Transform (Photoshop's perspective warp)
-                    let M = cv.getPerspectiveTransform(srcCoords, dstCoords);
-                    cv.warpPerspective(src, finalDest, M, new cv.Size(finalW, finalH), cv.INTER_LINEAR, cv.BORDER_CONSTANT, new cv.Scalar());
-
-                    updateStatus(statusId, "✅ Auto-Cropped successfully!", var(--primary));
-                    processingSuccess = true;
-
-                    // Cleanup transformation matrices
-                    srcCoords.delete(); dstCoords.delete(); M.delete(); bestApprox.delete();
-                } else {
-                    console.log("Card not detected clearly. Falling back to basic fit.");
-                    // FAILSAFE 1: Detected, but not a clear rectangle. Just resize to fit.
-                    cv.resize(src, finalDest, new cv.Size(finalW, finalH), 0, 0, cv.INTER_AREA);
-                    updateStatus(statusId, "⚠️ Auto-Fit applied (Edges not sharp)", var(--warning));
-                }
-
-                // Clean intermediate Mats
-                gray.delete(); blur.delete(); edges.delete(); contours.delete(); hierarchy.delete();
-
-            } catch (error) {
-                console.error("OpenCV Processing Error:", error);
-                // FAILSAFE 2: Severe error during processing. Try basic drawing to canvas as last resort.
-                updateStatus(statusId, "❌ Processing failed. Using raw image.", var(--error));
-                
-                // Show raw image on canvas using standard 2D context to avoid stuck state
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(imgElement, 0, 0, finalW, finalH);
-                canvas.style.display = 'block';
-                
-                // Cleanup src if it was created before error
-                if (src) src.delete();
-                if (finalDest) finalDest.delete();
-                return; // Exit function, drawing already handled
-            }
-
-            // If processing logic completed (success or Failsafe 1)
-            if (finalDest) {
-                try {
-                    cv.imshow(canvasId, finalDest);
-                    canvas.style.display = 'block'; // Show canvas now that image is drawn
-                    finalDest.delete();
-                } catch(e) {
-                    console.error("Error showing image on canvas:", e);
-                    // Last last resort fallback
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(imgElement, 0, 0, finalW, finalH);
-                    canvas.style.display = 'block';
-                }
-            }
-            
-            if (src) src.delete();
-            console.log(`Processing finished for ${canvasId}`);
+            // Update sliders to match image state
+            document.getElementById('rotate').value = state[side].rotate;
+            document.getElementById('zoom').value = state[side].zoom;
+            document.getElementById('brightness').value = state[side].bright;
+            document.getElementById('contrast').value = state[side].contrast;
+            updateLabels();
         }
+
+        // --- Core: Sliders Event Listeners ---
+        const sliders = ['rotate', 'zoom', 'brightness', 'contrast'];
+        sliders.forEach(slider => {
+            document.getElementById(slider).addEventListener('input', (e) => {
+                let val = parseInt(e.target.value);
+                
+                // Update state
+                if(slider === 'brightness') state[currentSide].bright = val;
+                if(slider === 'contrast') state[currentSide].contrast = val;
+                if(slider === 'rotate') state[currentSide].rotate = val;
+                if(slider === 'zoom') state[currentSide].zoom = val;
+                
+                updateLabels();
+                applyTransforms(currentSide);
+            });
+        });
+
+        function updateLabels() {
+            document.getElementById('valRotate').innerText = state[currentSide].rotate + '°';
+            document.getElementById('valZoom').innerText = state[currentSide].zoom + '%';
+            document.getElementById('valBright').innerText = state[currentSide].bright + '%';
+            document.getElementById('valContrast').innerText = state[currentSide].contrast + '%';
+        }
+
+        // --- Core: Apply Transforms (Rotation, Zoom, Filters) ---
+        function applyTransforms(side) {
+            const img = side === 'front' ? imgFront : imgBack;
+            const s = state[side];
+            
+            // Step 1: Position and Rotation (order matters)
+            // Using translate3d for hardware acceleration/smooth movement
+            img.style.transform = `translate3d(${s.x}px, ${s.y}px, 0) rotate(${s.rotate}deg) scale(${s.zoom / 100})`;
+            
+            // Step 2: Lighting Filters
+            img.style.filter = `brightness(${s.bright}%) contrast(${s.contrast}%)`;
+        }
+
+        // --- Core: Mouse Dragging (Pan) Setup ---
+        function setupDrag(imgElement, side) {
+            imgElement.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                isDragging = true;
+                // Calculate difference between mouse click and current image position
+                startX = e.clientX - state[side].x;
+                startY = e.clientY - state[side].y;
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging || currentSide !== side) return;
+                // Only move the active image being dragged
+                state[side].x = e.clientX - startX;
+                state[side].y = e.clientY - startY;
+                applyTransforms(side);
+            });
+
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+        }
+
+        setupDrag(imgFront, 'front');
+        setupDrag(imgBack, 'back');
+
     </script>
 </body>
 </html>
